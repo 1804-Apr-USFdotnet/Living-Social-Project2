@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{774DB813-A41C-4121-8995-A1E7E522A8BB}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>RealEstateCRM</RootNamespace>
-    <AssemblyName>RealEstateCRM</AssemblyName>
+    <ProjectGuid>{B235C579-33EB-42F1-AD45-5E13EBF49F6F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>RealEstateCRM.DataAccessLayer</RootNamespace>
+    <AssemblyName>RealEstateCRM.DataAccessLayer</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -49,30 +47,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\BuyerLead.cs" />
-    <Compile Include="Models\Code-First references\RealEstateCRMContext.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>RealEstateCRMContext.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\IEntity.cs" />
-    <Compile Include="Models\Lead.cs" />
-    <Compile Include="Models\RealEstateAgent.cs" />
-    <Compile Include="Models\SellerLead.cs" />
-    <Compile Include="Models\User.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\CRUD.cs" />
+    <Compile Include="IDbContext.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
+    <Compile Include="RealEstateCRMContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <EntityDeploy Include="Models\Code-First references\RealEstateCRMContext.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>RealEstateCRMContext.Designer.cs</LastGenOutput>
-    </EntityDeploy>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Models\Code-First references\RealEstateCRMContext.sql" />
+    <ProjectReference Include="..\RealEstateCRM\RealEstateCRM.csproj">
+      <Project>{774db813-a41c-4121-8995-a1e7e522a8bb}</Project>
+      <Name>RealEstateCRM</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

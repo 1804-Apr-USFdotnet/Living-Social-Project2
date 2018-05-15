@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RealEstateCRM.Models
 {
-    public class RealEstateAgent
+    public class RealEstateAgent : IEntity
     {
         public int RealEstateAgentId { get; set; }
 
@@ -16,8 +16,11 @@ namespace RealEstateCRM.Models
         public string Password { get; set; }
         public string Alias { get; set; }
 
-        //public virtual List<Lead> Leads { get; set; }
-        public virtual List<SellerLead> SellerLeads { get; set; }
-        public virtual List<BuyerLead> BuyerLeads { get; set; }
+        public virtual List<Lead> Leads { get; set; }
+       
+
+
+        //public virtual List<SellerLead> SellerLeads { get; set; }
+        //public virtual List<BuyerLead> BuyerLeads { get; set; }
     }
 }

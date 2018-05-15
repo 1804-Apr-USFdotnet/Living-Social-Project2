@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RealEstateCRM.Models
 {
-    public class Lead
+    public class Lead: IEntity
     {
         public int LeadId { get; set; }
 

@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateCRM", "RealEstateCRM\RealEstateCRM.csproj", "{774DB813-A41C-4121-8995-A1E7E522A8BB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateCRM.DataAccessLayer", "RealEstateCRM.DataAccessLayer\RealEstateCRM.DataAccessLayer.csproj", "{B235C579-33EB-42F1-AD45-5E13EBF49F6F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{774DB813-A41C-4121-8995-A1E7E522A8BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{774DB813-A41C-4121-8995-A1E7E522A8BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{774DB813-A41C-4121-8995-A1E7E522A8BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B235C579-33EB-42F1-AD45-5E13EBF49F6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B235C579-33EB-42F1-AD45-5E13EBF49F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B235C579-33EB-42F1-AD45-5E13EBF49F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B235C579-33EB-42F1-AD45-5E13EBF49F6F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

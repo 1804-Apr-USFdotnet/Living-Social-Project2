@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace RealEstateCRM.Models
 {
-    public class BuyerLead
+    public class BuyerLead : IEntity
     {
         public int BuyerLeadId { get; set; }
 
-        //buyer or seller, may be separated into SellerLead and BuyerLead
+        
         public string Type { get; set; }
 
         public string LeadName { get; set; }
