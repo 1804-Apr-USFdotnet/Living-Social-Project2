@@ -18,7 +18,7 @@ namespace RealEstateCRM.DataAccessLayer
 		public DbSet<RealEstateAgent> RealEstateAgents { get; set; }
 
 
-        //public RealEstateCRMContext () : base("connnectionstringName") { }
+        public RealEstateCRMContext () : base("RealEstateCRM") { }
 
         public override int SaveChanges()
         {
