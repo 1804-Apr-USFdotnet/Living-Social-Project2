@@ -54,5 +54,28 @@ namespace RealEstateCRM.Web.Controllers
                 return View(user);
             }
         }
+
+        public ActionResult Edit(int id)
+        {
+            User user = crud.GetByID(id);
+            return View(user);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                crud.Update(user);
+                crud.Save();
+                return RedirectToAction("index");
+            }
+            else
+            {
+                return View(user);
+            }
+        }
+        
+
     }
 }
