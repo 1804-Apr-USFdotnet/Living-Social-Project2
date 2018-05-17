@@ -14,6 +14,8 @@ namespace RealEstateCRM.DataAccessLayer.Repositories
         private readonly IDbContext _context;
         private IDbSet<T> _entities;
 
+     
+
         private IDbSet<T> Entities
         {
             get
@@ -26,6 +28,11 @@ namespace RealEstateCRM.DataAccessLayer.Repositories
             }
         }
 
+        public CRUD(IDbContext context)// Injecting Dependency
+        {
+            this._context = context;
+        }
+
         public IQueryable<T> Table
         {
             get
@@ -35,10 +42,7 @@ namespace RealEstateCRM.DataAccessLayer.Repositories
         }
 
 
-        public CRUD(IDbContext context)// Injecting Dependency
-        {
-            this._context = context;
-        }
+       
 
 
 
