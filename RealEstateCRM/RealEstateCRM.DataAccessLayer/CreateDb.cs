@@ -39,12 +39,12 @@ namespace RealEstateCRM.DataAccessLayer
             //block comment ctrl+K, ctrl+C
             //block uncomment ctrl+K, ctrl+U
 
-            #region AddTest
-           // crmDB.BuyerLeads.Add(testBuyerLead);
-            crmDB.Users.Add(testUser);
-            crmDB.SaveChanges();
-            Console.WriteLine("Db Changes Saved..............");
-            #endregion
+            // #region AddTest
+            //// crmDB.BuyerLeads.Add(testBuyerLead);
+            // crmDB.Users.Add(testUser);
+            // crmDB.SaveChanges();
+            // Console.WriteLine("Db Changes Saved..............");
+            // #endregion
 
 
 
@@ -52,8 +52,13 @@ namespace RealEstateCRM.DataAccessLayer
             //var editLead = crmDB.BuyerLeads.Where(x => x.BuyerLeadId == 1).FirstOrDefault();
             //editLead.LeadName = "Replaced Name";
             //crmDB.Entry<BuyerLead>(editLead).State = System.Data.Entity.EntityState.Modified;
-            //crmDB.SaveChanges();
             //Console.WriteLine("Lead Updated.......");
+
+            var editUser = crmDB.Users.Where(x => x.UserId == 1).FirstOrDefault();
+            editUser.FirstName = "Changed Name";
+            editUser.LastName = "Changed this too";
+            crmDB.Entry<User>(editUser).State = System.Data.Entity.EntityState.Modified;
+            crmDB.SaveChanges();
             #endregion
         }
     }
