@@ -68,16 +68,36 @@ namespace RealEstateCRM.Web.Controllers
         // GET: SellerLead/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(sellerCrud.GetByID(id));
         }
 
         // POST: SellerLead/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, SellerLead updatedSellerLead)
         {
             try
             {
-                // TODO: Add update logic here
+                //find already existing object 
+                SellerLead oldSellerLead = sellerCrud.GetByID(id);
+
+                //passing information entered into the new object from client forms
+                //into already existing object, no new object is added to DB
+
+                oldSellerLead.SellerLeadId = updatedSellerLead.SellerLeadId;
+                oldSellerLead.LeadName = updatedSellerLead.LeadName;
+                oldSellerLead.Min = updatedSellerLead.Min;
+                oldSellerLead.Max = updatedSellerLead.Max;
+                oldSellerLead.Bed = updatedSellerLead.Bed;
+                oldSellerLead.Bath = updatedSellerLead.Bath;
+                oldSellerLead.SqFootage = updatedSellerLead.SqFootage;
+                oldSellerLead.Floors = updatedSellerLead.Floors;
+                oldSellerLead.RealEstateAgent = updatedSellerLead.RealEstateAgent;
+
+                //already existing objects EntityState is set to Modified, allowing
+                //Dbcontext to track and save changes
+
+                sellerCrud.Update(oldSellerLead);
+                sellerCrud.Save();
 
                 return RedirectToAction("Index");
             }
