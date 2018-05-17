@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateCRM", "RealEstate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateCRM.DataAccessLayer", "RealEstateCRM.DataAccessLayer\RealEstateCRM.DataAccessLayer.csproj", "{B235C579-33EB-42F1-AD45-5E13EBF49F6F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateCRM.Web", "RealEstateCRM.Web\RealEstateCRM.Web.csproj", "{EF56815D-F773-4BAB-B9F4-13239323C3A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstateCRM.Web.Tests", "RealEstateCRM.Web.Tests\RealEstateCRM.Web.Tests.csproj", "{5B47E445-070B-4516-965D-8788F08D8A03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{B235C579-33EB-42F1-AD45-5E13EBF49F6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B235C579-33EB-42F1-AD45-5E13EBF49F6F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B235C579-33EB-42F1-AD45-5E13EBF49F6F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF56815D-F773-4BAB-B9F4-13239323C3A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF56815D-F773-4BAB-B9F4-13239323C3A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF56815D-F773-4BAB-B9F4-13239323C3A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF56815D-F773-4BAB-B9F4-13239323C3A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B47E445-070B-4516-965D-8788F08D8A03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B47E445-070B-4516-965D-8788F08D8A03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B47E445-070B-4516-965D-8788F08D8A03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B47E445-070B-4516-965D-8788F08D8A03}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

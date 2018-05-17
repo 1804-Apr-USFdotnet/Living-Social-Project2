@@ -23,6 +23,15 @@ namespace RealEstateCRM.DataAccessLayer
                 Floors = 1
             };
 
+            User testUser = new User
+            {
+                FirstName = "First name",
+                LastName = "Last name",
+                Alias = "alias",
+                Password = "password",
+                Email = "email@website.com",
+            };
+
             Console.WriteLine("Creating DB...............");
             RealEstateCRMContext crmDB = new RealEstateCRMContext();
             Console.WriteLine("DB Created..............");
@@ -30,8 +39,9 @@ namespace RealEstateCRM.DataAccessLayer
             //block comment ctrl+K, ctrl+C
             //block uncomment ctrl+K, ctrl+U
 
-            #region AddTestBuyerLead
-            crmDB.BuyerLeads.Add(testBuyerLead);
+            #region AddTest
+           // crmDB.BuyerLeads.Add(testBuyerLead);
+            crmDB.Users.Add(testUser);
             crmDB.SaveChanges();
             Console.WriteLine("Db Changes Saved..............");
             #endregion

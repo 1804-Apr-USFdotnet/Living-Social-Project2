@@ -1,0 +1,98 @@
+﻿@model RealEstateCRM.Models.BuyerLead
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>BuyerLead</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.LeadName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LeadName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PriorApproval)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PriorApproval)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Min)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Min)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Max)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Max)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bed)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Bath)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Bath)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SqFootage)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SqFootage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Floors)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Floors)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Created)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Created)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Modified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Modified)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.BuyerLeadId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
