@@ -54,11 +54,11 @@ namespace RealEstateCRM.DataAccessLayer
             //crmDB.Entry<BuyerLead>(editLead).State = System.Data.Entity.EntityState.Modified;
             //Console.WriteLine("Lead Updated.......");
 
-            var editUser = crmDB.Users.Where(x => x.UserId == 1).FirstOrDefault();
-            editUser.FirstName = "Changed Name";
-            editUser.LastName = "Changed this too";
-            crmDB.Entry<User>(editUser).State = System.Data.Entity.EntityState.Modified;
-            crmDB.SaveChanges();
+            //var editUser = crmDB.Users.Where(x => x.UserId == 1).FirstOrDefault();
+            //editUser.FirstName = "Changed Name";
+            //editUser.LastName = "Changed this too";
+            //crmDB.Entry<User>(editUser).State = System.Data.Entity.EntityState.Modified;
+            //crmDB.SaveChanges();
             #endregion
         }
     }

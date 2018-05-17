@@ -7,6 +7,7 @@ using RealEstateCRM;
 using RealEstateCRM.Models;
 using RealEstateCRM.DataAccessLayer;
 using RealEstateCRM.DataAccessLayer.Repositories;
+using System.Data.Entity;
 
 namespace RealEstateCRM.Web.Controllers
 {
@@ -67,17 +68,38 @@ namespace RealEstateCRM.Web.Controllers
         // GET: BuyerLead/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            return View(buyerCrud.GetByID(id));
         }
 
         // POST: BuyerLead/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int id, BuyerLead updatedBuyerLead)
         {
             try
             {
-                // TODO: Add update logic here
 
+                //find already existing object 
+                BuyerLead oldBuyerLead = buyerCrud.GetByID(id);
+
+                //passing information entered into the new object from client forms
+                //into already existing object, no new object is added to DB
+                
+                oldBuyerLead.BuyerLeadId = updatedBuyerLead.BuyerLeadId;
+                oldBuyerLead.LeadName = updatedBuyerLead.LeadName;
+                oldBuyerLead.PriorApproval = updatedBuyerLead.PriorApproval;
+                oldBuyerLead.Min = updatedBuyerLead.Min;
+                oldBuyerLead.Max = updatedBuyerLead.Max;
+                oldBuyerLead.Bed = updatedBuyerLead.Bed;
+                oldBuyerLead.Bath = updatedBuyerLead.Bath;
+                oldBuyerLead.SqFootage = updatedBuyerLead.SqFootage;
+                oldBuyerLead.Floors = updatedBuyerLead.Floors;
+                oldBuyerLead.RealEstateAgent = updatedBuyerLead.RealEstateAgent;
+
+                //already existing objects EntityState is set to Modified, allowing
+                //Dbcontext to track and save changes
+
+                buyerCrud.Update(oldBuyerLead); 
+                buyerCrud.Save();
                 return RedirectToAction("Index");
             }
             catch
