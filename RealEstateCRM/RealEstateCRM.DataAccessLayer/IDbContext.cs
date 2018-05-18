@@ -9,7 +9,7 @@ using RealEstateCRM.Models;
 
 namespace RealEstateCRM.DataAccessLayer
 {
-    public interface IDbContext
+    public interface IDbContext : IDisposable
     {
         IDbSet<TEntity> Set<TEntity>() where TEntity : IEntity;
         DbEntityEntry Entry<TEntity>(TEntity entity) where TEntity : IEntity;

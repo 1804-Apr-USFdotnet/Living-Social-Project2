@@ -6,29 +6,50 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using RealEstateCRM.DataAccessLayer;
+using RealEstateCRM.DataAccessLayer.Repositories;
 using RealEstateCRM.Models;
 
 namespace RealEstateCRM.API.Controllers
 {
     public class BuyerLeadsController : ApiController
     {
-        private RealEstateCRMContext db = new RealEstateCRMContext();
+        //private RealEstateCRMContext db = new RealEstateCRMContext();
+        IRepository<BuyerLead> buyerCrud;
+        IDbContext realEstateDb;
+
+        public BuyerLeadsController()
+        {
+            realEstateDb = new RealEstateCRMContext();
+            buyerCrud = new CRUD<BuyerLead>(realEstateDb);
+        }
 
         // GET: api/BuyerLeads
-        public IQueryable<BuyerLead> GetBuyerLeads()
+        
+          //public IQueryable<BuyerLead> GetBuyerLeads()
+          //public IEnumerable<BuyerLead> GetBuyerLeads()
+          //I'm using IQueryable
+          public IHttpActionResult GetBuyerLeads()
         {
-            return db.BuyerLeads;
+            try
+            {
+
+                //var buyerleads = buyerCrud.Table;
+                IQueryable<BuyerLead> buyerleads = buyerCrud.Table;
+                return Ok(buyerleads);
+            } catch
+            {
+                return InternalServerError();
+            }
         }
 
         // GET: api/BuyerLeads/5
         [ResponseType(typeof(BuyerLead))]
-        public async Task<IHttpActionResult> GetBuyerLead(int id)
+        public IHttpActionResult GetBuyerLead(int id)
         {
-            BuyerLead buyerLead = await db.BuyerLeads.FindAsync(id);
+            BuyerLead buyerLead = buyerCrud.GetByID(id);
             if (buyerLead == null)
             {
                 return NotFound();
@@ -39,7 +60,7 @@ namespace RealEstateCRM.API.Controllers
 
         // PUT: api/BuyerLeads/5
         [ResponseType(typeof(void))]
-        public async Task<IHttpActionResult> PutBuyerLead(int id, BuyerLead buyerLead)
+        public IHttpActionResult PutBuyerLead(int id, BuyerLead buyerLead)
         {
             if (!ModelState.IsValid)
             {
@@ -51,11 +72,14 @@ namespace RealEstateCRM.API.Controllers
                 return BadRequest();
             }
 
-            db.Entry(buyerLead).State = EntityState.Modified;
+            //db.Entry(buyerLead).State = EntityState.Modified;
+            buyerCrud.Update(buyerLead);
 
             try
             {
-                await db.SaveChangesAsync();
+                
+                //db.SaveChanges();
+                buyerCrud.Save();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -74,31 +98,32 @@ namespace RealEstateCRM.API.Controllers
 
         // POST: api/BuyerLeads
         [ResponseType(typeof(BuyerLead))]
-        public async Task<IHttpActionResult> PostBuyerLead(BuyerLead buyerLead)
+        public IHttpActionResult PostBuyerLead(BuyerLead buyerLead)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            db.BuyerLeads.Add(buyerLead);
-            await db.SaveChangesAsync();
+            //db.BuyerLeads.Add(buyerLead);
+            //db.SaveChanges();
+            buyerCrud.Insert(buyerLead);
 
             return CreatedAtRoute("DefaultApi", new { id = buyerLead.BuyerLeadId }, buyerLead);
         }
 
         // DELETE: api/BuyerLeads/5
         [ResponseType(typeof(BuyerLead))]
-        public async Task<IHttpActionResult> DeleteBuyerLead(int id)
+        public IHttpActionResult DeleteBuyerLead(int id)
         {
-            BuyerLead buyerLead = await db.BuyerLeads.FindAsync(id);
+            BuyerLead buyerLead = buyerCrud.GetByID(id);
+
             if (buyerLead == null)
             {
                 return NotFound();
             }
 
-            db.BuyerLeads.Remove(buyerLead);
-            await db.SaveChangesAsync();
+            buyerCrud.Delete(buyerLead);
 
             return Ok(buyerLead);
         }
@@ -107,14 +132,16 @@ namespace RealEstateCRM.API.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
+                buyerCrud.Dispose();
             }
             base.Dispose(disposing);
         }
 
         private bool BuyerLeadExists(int id)
         {
-            return db.BuyerLeads.Count(e => e.BuyerLeadId == id) > 0;
+            return buyerCrud.Table.ToList().Count(e => e.BuyerLeadId == id) > 0;
+            
         }
     }
 }

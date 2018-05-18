@@ -143,5 +143,10 @@ namespace RealEstateCRM.DataAccessLayer.Repositories
         {
             _context.SaveChanges();
         }
+
+        public void Dispose()
+        {
+            _context.Dispose();
+        }
     }
 }

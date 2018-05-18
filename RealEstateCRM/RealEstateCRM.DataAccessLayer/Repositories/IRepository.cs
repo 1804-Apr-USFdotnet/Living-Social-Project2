@@ -15,5 +15,6 @@ namespace RealEstateCRM.DataAccessLayer.Repositories
         void Delete(T entity);
         IQueryable<T> Table { get; }
         void Save();
+        void Dispose();
     }
 }
