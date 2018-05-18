@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -45,12 +46,47 @@ namespace RealEstateCRM.API.Controllers
             if (ModelState.IsValid)
             {
                 crud.Insert(user);
-                return CreatedAtRoute("shared/Index", new { id = user.UserId }, user);
+                return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
             }
             else
             {
                 return BadRequest();
             }
+        }
+
+        public IHttpActionResult PutUser(int id, User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != user.UserId)
+            {
+                return BadRequest();
+            }
+
+            crud.Update(user);
+
+            try
+            {
+
+                //db.SaveChanges();
+                crud.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         public IHttpActionResult DeleteUser(int id)
@@ -67,11 +103,9 @@ namespace RealEstateCRM.API.Controllers
             }
         }
 
-        //public IHttpActionResult GetAllLeads(int user_id)
-        //{
-        //    IQueryable<BuyerLead> userBuyerLeads = buyerCrud.Table.Where(l => l.UserId == user_id);
-        //    IQueryable<SellerLead> userSellerLeads = sellerCrud.Table.Where(l => l.UserId == user_id);
-        //    var allLeads = userBuyerLeads.Union(userSellerLeads);
-        //}
+        public bool UserExists(int id)
+        {
+            return crud.Table.ToList().Count(u => u.UserId == id) > 0;
+        }
     }
 }
