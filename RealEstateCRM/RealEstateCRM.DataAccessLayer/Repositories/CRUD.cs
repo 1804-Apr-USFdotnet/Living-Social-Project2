@@ -86,6 +86,8 @@ namespace RealEstateCRM.DataAccessLayer.Repositories
                 {
                     throw new ArgumentNullException("entity");
                 }
+
+                this.Entities.Attach(entity);
                 this._context.Entry(entity).State = EntityState.Modified;
                 //this.context.Entry(entity).State = EntityState.Modified;not worked
                 //this.context.Entry(entity).CurrentValues.SetValues(entity);not worked

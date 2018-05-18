@@ -196,6 +196,7 @@
     <Content Include="Views\BuyerLead\Index.cshtml" />
     <Content Include="Views\BuyerLead\Create.cshtml" />
     <Content Include="Views\BuyerLead\Delete.cshtml" />
+    <Content Include="Views\BuyerLead\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
