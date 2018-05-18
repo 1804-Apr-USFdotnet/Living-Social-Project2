@@ -38,5 +38,18 @@ namespace RealEstateCRM.API.Controllers
             }
             return Ok(user);
         }
+
+        public IHttpActionResult CreateUser(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                crud.Insert(user);
+                return Ok();
+            }
+            else
+            {
+                 
+            }
+        }
     }
 }
