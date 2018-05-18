@@ -32,6 +32,25 @@ namespace RealEstateCRMConsumer.Controllers
             return View(buyerlead);
         }
 
+        public ActionResult Create()
+        {
+            return View(new BuyerLead());
+        }
+
+        //POST
+        [HttpPost]
+        public async Task<ActionResult> Create(BuyerLead buyerLead)
+        {
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/BuyerLeads/", buyerLead);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+
+            return RedirectToAction("Index");
+        }
+
 
     }
 }
