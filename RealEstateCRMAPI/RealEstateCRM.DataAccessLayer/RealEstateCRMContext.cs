@@ -11,12 +11,11 @@ namespace RealEstateCRM.DataAccessLayer
 {
     public class RealEstateCRMContext : DbContext, IDbContext
     {
-		//public DbSet<Lead> Leads { get; set; }
+		public DbSet<Lead> Leads { get; set; }
 		public DbSet<User> Users { get; set; }
-        public DbSet<BuyerLead> BuyerLeads { get; set; }
-        public DbSet<SellerLead> SellerLeads { get; set; }
 		public DbSet<RealEstateAgent> RealEstateAgents { get; set; }
 
+        
 
         public RealEstateCRMContext () : base("RealEstateCRM") { }
 
@@ -48,9 +47,6 @@ namespace RealEstateCRM.DataAccessLayer
         {
             return base.Set<TEntity>();
         }
+
     }
-
-    
-
-
 }

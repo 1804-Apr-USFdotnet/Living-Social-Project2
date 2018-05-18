@@ -20,12 +20,7 @@ namespace RealEstateCRM.Models
         public string Password { get; set; }
         public string Alias { get; set; }
 
-        //public virtual List<Lead> Leads { get; set; }
-       
-
-
-        public virtual List<SellerLead> SellerLeads { get; set; }
-        public virtual List<BuyerLead> BuyerLeads { get; set; }
+        public virtual List<Lead> Leads { get; set; }
 
         public DateTime Created { get; set; }
         public DateTime? Modified { get; set; }

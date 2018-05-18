@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B235C579-33EB-42F1-AD45-5E13EBF49F6F}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RealEstateCRM.DataAccessLayer</RootNamespace>
     <AssemblyName>RealEstateCRM.DataAccessLayer</AssemblyName>

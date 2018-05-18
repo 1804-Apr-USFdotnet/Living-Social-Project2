@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
+using System.Web;
 
-namespace RealEstateCRM.Models
+namespace RealEstateCRMConsumer.Models
 {
-    public class Lead: IEntity
+    public class Lead : IEntity
     {
         public int LeadId { get; set; }
 
@@ -26,6 +24,7 @@ namespace RealEstateCRM.Models
         public int? Floors { get; set; }
 
 
+
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
@@ -36,8 +35,5 @@ namespace RealEstateCRM.Models
         public virtual User User { get; set; }
 
         public virtual RealEstateAgent RealEstateAgent { get; set; }
-
-        public DateTime Created { get; set; }
-        public DateTime? Modified { get; set; }
     }
 }
