@@ -23,6 +23,8 @@ namespace RealEstateCRM.Models
         public int SqFootage { get; set; }
         public int Floors { get; set; }
 
+
+
         //public virtual RealEstateAgent RealEstateAgent { get; set; }
     }
 }

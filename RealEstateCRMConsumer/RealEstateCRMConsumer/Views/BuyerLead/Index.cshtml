@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>listest</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -36,6 +36,9 @@
             @Html.DisplayNameFor(model => model.Floors)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.UserId)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.Created)
         </th>
         <th>
@@ -44,44 +47,48 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.LeadName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PriorApproval)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Min)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Max)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Bed)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Bath)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.SqFootage)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Floors)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Modified)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.BuyerLeadId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.BuyerLeadId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.BuyerLeadId })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LeadName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PriorApproval)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Min)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Max)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bed)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Bath)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SqFootage)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Floors)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Modified)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.BuyerLeadId }) |
+                @Html.ActionLink("Details", "Details", new { id = item.BuyerLeadId }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.BuyerLeadId })
+            </td>
+        </tr>
+    }
 
 </table>

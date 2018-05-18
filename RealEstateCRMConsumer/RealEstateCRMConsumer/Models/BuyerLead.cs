@@ -28,6 +28,9 @@ namespace RealEstateCRMConsumer.Models
         public int SqFootage { get; set; }
         public int Floors { get; set; }
 
+        public int? UserId { get; set; }
+        public virtual User User { get; set; }
+
         public virtual RealEstateAgent RealEstateAgent { get; set; }
 
         public DateTime Created { get; set; }

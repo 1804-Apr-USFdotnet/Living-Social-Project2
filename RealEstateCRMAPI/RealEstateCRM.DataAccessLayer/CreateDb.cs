@@ -21,6 +21,7 @@ namespace RealEstateCRM.DataAccessLayer
                 Bath = 1,
                 SqFootage = 1500,
                 Floors = 1
+               
             };
 
             Console.WriteLine("Creating DB...............");

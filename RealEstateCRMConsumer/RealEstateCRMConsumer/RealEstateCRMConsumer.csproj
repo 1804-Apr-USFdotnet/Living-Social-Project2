@@ -154,6 +154,7 @@
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\RealEstateAgent.cs" />
     <Compile Include="Models\SellerLead.cs" />
+    <Compile Include="Models\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
