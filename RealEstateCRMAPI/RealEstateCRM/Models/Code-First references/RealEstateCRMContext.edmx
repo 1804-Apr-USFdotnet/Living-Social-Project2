@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Edmx Version="3.0" xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <Runtime>
+    <ConceptualModels>
+      <Schema Namespace="RealEstateCRM.Models" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BuyerLead" customannotation:ClrType="RealEstateCRM.Models.BuyerLead, RealEstateCRM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="BuyerLeadId" />
+          </Key>
+          <Property Name="BuyerLeadId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LeadName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="priorApproval" Type="Boolean" Nullable="false" />
+          <Property Name="Min" Type="Int32" Nullable="false" />
+          <Property Name="Max" Type="Int32" Nullable="false" />
+          <Property Name="Bed" Type="Int32" Nullable="false" />
+          <Property Name="Bath" Type="Int32" Nullable="false" />
+          <Property Name="SqFootage" Type="Int32" Nullable="false" />
+          <Property Name="Floors" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RealEstateAgent" Relationship="Self.RealEstateAgent_BuyerLeads" FromRole="RealEstateAgent_BuyerLeads_Target" ToRole="RealEstateAgent_BuyerLeads_Source" />
+        </EntityType>
+        <EntityType Name="RealEstateAgent" customannotation:ClrType="RealEstateCRM.Models.RealEstateAgent, RealEstateCRM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="RealEstateAgentId" />
+          </Key>
+          <Property Name="RealEstateAgentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="BuyerLeads" Relationship="Self.RealEstateAgent_BuyerLeads" FromRole="RealEstateAgent_BuyerLeads_Source" ToRole="RealEstateAgent_BuyerLeads_Target" />
+          <NavigationProperty Name="SellerLeads" Relationship="Self.SellerLead_RealEstateAgent" FromRole="SellerLead_RealEstateAgent_Target" ToRole="SellerLead_RealEstateAgent_Source" />
+        </EntityType>
+        <EntityType Name="SellerLead" customannotation:ClrType="RealEstateCRM.Models.SellerLead, RealEstateCRM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="SellerLeadId" />
+          </Key>
+          <Property Name="SellerLeadId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Type" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LeadName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Min" Type="Int32" Nullable="false" />
+          <Property Name="Max" Type="Int32" Nullable="false" />
+          <Property Name="Bed" Type="Int32" Nullable="false" />
+          <Property Name="Bath" Type="Int32" Nullable="false" />
+          <Property Name="SqFootage" Type="Int32" Nullable="false" />
+          <Property Name="Floors" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RealEstateAgent" Relationship="Self.SellerLead_RealEstateAgent" FromRole="SellerLead_RealEstateAgent_Source" ToRole="SellerLead_RealEstateAgent_Target" />
+        </EntityType>
+        <EntityType Name="User" customannotation:ClrType="RealEstateCRM.Models.User, RealEstateCRM, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Alias" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="RealEstateAgent_BuyerLeads">
+          <End Role="RealEstateAgent_BuyerLeads_Source" Type="Self.RealEstateAgent" Multiplicity="0..1" />
+          <End Role="RealEstateAgent_BuyerLeads_Target" Type="Self.BuyerLead" Multiplicity="*" />
+        </Association>
+        <Association Name="SellerLead_RealEstateAgent">
+          <End Role="SellerLead_RealEstateAgent_Source" Type="Self.SellerLead" Multiplicity="*" />
+          <End Role="SellerLead_RealEstateAgent_Target" Type="Self.RealEstateAgent" Multiplicity="0..1" />
+        </Association>
+        <EntityContainer Name="RealEstateCRMContext" customannotation:UseClrTypes="true">
+          <EntitySet Name="BuyerLeads" EntityType="Self.BuyerLead" />
+          <EntitySet Name="RealEstateAgents" EntityType="Self.RealEstateAgent" />
+          <EntitySet Name="SellerLeads" EntityType="Self.SellerLead" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <AssociationSet Name="RealEstateAgent_BuyerLeads" Association="Self.RealEstateAgent_BuyerLeads">
+            <End Role="RealEstateAgent_BuyerLeads_Source" EntitySet="RealEstateAgents" />
+            <End Role="RealEstateAgent_BuyerLeads_Target" EntitySet="BuyerLeads" />
+          </AssociationSet>
+          <AssociationSet Name="SellerLead_RealEstateAgent" Association="Self.SellerLead_RealEstateAgent">
+            <End Role="SellerLead_RealEstateAgent_Source" EntitySet="SellerLeads" />
+            <End Role="SellerLead_RealEstateAgent_Target" EntitySet="RealEstateAgents" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </ConceptualModels>
+    <Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CodeFirstDatabase" CdmEntityContainer="RealEstateCRMContext">
+          <EntitySetMapping Name="BuyerLeads">
+            <EntityTypeMapping TypeName="RealEstateCRM.Models.BuyerLead">
+              <MappingFragment StoreEntitySet="BuyerLead">
+                <ScalarProperty Name="BuyerLeadId" ColumnName="BuyerLeadId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="LeadName" ColumnName="LeadName" />
+                <ScalarProperty Name="priorApproval" ColumnName="priorApproval" />
+                <ScalarProperty Name="Min" ColumnName="Min" />
+                <ScalarProperty Name="Max" ColumnName="Max" />
+                <ScalarProperty Name="Bed" ColumnName="Bed" />
+                <ScalarProperty Name="Bath" ColumnName="Bath" />
+                <ScalarProperty Name="SqFootage" ColumnName="SqFootage" />
+                <ScalarProperty Name="Floors" ColumnName="Floors" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RealEstateAgents">
+            <EntityTypeMapping TypeName="RealEstateCRM.Models.RealEstateAgent">
+              <MappingFragment StoreEntitySet="RealEstateAgent">
+                <ScalarProperty Name="RealEstateAgentId" ColumnName="RealEstateAgentId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SellerLeads">
+            <EntityTypeMapping TypeName="RealEstateCRM.Models.SellerLead">
+              <MappingFragment StoreEntitySet="SellerLead">
+                <ScalarProperty Name="SellerLeadId" ColumnName="SellerLeadId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="LeadName" ColumnName="LeadName" />
+                <ScalarProperty Name="Min" ColumnName="Min" />
+                <ScalarProperty Name="Max" ColumnName="Max" />
+                <ScalarProperty Name="Bed" ColumnName="Bed" />
+                <ScalarProperty Name="Bath" ColumnName="Bath" />
+                <ScalarProperty Name="SqFootage" ColumnName="SqFootage" />
+                <ScalarProperty Name="Floors" ColumnName="Floors" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="RealEstateCRM.Models.User">
+              <MappingFragment StoreEntitySet="User">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Alias" ColumnName="Alias" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="RealEstateAgent_BuyerLeads" TypeName="RealEstateCRM.Models.RealEstateAgent_BuyerLeads" StoreEntitySet="BuyerLead">
+            <EndProperty Name="RealEstateAgent_BuyerLeads_Source">
+              <ScalarProperty Name="RealEstateAgentId" ColumnName="RealEstateAgent_RealEstateAgentId" />
+            </EndProperty>
+            <EndProperty Name="RealEstateAgent_BuyerLeads_Target">
+              <ScalarProperty Name="BuyerLeadId" ColumnName="BuyerLeadId" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="RealEstateAgent_RealEstateAgentId" />
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="SellerLead_RealEstateAgent" TypeName="RealEstateCRM.Models.SellerLead_RealEstateAgent" StoreEntitySet="SellerLead">
+            <EndProperty Name="SellerLead_RealEstateAgent_Target">
+              <ScalarProperty Name="RealEstateAgentId" ColumnName="RealEstateAgent_RealEstateAgentId" />
+            </EndProperty>
+            <EndProperty Name="SellerLead_RealEstateAgent_Source">
+              <ScalarProperty Name="SellerLeadId" ColumnName="SellerLeadId" />
+            </EndProperty>
+            <Condition IsNull="false" ColumnName="RealEstateAgent_RealEstateAgentId" />
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </Mappings>
+    <StorageModels>
+      <Schema Namespace="CodeFirstDatabaseSchema" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BuyerLead">
+          <Key>
+            <PropertyRef Name="BuyerLeadId" />
+          </Key>
+          <Property Name="BuyerLeadId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="LeadName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="priorApproval" Type="bit" Nullable="false" />
+          <Property Name="Min" Type="int" Nullable="false" />
+          <Property Name="Max" Type="int" Nullable="false" />
+          <Property Name="Bed" Type="int" Nullable="false" />
+          <Property Name="Bath" Type="int" Nullable="false" />
+          <Property Name="SqFootage" Type="int" Nullable="false" />
+          <Property Name="Floors" Type="int" Nullable="false" />
+          <Property Name="RealEstateAgent_RealEstateAgentId" Type="int" customannotation:Index="{ Name: IX_RealEstateAgent_RealEstateAgentId, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="RealEstateAgent">
+          <Key>
+            <PropertyRef Name="RealEstateAgentId" />
+          </Key>
+          <Property Name="RealEstateAgentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Alias" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <EntityType Name="SellerLead">
+          <Key>
+            <PropertyRef Name="SellerLeadId" />
+          </Key>
+          <Property Name="SellerLeadId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Type" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="LeadName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Min" Type="int" Nullable="false" />
+          <Property Name="Max" Type="int" Nullable="false" />
+          <Property Name="Bed" Type="int" Nullable="false" />
+          <Property Name="Bath" Type="int" Nullable="false" />
+          <Property Name="SqFootage" Type="int" Nullable="false" />
+          <Property Name="Floors" Type="int" Nullable="false" />
+          <Property Name="RealEstateAgent_RealEstateAgentId" Type="int" customannotation:Index="{ Name: IX_RealEstateAgent_RealEstateAgentId, Order: 0 }" Nullable="true" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="UserId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="LastName" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Password" Type="nvarchar(max)" Nullable="true" />
+          <Property Name="Alias" Type="nvarchar(max)" Nullable="true" />
+        </EntityType>
+        <Association Name="RealEstateAgent_BuyerLeads">
+          <End Role="RealEstateAgent" Type="Self.RealEstateAgent" Multiplicity="0..1" />
+          <End Role="BuyerLead" Type="Self.BuyerLead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RealEstateAgent">
+              <PropertyRef Name="RealEstateAgentId" />
+            </Principal>
+            <Dependent Role="BuyerLead">
+              <PropertyRef Name="RealEstateAgent_RealEstateAgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="SellerLead_RealEstateAgent">
+          <End Role="RealEstateAgent" Type="Self.RealEstateAgent" Multiplicity="0..1" />
+          <End Role="SellerLead" Type="Self.SellerLead" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RealEstateAgent">
+              <PropertyRef Name="RealEstateAgentId" />
+            </Principal>
+            <Dependent Role="SellerLead">
+              <PropertyRef Name="RealEstateAgent_RealEstateAgentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CodeFirstDatabase">
+          <EntitySet Name="BuyerLead" EntityType="Self.BuyerLead" Schema="dbo" Table="BuyerLeads" />
+          <EntitySet Name="RealEstateAgent" EntityType="Self.RealEstateAgent" Schema="dbo" Table="RealEstateAgents" />
+          <EntitySet Name="SellerLead" EntityType="Self.SellerLead" Schema="dbo" Table="SellerLeads" />
+          <EntitySet Name="User" EntityType="Self.User" Schema="dbo" Table="Users" />
+          <AssociationSet Name="RealEstateAgent_BuyerLeads" Association="Self.RealEstateAgent_BuyerLeads">
+            <End Role="RealEstateAgent" EntitySet="RealEstateAgent" />
+            <End Role="BuyerLead" EntitySet="BuyerLead" />
+          </AssociationSet>
+          <AssociationSet Name="SellerLead_RealEstateAgent" Association="Self.SellerLead_RealEstateAgent">
+            <End Role="RealEstateAgent" EntitySet="RealEstateAgent" />
+            <End Role="SellerLead" EntitySet="SellerLead" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </StorageModels>
+  </Runtime>
+  <Designer>
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="ProcessDependentTemplatesOnSave" Value="False" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <Diagrams >
+      <Diagram DiagramId="9ceb0dcf944247918b55a52c5c519469" Name="Diagram1">
+        <EntityTypeShape EntityType="RealEstateCRM.Models.BuyerLead" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateCRM.Models.RealEstateAgent" Width="1.5" PointX="1.125" PointY="0.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateCRM.Models.SellerLead" Width="1.5" PointX="3.125" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="RealEstateCRM.Models.User" Width="1.5" PointX="7.75" PointY="1.5" IsExpanded="true" />
+        <AssociationConnector Association="RealEstateCRM.Models.RealEstateAgent_BuyerLeads" ManuallyRouted="false" />
+        <AssociationConnector Association="RealEstateCRM.Models.SellerLead_RealEstateAgent" ManuallyRouted="false" />
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</Edmx>
