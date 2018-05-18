@@ -15,10 +15,14 @@ namespace RealEstateCRMConsumer.Models
 
         //public string Type { get; set; }
 
+        [Required]
         public string LeadName { get; set; }
         public Boolean PriorApproval { get; set; }
+
+
         public int Min { get; set; }
         public int Max { get; set; }
+
         public int Bed { get; set; }
         public int Bath { get; set; }
         public int SqFootage { get; set; }

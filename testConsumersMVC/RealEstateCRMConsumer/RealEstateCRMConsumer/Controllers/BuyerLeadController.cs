@@ -52,5 +52,30 @@ namespace RealEstateCRMConsumer.Controllers
         }
 
 
+        public async Task<ActionResult> Delete(int id)
+        {
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/BuyerLeads/" + id);
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            var responseDataBuyerLead = response.Content.ReadAsAsync<BuyerLead>().Result;
+
+            //var buyerLeadToDelete = JsonConvert.DeserializeObject<BuyerLead>(responseData);
+
+            return View(responseDataBuyerLead);
+        }
+
+        //DELETE
+        [HttpPost]
+        public async Task<ActionResult> Delete(int id, BuyerLead buyerLeadToDelete)
+        {
+            HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/BuyerLeads/" + id);
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            return RedirectToAction("Index");
+        }
     }
 }
