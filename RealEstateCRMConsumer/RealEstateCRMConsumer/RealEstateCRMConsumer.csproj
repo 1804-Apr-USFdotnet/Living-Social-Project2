@@ -208,7 +208,6 @@
     <Content Include="Views\BuyerLead\Create.cshtml" />
     <Content Include="Views\BuyerLead\Delete.cshtml" />
     <Content Include="Views\BuyerLead\Edit.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Lead\Edit.cshtml" />
     <Content Include="Views\Lead\Delete.cshtml" />
     <Content Include="Views\Lead\Index.cshtml" />
@@ -222,17 +221,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-=======
-    <Content Include="Views\User\Index.cshtml" />
-    <Content Include="Views\User\Edit.cshtml" />
-    <Content Include="Views\User\Create.cshtml" />
-    <Content Include="Views\User\Delete.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Views\Lead\" />
-    <Folder Include="Views\Users\" />
->>>>>>> 18697f707ead2c485665d8c610197eea8ba66f0a
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
