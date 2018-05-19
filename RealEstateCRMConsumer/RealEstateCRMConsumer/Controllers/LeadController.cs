@@ -1,89 +1,119 @@
-﻿using System;
+﻿using RealEstateCRMConsumer.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Threading.Tasks;
 using System.Web;
+
 using System.Web.Mvc;
+using Newtonsoft.Json;
 
 namespace RealEstateCRMConsumer.Controllers
 {
     public class LeadController : Controller
     {
+        private static readonly HttpClient httpClient = new HttpClient();
+
         // GET: Lead
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            return View();
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/");
+
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+
+            var lead = await response.Content.ReadAsAsync<IEnumerable<Lead>>();
+
+            return View(lead);
         }
 
         // GET: Lead/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Details(int id)
         {
-            return View();
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/" + id);
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            var responseDataLead = response.Content.ReadAsAsync<Lead>().Result;
+
+            return View(responseDataLead);
         }
 
         // GET: Lead/Create
         public ActionResult Create()
         {
-            return View();
+            ViewBag.LeadType = new SelectList("Buyer", "Seller");
+
+            return View(new Lead());
         }
 
         // POST: Lead/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public async Task<ActionResult> Create(Lead lead)
         {
-            try
-            {
-                // TODO: Add insert logic here
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Leads/", lead);
 
-                return RedirectToAction("Index");
-            }
-            catch
+            if (!response.IsSuccessStatusCode)
             {
-                return View();
+                return View("Error");
             }
+
+            return RedirectToAction("Index");
         }
 
         // GET: Lead/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            return View();
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/" + id);
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            var responseDataLead = response.Content.ReadAsAsync<Lead>().Result;
+
+            return View(responseDataLead);
         }
 
         // POST: Lead/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        public async Task<ActionResult> Edit(int id, Lead leadToEdit)
         {
-            try
+            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Leads/" + id, leadToEdit);
+            if (!response.IsSuccessStatusCode)
             {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
+                return View("Error");
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: Lead/Delete/5
-        public ActionResult Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
-            return View();
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/" + id);
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            var responseDataLead = response.Content.ReadAsAsync<Lead>().Result;
+
+            return View(responseDataLead);
         }
 
         // POST: Lead/Delete/5
         [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
+        public async Task<ActionResult> Delete(int id, Lead leadToDelete)
         {
-            try
+            HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/Leads/" + id);
+            if (!response.IsSuccessStatusCode)
             {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
+                return View("Error");
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
     }
 }

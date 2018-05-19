@@ -207,10 +207,14 @@
     <Content Include="Views\BuyerLead\Create.cshtml" />
     <Content Include="Views\BuyerLead\Delete.cshtml" />
     <Content Include="Views\BuyerLead\Edit.cshtml" />
+    <Content Include="Views\Lead\Edit.cshtml" />
+    <Content Include="Views\Lead\Delete.cshtml" />
+    <Content Include="Views\Lead\Index.cshtml" />
+    <Content Include="Views\Lead\Create.cshtml" />
+    <Content Include="Views\Lead\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Lead\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

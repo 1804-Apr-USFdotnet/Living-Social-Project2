@@ -13,14 +13,20 @@ namespace RealEstateCRM.DataAccessLayer
         {
             Lead testLead = new Lead
             {
+                LeadType = "Seller",
                 LeadName = "firstname lastname",
                 PriorApproval = true,
+                
                 Min = 200,
                 Max = 800,
                 Bed = 1,
                 Bath = 1,
                 SqFootage = 1500,
                 Floors = 1,
+
+                PhoneNumber = "555-555-5555",
+                Email = "testlead@testleads.com",
+
                 Address = "1283 Red Rd",
                 City = "Tampa",
                 State = "FL",
