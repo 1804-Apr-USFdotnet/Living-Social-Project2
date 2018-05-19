@@ -1,0 +1,39 @@
+node('master'){
+    stage("Import"){
+    git 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
+    git branch: 'Dev', url: 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
+}
+stage("Build")
+{
+    dir('RealEstateCRMAPI'){
+    bat 'nuget restore'
+    bat 'msbuild'
+    }
+}
+stage("Test")
+{
+    dir('RealEstateCRMAPI'){
+         bat "VSTest.Console RealEstateCRM.Test\\bin\\Debug\\RealEstateCRM.Test.dll"
+    }
+}
+stage("Analyze")
+{
+     dir('RealEstateCRMAPI'){
+                bat 'SonarScanner.MSBuild begin /k:Project2API /v:0.1.0 /d:sonar.organization=robertb100-github /d:sonar.verbose=true'
+                bat 'msbuild /t:rebuild'  
+                bat 'SonarScanner.MSBuild end'
+     }
+}
+stage("Package")
+{
+    dir('RealEstateCRMAPI/RealEstateCRM.API') {
+        bat 'msbuild /t:package'
+        }
+}
+stage("Deploy") 
+{
+    dir('RealEstateCRMAPI/RealEstateCRM.API/obj/Debug/Package') {
+        bat "msdeploy -verb:sync -source:package=\"%CD%\\RealEstateCRM.API.zip\" -dest:auto,computerName=\"https://ec2-13-58-19-141.us-east-2.compute.amazonaws.com:8172/msdeploy.axd\",userName=\"Administrator\",password=\"Password123-\",authtype=\"basic\",includeAcls=\"False\" -disableLink:AppPoolExtension -disableLink:ContentExtension -disableLink:CertificateExtension -setParam:\"IIS Web Application Name\"=\"Default Web Site\" -enableRule:AppOffline -allowUntrusted"
+    }
+    }
+}
