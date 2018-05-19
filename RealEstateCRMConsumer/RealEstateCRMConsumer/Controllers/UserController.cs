@@ -3,46 +3,42 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using System.Web;
-
 using System.Web.Mvc;
-using Newtonsoft.Json;
+
 
 namespace RealEstateCRMConsumer.Controllers
 {
-    public class BuyerLeadController : Controller
+    public class UserController : Controller
     {
         private static readonly HttpClient httpClient = new HttpClient();
-
-        // GET: BuyerLead
+        // GET: Users
         public async Task<ActionResult> Index()
         {
-            HttpResponseMessage response = await httpClient.GetAsync( "http://localhost:57955/api/BuyerLeads/");
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users");
 
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
             }
 
+            var users = await response.Content.ReadAsAsync<IEnumerable<User>>();
 
-            var buyerlead = await response.Content.ReadAsAsync<IEnumerable<BuyerLead>>();
-
-            return View(buyerlead);
+            return View(users);
         }
 
         public ActionResult Create()
         {
-            return View(new BuyerLead());
+            return View(new User());
         }
 
-        //POST
+        // Create
         [HttpPost]
-        public async Task<ActionResult> Create(BuyerLead buyerLead)
+        public async Task<ActionResult> Create(User user)
         {
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/BuyerLeads/", buyerLead);
-
+            // postAsync = async post message
+            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Users", user);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
@@ -53,47 +49,48 @@ namespace RealEstateCRMConsumer.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/BuyerLeads/" + id);
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
             }
-            var responseDataBuyerLead = response.Content.ReadAsAsync<BuyerLead>().Result;
+            var responseUser = response.Content.ReadAsAsync<User>().Result;
 
-            return View(responseDataBuyerLead);
+            return View(responseUser);
         }
 
-        //PUT
+        // Edit
         [HttpPost]
-        public async Task<ActionResult> Edit (int id, BuyerLead buyerLeadToEdit)
+        public async Task<ActionResult> Edit(int id, User user)
         {
-            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/BuyerLeads/"+id, buyerLeadToEdit);
+            // put Async = async put message
+            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Users/" + id, user);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
             }
             return RedirectToAction("Index");
         }
-
+        [HttpGet]
         public async Task<ActionResult> Delete(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/BuyerLeads/" + id);
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
             }
-            var responseDataBuyerLead = response.Content.ReadAsAsync<BuyerLead>().Result;
+            var responseUser = response.Content.ReadAsAsync<User>().Result;
 
             //var buyerLeadToDelete = JsonConvert.DeserializeObject<BuyerLead>(responseData);
 
-            return View(responseDataBuyerLead);
+            return View(responseUser);
         }
 
-        //DELETE
+        // Delete
         [HttpPost]
-        public async Task<ActionResult> Delete(int id, BuyerLead buyerLeadToDelete)
+        public async Task<ActionResult> Delete(int id, User user)
         {
-            HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/BuyerLeads/" + id);
+            HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
