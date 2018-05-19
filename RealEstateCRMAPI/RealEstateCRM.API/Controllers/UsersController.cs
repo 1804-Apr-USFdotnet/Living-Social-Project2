@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using RealEstateCRM.DataAccessLayer;
 using RealEstateCRM.DataAccessLayer.Repositories;
 using RealEstateCRM.Models;
@@ -13,8 +15,6 @@ namespace RealEstateCRM.API.Controllers
     public class UsersController : ApiController
     {
         IRepository<User> crud;
-        IRepository<SellerLead> sellerCrud;
-        IRepository<BuyerLead> buyerCrud;
         IDbContext realEstateDb;
 
         public UsersController()
@@ -24,12 +24,26 @@ namespace RealEstateCRM.API.Controllers
 
         }
 
-        public IEnumerable<User> GetAllUsers()
+        // GET: api/Users
+
+        public IHttpActionResult GetAllUsers()
         {
-            IEnumerable<User> allUsers = crud.Table;
-            return allUsers;
+            
+
+            try
+            {
+                IQueryable<User> allUsers = crud.Table;
+                return Ok(allUsers);
+            }
+            catch
+            {
+                return InternalServerError();
+            }
+
         }
 
+        // GET: api/Users/5
+        [ResponseType(typeof(User))]
         public IHttpActionResult GetUser(int id)
         {
             var user = crud.GetByID(id);
@@ -40,22 +54,65 @@ namespace RealEstateCRM.API.Controllers
             return Ok(user);
         }
 
+        // POST: api/Users
+        [ResponseType(typeof(User))]
         public IHttpActionResult PostUser(User user)
         {
-            if (ModelState.IsValid)
+
+            if (!ModelState.IsValid)
             {
-                crud.Insert(user);
-                return CreatedAtRoute("shared/Index", new { id = user.UserId }, user);
+                return BadRequest(ModelState);
             }
-            else
+
+
+
+            crud.Insert(user);
+
+            return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
+        }
+
+        // PUT: api/Users/5
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutUser(int id, User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != user.UserId)
             {
                 return BadRequest();
             }
+
+            crud.Update(user);
+
+            try
+            {
+
+                //db.SaveChanges();
+                crud.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!UserExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
+        // DELETE: api/Users/5
+        [ResponseType(typeof(User))]
         public IHttpActionResult DeleteUser(int id)
         {
-            if(crud.GetByID(id) == null)
+            if (crud.GetByID(id) == null)
             {
                 return NotFound();
             }
@@ -67,11 +124,18 @@ namespace RealEstateCRM.API.Controllers
             }
         }
 
-        //public IHttpActionResult GetAllLeads(int user_id)
-        //{
-        //    IQueryable<BuyerLead> userBuyerLeads = buyerCrud.Table.Where(l => l.UserId == user_id);
-        //    IQueryable<SellerLead> userSellerLeads = sellerCrud.Table.Where(l => l.UserId == user_id);
-        //    var allLeads = userBuyerLeads.Union(userSellerLeads);
-        //}
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                crud.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        public bool UserExists(int id)
+        {
+            return crud.Table.ToList().Count(u => u.UserId == id) > 0;
+        }
     }
 }

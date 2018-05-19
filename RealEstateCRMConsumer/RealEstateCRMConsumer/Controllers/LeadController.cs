@@ -47,7 +47,7 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: Lead/Create
         public ActionResult Create()
         {
-            ViewBag.LeadType = new SelectList("Buyer", "Seller");
+           // ViewBag.LeadType = new SelectList("Buyer", "Seller");
 
             return View(new Lead());
         }
