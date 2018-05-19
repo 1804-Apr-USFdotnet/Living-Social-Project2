@@ -32,7 +32,7 @@ namespace RealEstateCRM.API.Controllers
             try
             {
                 IQueryable<RealEstateAgent> agents = agentCrud.Table;
-                return Ok(agents);
+                return Ok(agents.Include ( agent => agent.Leads).AsEnumerable());
             }
             catch
             {

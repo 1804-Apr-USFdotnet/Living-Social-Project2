@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -19,6 +21,19 @@ namespace RealEstateCRM.API
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
+            var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
+            json.SerializerSettings.Formatting = Newtonsoft.Json.Formatting.Indented;
+
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
+                new CamelCasePropertyNamesContractResolver();
+
+            
+
+            //       var config = GlobalConfiguration.Configuration;
+            //       config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
+            //= Newtonsoft.Json.ReferenceLoopHandling.Serialize;
+            //       config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling
+            //            = Newtonsoft.Json.PreserveReferencesHandling.Objects;
 
             //var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
             //json.SerializerSettings.PreserveReferencesHandling =
