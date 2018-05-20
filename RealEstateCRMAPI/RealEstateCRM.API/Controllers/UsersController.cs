@@ -6,9 +6,12 @@ using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using System.Web.Http.Description;
+using Microsoft.AspNet.Identity.EntityFramework;
 using RealEstateCRM.DataAccessLayer;
 using RealEstateCRM.DataAccessLayer.Repositories;
 using RealEstateCRM.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 
 namespace RealEstateCRM.API.Controllers
 {
@@ -55,6 +58,7 @@ namespace RealEstateCRM.API.Controllers
         }
 
         // POST: api/Users
+        [AllowAnonymous]
         [ResponseType(typeof(User))]
         public IHttpActionResult PostUser(User user)
         {
@@ -70,6 +74,68 @@ namespace RealEstateCRM.API.Controllers
 
             return CreatedAtRoute("DefaultApi", new { id = user.UserId }, user);
         }
+        [AllowAnonymous]
+        [ResponseType(typeof(User))]
+        [HttpPost]
+        [Route("~/api/Users/Register")]
+        public IHttpActionResult RegisterUser(User newUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            // register
+            var userStore = new UserStore<IdentityUser>(new DataDbContext());
+            var userManager = new UserManager<IdentityUser>(userStore);
+            var user = new IdentityUser(newUser.Email);
+
+            if (userManager.Users.Any(u => u.Email == newUser.Email))
+            { 
+                return BadRequest();
+            }
+
+            userManager.Create(user, newUser.Password);
+            return Ok();
+        }
+
+
+
+
+        [HttpPost]
+        [ResponseType(typeof(User))]
+        [Route("~/api/Users/Login")]
+        [AllowAnonymous]
+        public IHttpActionResult LogIn(User loginUser)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("model state not valid");
+            }
+
+            // actually login
+            var userStore = new UserStore<IdentityUser>(new DataDbContext());
+            var userManager = new UserManager<IdentityUser>(userStore);
+            var user = userManager.Users.FirstOrDefault(u => u.Email == loginUser.Email);
+
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            if (!userManager.CheckPassword(user, loginUser.Password))
+            {
+                return Unauthorized();
+            }
+
+            var authManager = Request.GetOwinContext().Authentication;
+            var claimsIdentity = userManager.CreateIdentity(user, "ApplicationCookie");
+
+            authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
+
+            return Ok();
+        }
+
 
         // PUT: api/Users/5
         [ResponseType(typeof(void))]

@@ -52,6 +52,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Account.cs" />
     <Compile Include="Models\BuyerLead.cs" />
     <Compile Include="Models\Code-First references\RealEstateCRMContext.Designer.cs">
       <AutoGen>True</AutoGen>

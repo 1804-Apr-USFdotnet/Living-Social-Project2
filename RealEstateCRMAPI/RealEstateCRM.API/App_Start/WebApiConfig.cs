@@ -11,6 +11,10 @@ namespace RealEstateCRM.API
         {
             // Web API configuration and services
 
+
+            // adds authorization to EVERYTHING
+            config.Filters.Add(new AuthorizeAttribute());
+
             // Web API routes
             config.MapHttpAttributeRoutes();
 
