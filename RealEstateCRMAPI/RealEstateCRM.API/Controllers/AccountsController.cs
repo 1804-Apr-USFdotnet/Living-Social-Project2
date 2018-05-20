@@ -12,10 +12,11 @@ using RealEstateCRM.DataAccessLayer.Repositories;
 using RealEstateCRM.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
+using System.Security.Claims;
 
 namespace RealEstateCRM.API.Controllers
 {
-    public class AccountController : ApiController
+    public class AccountsController : ApiController
     {
         [AllowAnonymous]
         [ResponseType(typeof(Account))]
@@ -25,7 +26,7 @@ namespace RealEstateCRM.API.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest("model is invalid");
             }
 
             // register
@@ -35,14 +36,50 @@ namespace RealEstateCRM.API.Controllers
 
             if (userManager.Users.Any(u => u.Email == newAccount.Email))
             {
-                return BadRequest();
+                return BadRequest("email is already taken");
             }
 
             userManager.Create(user, newAccount.Password);
-            return Ok("registered account");
+            var authManager = Request.GetOwinContext().Authentication;
+            var claimsIdentity = userManager.CreateIdentity(user, "ApplicationCookie");
+
+            authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
+            return Ok("registered account and logged in");
         }
 
+        [HttpPost]
+        [Route("~/api/Accounts/RegisterAdmin")]
+        [AllowAnonymous]
 
+        public IHttpActionResult RegisterAdmin(Account account)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model is invalid");
+            }
+            // actually register
+            var userStore = new UserStore<IdentityUser>(new DataDbContext());
+            var userManager = new UserManager<IdentityUser>(userStore);
+            var user = new IdentityUser(account.Email);
+
+            if (userManager.Users.Any(u => u.UserName == account.Email))
+            {
+                return BadRequest("email is already in user manager");
+            }
+            userManager.Create(user, account.Password);
+
+            userManager.Create(user, account.Password);
+            var authManager = Request.GetOwinContext().Authentication;
+            var claimsIdentity = userManager.CreateIdentity(user, "ApplicationCookie");
+
+            authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
+
+            // the only difference from Register action
+            userManager.AddClaim(user.Id, new Claim(ClaimTypes.Role, "admin"));
+
+            return Ok();
+
+        }
 
 
         [HttpPost]
@@ -59,7 +96,7 @@ namespace RealEstateCRM.API.Controllers
             // actually login
             var userStore = new UserStore<IdentityUser>(new DataDbContext());
             var userManager = new UserManager<IdentityUser>(userStore);
-            var user = userManager.Users.FirstOrDefault(u => u.Email == loginAccount.Email);
+            var user = userManager.Users.FirstOrDefault(u => u.UserName == loginAccount.Email);
 
             if (user == null)
             {
@@ -78,5 +115,18 @@ namespace RealEstateCRM.API.Controllers
 
             return Ok();
         }
+
+
+
+        [HttpGet]
+        [Route("~/api/Accounts/Logout")]
+        public IHttpActionResult Logout()
+        {
+            
+            Request.GetOwinContext().Authentication.SignOut("ApplicationCookie");
+            return Ok("signed out");
+        }
     }
+
+    
 }

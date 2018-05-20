@@ -20,6 +20,7 @@ namespace RealEstateCRMConsumer.Controllers
 
             if (!response.IsSuccessStatusCode)
             {
+                TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
 
@@ -34,6 +35,7 @@ namespace RealEstateCRMConsumer.Controllers
             HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
+                TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
             
@@ -53,13 +55,34 @@ namespace RealEstateCRMConsumer.Controllers
         public async Task<ActionResult> Create(User user)
         {
             // postAsync = async post message
+
+            HttpResponseMessage emailResponse = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Users/emailcheck", user);
+
+            if (!emailResponse.IsSuccessStatusCode)
+            {
+                ViewBag.message = emailResponse.ReasonPhrase;
+                return View("Create");
+            }
+
             HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Users", user);
             if (!response.IsSuccessStatusCode)
             {
+                TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
+            Account account = new Account()
+            {
+                Email = user.Email,
+                Password = user.Password
+            };
 
-            return RedirectToAction("Index");
+            TempData["account"] = account;
+
+            // create an account you can pass to the register method 
+            
+
+
+            return RedirectToAction("Register", "Account");
         }
 
         // GET: User/Edit/5
@@ -68,6 +91,7 @@ namespace RealEstateCRMConsumer.Controllers
             HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
+                TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
             var responseUser = response.Content.ReadAsAsync<User>().Result;
@@ -83,6 +107,7 @@ namespace RealEstateCRMConsumer.Controllers
             HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Users/" + id, user);
             if (!response.IsSuccessStatusCode)
             {
+                TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
             return RedirectToAction("Index");
@@ -95,6 +120,7 @@ namespace RealEstateCRMConsumer.Controllers
             HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
+                TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
             var responseUser = response.Content.ReadAsAsync<User>().Result;
@@ -111,9 +137,12 @@ namespace RealEstateCRMConsumer.Controllers
             HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
+                TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
             return RedirectToAction("Index");
         }
+
+       
     }
 }
