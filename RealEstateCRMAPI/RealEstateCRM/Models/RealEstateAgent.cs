@@ -24,6 +24,7 @@ namespace RealEstateCRM.Models
         [Required]
         public string Alias { get; set; }
 
+        
         public virtual List<Lead> Leads { get; set; }
 
         public DateTime Created { get; set; }

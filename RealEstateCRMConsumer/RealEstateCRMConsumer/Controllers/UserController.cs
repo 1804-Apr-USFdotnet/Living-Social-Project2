@@ -18,7 +18,7 @@ namespace RealEstateCRMConsumer.Controllers
         {
             HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users");
 
-            if (!response.IsSuccessStatusCode)
+             if(!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");

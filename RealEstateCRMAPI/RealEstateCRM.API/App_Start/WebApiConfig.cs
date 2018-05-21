@@ -10,10 +10,15 @@ namespace RealEstateCRM.API
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services
-
+            config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
+            = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
+            config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling
+            = Newtonsoft.Json.PreserveReferencesHandling.Objects;
 
             //// adds authorization to EVERYTHING
             config.Filters.Add(new AuthorizeAttribute());
+
+           
 
             // Web API routes
             config.MapHttpAttributeRoutes();

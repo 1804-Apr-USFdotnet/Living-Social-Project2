@@ -17,7 +17,10 @@ namespace RealEstateCRM.DataAccessLayer
 
         
 
-        public RealEstateCRMContext () : base("RealEstateCRM") { }
+        public RealEstateCRMContext () : base("RealEstateCRM") {
+            this.Configuration.LazyLoadingEnabled = false;
+            this.Configuration.ProxyCreationEnabled = false;
+        }
 
         public override int SaveChanges()
         {
