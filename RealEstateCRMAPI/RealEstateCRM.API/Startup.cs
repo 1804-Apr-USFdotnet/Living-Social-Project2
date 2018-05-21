@@ -20,7 +20,8 @@ namespace RealEstateCRM.API
              
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
-                AuthenticationType = "ApplicationCookie"
+                AuthenticationType = WebApiConfig.AuthenticationType,
+                CookieName = WebApiConfig.CookieName
             });
 
             app.UseWebApi(config);

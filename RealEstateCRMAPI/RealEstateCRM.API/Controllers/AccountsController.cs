@@ -41,7 +41,7 @@ namespace RealEstateCRM.API.Controllers
 
             userManager.Create(user, newAccount.Password);
             var authManager = Request.GetOwinContext().Authentication;
-            var claimsIdentity = userManager.CreateIdentity(user, "ApplicationCookie");
+            var claimsIdentity = userManager.CreateIdentity(user, WebApiConfig.AuthenticationType);
 
             authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
             return Ok("registered account and logged in");
@@ -70,7 +70,7 @@ namespace RealEstateCRM.API.Controllers
 
             userManager.Create(user, account.Password);
             var authManager = Request.GetOwinContext().Authentication;
-            var claimsIdentity = userManager.CreateIdentity(user, "ApplicationCookie");
+            var claimsIdentity = userManager.CreateIdentity(user, WebApiConfig.AuthenticationType);
 
             authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
 
@@ -109,7 +109,7 @@ namespace RealEstateCRM.API.Controllers
             }
 
             var authManager = Request.GetOwinContext().Authentication;
-            var claimsIdentity = userManager.CreateIdentity(user, "ApplicationCookie");
+            var claimsIdentity = userManager.CreateIdentity(user, WebApiConfig.AuthenticationType);
 
             authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
 
@@ -123,7 +123,7 @@ namespace RealEstateCRM.API.Controllers
         public IHttpActionResult Logout()
         {
             
-            Request.GetOwinContext().Authentication.SignOut("ApplicationCookie");
+            Request.GetOwinContext().Authentication.SignOut(WebApiConfig.AuthenticationType);
             return Ok("signed out");
         }
     }
