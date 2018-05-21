@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,13 @@ namespace RealEstateCRM.API
             GlobalConfiguration.Configuration.Formatters.JsonFormatter.SerializerSettings.ContractResolver =
                 new CamelCasePropertyNamesContractResolver();
 
+            
+
+            //       var config = GlobalConfiguration.Configuration;
+            //       config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
+            //= Newtonsoft.Json.ReferenceLoopHandling.Serialize;
+            //       config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling
+            //            = Newtonsoft.Json.PreserveReferencesHandling.Objects;
 
             //var json = GlobalConfiguration.Configuration.Formatters.JsonFormatter;
             //json.SerializerSettings.PreserveReferencesHandling =
