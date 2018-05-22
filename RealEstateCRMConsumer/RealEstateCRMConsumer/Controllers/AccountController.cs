@@ -9,9 +9,8 @@ using RealEstateCRMConsumer.Models;
 
 namespace RealEstateCRMConsumer.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController : AServiceController
     {
-        private static readonly HttpClient httpClient = new HttpClient();
 
         // GET: Account
         [HttpGet]
@@ -24,6 +23,8 @@ namespace RealEstateCRMConsumer.Controllers
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
+            PassCookiesToClient(response);
+
 
 
             return RedirectToAction("Index", "User");
@@ -36,7 +37,7 @@ namespace RealEstateCRMConsumer.Controllers
 
         [HttpPost]
         public async Task<ActionResult> Login(Account account)
-        {
+            {
             HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Login", account);
 
             if (!response.IsSuccessStatusCode)
@@ -44,6 +45,8 @@ namespace RealEstateCRMConsumer.Controllers
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
+            PassCookiesToClient(response);
+
 
             return RedirectToAction("Index", "User");
         }
@@ -58,7 +61,22 @@ namespace RealEstateCRMConsumer.Controllers
                 return View("Error");
             }
 
+            PassCookiesToClient(response);
+
             return RedirectToAction("Index", "User");
+        }
+
+        private bool PassCookiesToClient(HttpResponseMessage apiResponse)
+        {
+            if (apiResponse.Headers.TryGetValues("Set-Cookie", out IEnumerable<string> values))
+            {
+                foreach (string value in values)
+                {
+                    Response.Headers.Add("Set-Cookie", value);
+                }
+                return true;
+            }
+            return false;
         }
     }
 }

@@ -7,8 +7,8 @@ namespace RealEstateCRM.API
 {
     public static class WebApiConfig
     {
-        public static string AuthenticationType = "ApplicationCookie";
-        public static string CookieName = "ApplicationCookie";
+        public static string AuthenticationType = "AuthTestCookie";
+        public static string CookieName = "AuthTestCookie";
 
         public static void Register(HttpConfiguration config)
         {
