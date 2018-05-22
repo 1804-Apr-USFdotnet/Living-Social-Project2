@@ -35,15 +35,18 @@ namespace RealEstateCRM.DataAccessLayer
             };
 
             Console.WriteLine("Creating DB...............");
-            RealEstateCRMContext crmDB = new RealEstateCRMContext();
+            //RealEstateCRMContext crmDB = new RealEstateCRMContext();
+            TestCRMContext  testCRM = new TestCRMContext();
             Console.WriteLine("DB Created..............");
 
             //block comment ctrl+K, ctrl+C
             //block uncomment ctrl+K, ctrl+U
 
             #region AddTestLead
-            crmDB.Leads.Add(testLead);
-            crmDB.SaveChanges();
+            testCRM.Leads.Add(testLead);
+            testCRM.SaveChanges();
+            //crmDB.Leads.Add(testLead);
+            //crmDB.SaveChanges();
             Console.WriteLine("Db Changes Saved..............");
             #endregion
 
