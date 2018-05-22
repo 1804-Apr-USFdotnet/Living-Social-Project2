@@ -1,3 +1,4 @@
+
 node('master'){
     stage("Import"){
         try {
@@ -64,10 +65,11 @@ stage("Deploy")
     try {
     dir('RealEstateCRMAPI/RealEstateCRM.API/obj/Debug/Package') {
         bat "msdeploy -verb:sync -source:package=\"%CD%\\RealEstateCRM.API.zip\" -dest:auto,computerName=\"https://ec2-13-58-19-141.us-east-2.compute.amazonaws.com:8172/msdeploy.axd\",userName=\"Administrator\",password=\"Password123-\",authtype=\"basic\",includeAcls=\"False\" -disableLink:AppPoolExtension -disableLink:ContentExtension -disableLink:CertificateExtension -setParam:\"IIS Web Application Name\"=\"Default Web Site\" -enableRule:AppOffline -allowUntrusted"
+        slackSuccess('Deploy')
     }
     }
     catch (exc) {
-            slackError('Import')
+            slackError('Deploy')
             throw exc
         }
     }
@@ -78,4 +80,7 @@ def slackError(stageName) {
 
     slackSend color: 'danger', message: "FAILED ${stageName} stage: [<${JOB_URL}|${env.JOB_NAME}> <${env.BUILD_URL}console|${env.BUILD_DISPLAY_NAME}>] [${currentBuild.durationString.replace(' and counting', '')}]"
 
+}
+def slackSuccess(stageName) {
+    slackSend color: 'good', message: "Success ${stageName}. The application has successfully passed through the pipeline and has been deployed to the Dev server"
 }
