@@ -44,13 +44,13 @@ namespace RealEstateCRMConsumer.Controllers
 
 
             HttpResponseMessage  response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
 
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
-            PassCookiesToClient(response);
 
 
             return RedirectToAction("Index", "User");
@@ -71,17 +71,6 @@ namespace RealEstateCRMConsumer.Controllers
             return RedirectToAction("Index", "User");
         }
 
-        private bool PassCookiesToClient(HttpResponseMessage apiResponse)
-        {
-            if (apiResponse.Headers.TryGetValues("Set-Cookie", out IEnumerable<string> values))
-            {
-                foreach (string value in values)
-                {
-                    Response.Headers.Add("Set-Cookie", value);
-                }
-                return true;
-            }
-            return false;
-        }
+        
     }
 }

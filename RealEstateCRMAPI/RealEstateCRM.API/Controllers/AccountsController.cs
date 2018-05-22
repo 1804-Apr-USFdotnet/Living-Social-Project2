@@ -93,6 +93,9 @@ namespace RealEstateCRM.API.Controllers
                 return BadRequest("model state not valid");
             }
 
+
+            // Test that request has cookie
+            Request.Headers.GetCookies();
             // actually login
             var userStore = new UserStore<IdentityUser>(new DataDbContext());
             var userManager = new UserManager<IdentityUser>(userStore);
@@ -114,6 +117,7 @@ namespace RealEstateCRM.API.Controllers
             authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
 
             return Ok();
+            
         }
 
 
@@ -122,11 +126,14 @@ namespace RealEstateCRM.API.Controllers
         [Route("~/api/Accounts/Logout")]
         public IHttpActionResult Logout()
         {
-            
+
             Request.GetOwinContext().Authentication.SignOut(WebApiConfig.AuthenticationType);
             return Ok("signed out");
         }
+
+       
     }
+}
 
     
-}
+

@@ -10,15 +10,18 @@ using System.Web.Mvc;
 
 namespace RealEstateCRMConsumer.Controllers
 {
-    public class UserController : Controller
+    public class UserController : AServiceController
     {
-        private static readonly HttpClient httpClient = new HttpClient();
         // GET: Users
         public async Task<ActionResult> Index()
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users");
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/Users");
 
-             if(!response.IsSuccessStatusCode)
+
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
+
+            if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
