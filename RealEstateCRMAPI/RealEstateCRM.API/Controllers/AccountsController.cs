@@ -120,7 +120,29 @@ namespace RealEstateCRM.API.Controllers
             
         }
 
+        public IHttpActionResult DeleteUser(Account deleteAccount)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("model is invalid");
+            }
 
+            // find user
+            var userStore = new UserStore<IdentityUser>(new DataDbContext());
+            var userManager = new UserManager<IdentityUser>(userStore);
+            var user = new IdentityUser(deleteAccount.Email);
+
+            if (!userManager.Users.Any(u => u.Email == deleteAccount.Email))
+            {
+                return BadRequest("user does not exist");
+            }
+
+
+            // delete user
+            userManager.Delete(user);
+
+            return Ok("deleted account and logged out");
+        }
 
         [HttpGet]
         [Route("~/api/Accounts/Logout")]

@@ -6,7 +6,9 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
-
+using Microsoft.AspNet.Identity;
+using System.Text;
+using System.Net.Http.Formatting;
 
 namespace RealEstateCRMConsumer.Controllers
 {
@@ -19,6 +21,7 @@ namespace RealEstateCRMConsumer.Controllers
 
 
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            //IdentityExtensions.GetUserName()
             PassCookiesToClient(response);
 
             if (!response.IsSuccessStatusCode)
@@ -35,7 +38,11 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: User/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
+
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, $"api/Users/{id}");
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
+
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
@@ -57,9 +64,16 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(User user)
         {
-            // postAsync = async post message
+            // create request
+            HttpRequestMessage apiEmailRequest = CreateRequestToService(HttpMethod.Post, $"api/Users/emailcheck");
 
-            HttpResponseMessage emailResponse = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Users/emailcheck", user);
+            // add user object with JSON formater to request content 
+            apiEmailRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
+
+            // obtain respose from API
+            HttpResponseMessage emailResponse = await httpClient.SendAsync(apiEmailRequest);
+            PassCookiesToClient(emailResponse);
+
 
             if (!emailResponse.IsSuccessStatusCode)
             {
@@ -67,31 +81,47 @@ namespace RealEstateCRMConsumer.Controllers
                 return View("Create");
             }
 
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Users", user);
+            // create request
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, $"api/Users");
+
+            // add User object to request
+            apiRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
+            
+            // send User to API to be added to database 
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
+
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
+
+            // create account based on user to be added to DataDb
             Account account = new Account()
             {
                 Email = user.Email,
                 Password = user.Password
             };
 
+            // save account to Temp Data to be passed to register action in account controller 
             TempData["account"] = account;
-
-            // create an account you can pass to the register method 
-            
-
 
             return RedirectToAction("Register", "Account");
         }
 
         // GET: User/Edit/5
+        // render edit template
         public async Task<ActionResult> Edit(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
+            // create request
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, $"api/Users/Edit{id}");
+
+            // wait for response 
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
+
+            //HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/Edit" + id);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
@@ -106,8 +136,17 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(int id, User user)
         {
-            // put Async = async put message
-            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Users/" + id, user);
+            // create request
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, $"api/Users/Edit/{id}");
+
+            // add user object with JSON formater to request content 
+            apiRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
+
+            // obtain respose from API
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
+
+            //HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Users/" + id, user);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
@@ -117,10 +156,16 @@ namespace RealEstateCRMConsumer.Controllers
         }
 
         // GET: Lead/Delete/5
-        //[HttpGet]
         public async Task<ActionResult> Delete(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
+            // create request
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, $"api/Users/{id}");
+
+            // wait for response 
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
+
+            //HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
@@ -137,7 +182,15 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(int id, User user)
         {
-            HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/Users/" + id);
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Delete, $"api/Users/{id}");
+
+            // add user object with JSON formater to request content 
+            apiRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
+
+            // obtain respose from API
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
+            //HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;

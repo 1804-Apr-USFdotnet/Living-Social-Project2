@@ -112,6 +112,7 @@ namespace RealEstateCRM.API.Controllers
         }
 
         // DELETE: api/Users/5
+        [HttpDelete]
         [ResponseType(typeof(User))]
         public IHttpActionResult DeleteUser(int id)
         {
