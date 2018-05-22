@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -38,7 +39,11 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(Account account)
             {
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Login", account);
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Accounts/Login");
+            apiRequest.Content = new ObjectContent<Account>(account, new JsonMediaTypeFormatter());
+
+
+            HttpResponseMessage  response = await httpClient.SendAsync(apiRequest);
 
             if (!response.IsSuccessStatusCode)
             {
