@@ -26,10 +26,6 @@ namespace RealEstateCRM.API
            
 
 
-             config.Formatters.JsonFormatter.SerializerSettings.ReferenceLoopHandling
-      = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
-             config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling
-      = Newtonsoft.Json.PreserveReferencesHandling.Objects;
 
     
 

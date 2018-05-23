@@ -68,7 +68,7 @@ namespace RealEstateCRMConsumer.Controllers
 
             PassCookiesToClient(response);
 
-            return RedirectToAction("Account", "Create");
+            return RedirectToAction("Create", "Account");
         }
 
         

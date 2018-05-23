@@ -114,19 +114,17 @@ namespace RealEstateCRMConsumer.Controllers
         // render edit template
         public async Task<ActionResult> Edit(int id)
         {
-            // create request
-            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, $"api/Users/Edit{id}");
-
-            // wait for response 
+            // Use "details" action to return user object 
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, $"api/Users/{id}");
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
 
-            //HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/Edit" + id);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
+
             var responseUser = response.Content.ReadAsAsync<User>().Result;
 
             return View(responseUser);
@@ -137,7 +135,7 @@ namespace RealEstateCRMConsumer.Controllers
         public async Task<ActionResult> Edit(int id, User user)
         {
             // create request
-            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, $"api/Users/Edit/{id}");
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Put, $"api/Users/{id}");
 
             // add user object with JSON formater to request content 
             apiRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());

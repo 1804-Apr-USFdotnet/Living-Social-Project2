@@ -26,16 +26,17 @@ namespace RealEstateCRM.API
 
             app.UseWebApi(config);
 
-            RouteTable.Routes.MapRoute(
-                name: "MvcRoute",
-                url: "{controller}/{action}/{id}",
-                defaults: new
-                {
-                    controller = "home",
-                    action = "index",
-                    id = UrlParameter.Optional
-                }
-            );
+
+            //RouteTable.Routes.MapRoute(
+            //    name: "MvcRoute",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new
+            //    {
+            //        controller = "home",
+            //        action = "index",
+            //        id = UrlParameter.Optional
+            //    }
+            //);
         }
     }
 }
