@@ -94,9 +94,7 @@ namespace RealEstateCRM.API.Controllers
             }
 
 
-            // Test that request has cookie
-            Request.Headers.GetCookies();
-            // actually login
+            // Find user in user manager database 
             var userStore = new UserStore<IdentityUser>(new DataDbContext());
             var userManager = new UserManager<IdentityUser>(userStore);
             var user = userManager.Users.FirstOrDefault(u => u.UserName == loginAccount.Email);
@@ -111,7 +109,7 @@ namespace RealEstateCRM.API.Controllers
                 return Unauthorized();
             }
             
-
+            // authenticate user and sign in 
             var authManager = Request.GetOwinContext().Authentication;
             var claimsIdentity = userManager.CreateIdentity(user, WebApiConfig.AuthenticationType);
 
@@ -127,6 +125,8 @@ namespace RealEstateCRM.API.Controllers
         [ResponseType(typeof(Account))]
         [Route("~/api/Accounts/Edit/{email}")]
         [AllowAnonymous]
+        // Edit account 
+        // Pass in account object in request body and email string in request url 
         public async Task<IHttpActionResult> Edit([FromBody] Account EditAccount, string email)
         {
             if (!ModelState.IsValid)
@@ -134,6 +134,7 @@ namespace RealEstateCRM.API.Controllers
                 return BadRequest("model state not valid");
             }
 
+            // Find user (account) in user manager 
             var userStore = new UserStore<IdentityUser>(new DataDbContext());
             var userManager = new UserManager<IdentityUser>(userStore);
             var user = userManager.Users.FirstOrDefault(u => u.UserName == email);
@@ -147,21 +148,18 @@ namespace RealEstateCRM.API.Controllers
 
                 userManager.RemovePassword(user.Id);
             }
+            // convert password to hash 
             var newPasswordHash = userManager.PasswordHasher.HashPassword(EditAccount.Password);
 
-            // get user and edit properties
+            // update user (account) and save changes
             await userStore.SetPasswordHashAsync(user, newPasswordHash);
             await userManager.UpdateAsync(user);
             user.UserName = EditAccount.Email;
             userStore.Context.SaveChanges();
 
-
             return Ok();
 
         }
-
-   
-        
 
         public IHttpActionResult DeleteUser(Account deleteAccount)
         {

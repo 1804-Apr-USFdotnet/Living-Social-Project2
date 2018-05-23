@@ -13,16 +13,17 @@ using Newtonsoft.Json;
 
 namespace RealEstateCRMConsumer.Controllers
 {
+    // make sure controller inherits from abstract controller
     public class UserController : AServiceController
     {
         // GET: Users
         public async Task<ActionResult> Index()
         {
+            // create request using method from abstract controller 
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/Users");
-
-
+            // send request
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
-            //IdentityExtensions.GetUserName()
+            // pass cookies to client 
             PassCookiesToClient(response);
 
             if (!response.IsSuccessStatusCode)
@@ -30,16 +31,16 @@ namespace RealEstateCRMConsumer.Controllers
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
-
+            // set returned data to variable 
             var users = await response.Content.ReadAsAsync<IEnumerable<User>>();
 
+            // pass users to view to display them 
             return View(users);
         }
 
         // GET: User/Details/5
         public async Task<ActionResult> Details(int id)
         {
-
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, $"api/Users/{id}");
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
@@ -158,14 +159,6 @@ namespace RealEstateCRMConsumer.Controllers
                 Password = user.Password
             };
 
-            
-
-            //using (var formData = new MultipartFormDataContent())
-            //{
-            //    //add content to form data
-            //    formData.Add(new StringContent(JsonConvert.SerializeObject(oldUser.Email)), "email");
-            //    formData.Add(new ObjectContent<Account>(account, new JsonMediaTypeFormatter()));
-            //}
             HttpRequestMessage accountRequest = CreateRequestToService(HttpMethod.Post, $"api/Accounts/Edit/{oldUser.Email}");
             accountRequest.Content = new ObjectContent<Account>(account, new JsonMediaTypeFormatter());
             // obtain respose from API
@@ -183,7 +176,6 @@ namespace RealEstateCRMConsumer.Controllers
         public async Task<ActionResult> EditUser()
         {
             // create request
-
             User user = TempData["user"] as User;
             HttpRequestMessage request = CreateRequestToService(HttpMethod.Put, $"api/Users/{user.UserId}");
             request.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
@@ -210,7 +202,6 @@ namespace RealEstateCRMConsumer.Controllers
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
 
-            //HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
@@ -218,7 +209,6 @@ namespace RealEstateCRMConsumer.Controllers
             }
             var responseUser = response.Content.ReadAsAsync<User>().Result;
 
-            //var buyerLeadToDelete = JsonConvert.DeserializeObject<BuyerLead>(responseData);
 
             return View(responseUser);
         }
@@ -235,7 +225,6 @@ namespace RealEstateCRMConsumer.Controllers
             // obtain respose from API
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
-            //HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/Users/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
