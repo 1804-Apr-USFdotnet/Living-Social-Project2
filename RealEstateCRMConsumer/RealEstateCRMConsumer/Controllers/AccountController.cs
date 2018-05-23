@@ -6,6 +6,7 @@ using System.Net.Http.Formatting;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 using RealEstateCRMConsumer.Models;
 
 namespace RealEstateCRMConsumer.Controllers
@@ -55,7 +56,32 @@ namespace RealEstateCRMConsumer.Controllers
 
             return RedirectToAction("Index", "User");
         }
-    
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(Account account)
+        {
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Accounts/Edit");
+
+            
+          
+            apiRequest.Content = new ObjectContent<Account>(account, new JsonMediaTypeFormatter());
+
+
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["error"] = response.ReasonPhrase;
+                return View("Error");
+            }
+
+            
+
+
+            return RedirectToAction("Index", "User");
+        }
+
 
         public async Task<ActionResult> Logout()
         {

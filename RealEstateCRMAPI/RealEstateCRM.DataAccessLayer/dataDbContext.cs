@@ -12,7 +12,7 @@ namespace RealEstateCRM.DataAccessLayer
     {
         public DataDbContext() : base("DataDb")
         {
-
+            
         }
     }
 }

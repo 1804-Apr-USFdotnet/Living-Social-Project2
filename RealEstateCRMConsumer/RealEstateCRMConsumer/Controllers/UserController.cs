@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.Text;
 using System.Net.Http.Formatting;
+using Newtonsoft.Json;
 
 namespace RealEstateCRMConsumer.Controllers
 {
@@ -126,25 +127,71 @@ namespace RealEstateCRMConsumer.Controllers
             }
 
             var responseUser = response.Content.ReadAsAsync<User>().Result;
+            ViewBag.userId = responseUser.UserId;
 
             return View(responseUser);
         }
 
         // Edit
         [HttpPost]
-        public async Task<ActionResult> Edit(int id, User user)
+        public async Task<ActionResult> EditAccount(int id, User user)
         {
             // create request
-            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Put, $"api/Users/{id}");
+            TempData["user"] = user;
 
-            // add user object with JSON formater to request content 
-            apiRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
-
-            // obtain respose from API
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, $"api/Users/{id}");
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
+            var oldUser = response.Content.ReadAsAsync<User>().Result;
 
-            //HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Users/" + id, user);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["error"] = response.ReasonPhrase;
+                return View("Error");
+            }
+
+            // instantiate account with new user values
+            Account account = new Account()
+            {
+                Email = user.Email,
+                Password = user.Password
+            };
+
+            
+
+            //using (var formData = new MultipartFormDataContent())
+            //{
+            //    //add content to form data
+            //    formData.Add(new StringContent(JsonConvert.SerializeObject(oldUser.Email)), "email");
+            //    formData.Add(new ObjectContent<Account>(account, new JsonMediaTypeFormatter()));
+            //}
+            HttpRequestMessage accountRequest = CreateRequestToService(HttpMethod.Post, $"api/Accounts/Edit/{oldUser.Email}");
+            accountRequest.Content = new ObjectContent<Account>(account, new JsonMediaTypeFormatter());
+            // obtain respose from API
+            HttpResponseMessage newAccountResponse = await httpClient.SendAsync(accountRequest);
+            PassCookiesToClient(newAccountResponse);
+
+            if (!newAccountResponse.IsSuccessStatusCode)
+            {
+                TempData["error"] = newAccountResponse.ReasonPhrase;
+                return View("Error");
+            }
+            return RedirectToAction("EditUser");
+        }
+
+        public async Task<ActionResult> EditUser()
+        {
+            // create request
+
+            User user = TempData["user"] as User;
+            HttpRequestMessage request = CreateRequestToService(HttpMethod.Put, $"api/Users/{user.UserId}");
+            request.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
+
+            // obtain respose from API
+            HttpResponseMessage response = await httpClient.SendAsync(request);
+            PassCookiesToClient(response);
+
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
