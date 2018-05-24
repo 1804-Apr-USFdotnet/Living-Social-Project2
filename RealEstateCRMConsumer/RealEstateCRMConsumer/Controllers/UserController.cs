@@ -67,14 +67,17 @@ namespace RealEstateCRMConsumer.Controllers
         public async Task<ActionResult> Create(User user)
         {
             // check to be sure email doesnt exist already
-            HttpRequestMessage apiEmailRequest = CreateRequestToService(HttpMethod.Post, $"api/Users/emailcheck");
+            //HttpRequestMessage apiEmailRequest = CreateRequestToService(HttpMethod.Post, "api/Users/emailcheck");
 
-            // add user object with JSON formater to request content 
-            apiEmailRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
+            ////// add user object with JSON formater to request content 
+            //apiEmailRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
 
-            // obtain respose from API
-            HttpResponseMessage emailResponse = await httpClient.SendAsync(apiEmailRequest);
-            PassCookiesToClient(emailResponse);
+            ////// obtain respose from API
+            //HttpResponseMessage emailResponse = await httpClient.SendAsync(apiEmailRequest);
+            //PassCookiesToClient(emailResponse);
+
+            HttpResponseMessage emailResponse = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Users/emailcheck/", user);
+
 
 
             if (!emailResponse.IsSuccessStatusCode)
@@ -86,12 +89,13 @@ namespace RealEstateCRMConsumer.Controllers
             // create request
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, $"api/Users");
 
-            // add User object to request
+            //// add User object to request
             apiRequest.Content = new ObjectContent<User>(user, new JsonMediaTypeFormatter());
-            
-            // send User to API to be added to database 
+
+            //// send User to API to be added to database 
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
+
 
             if (!response.IsSuccessStatusCode)
             {
@@ -108,6 +112,7 @@ namespace RealEstateCRMConsumer.Controllers
 
             // save account to Temp Data to be passed to register action in account controller 
             TempData["account"] = account;
+            TempData["role"] = "user";
 
             return RedirectToAction("Register", "Account");
         }
@@ -141,6 +146,7 @@ namespace RealEstateCRMConsumer.Controllers
             TempData["user"] = user;
 
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, $"api/Users/{id}");
+
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
             var oldUser = response.Content.ReadAsAsync<User>().Result;

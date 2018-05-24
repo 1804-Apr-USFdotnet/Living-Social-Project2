@@ -22,22 +22,41 @@ namespace RealEstateCRM.API.Controllers
         [AllowAnonymous]
         [ResponseType(typeof(Account))]
         [HttpPost]
-        [Route("~/api/Accounts/Register")]
-        public IHttpActionResult RegisterUser(Account newAccount)
+        [Route("~/api/Accounts/Register/{role}")]
+        public IHttpActionResult RegisterUser(Account newAccount, string role)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("model is invalid");
             }
-
+            
             // register
             var userStore = new UserStore<IdentityUser>(new DataDbContext());
             var userManager = new UserManager<IdentityUser>(userStore);
             var user = new IdentityUser(newAccount.Email);
-
+            
             if (userManager.Users.Any(u => u.Email == newAccount.Email))
             {
                 return BadRequest("email is already taken");
+            }
+
+            if(role.ToLower() == "user")
+            {
+                userManager.AddToRole(user.Id, "user");
+            }
+            else if(role.ToLower() == "agent")
+            {
+                userManager.AddToRole(user.Id, "agent");
+
+            }
+            else if(role.ToLower() == "admin")
+            {
+                userManager.AddToRole(user.Id, "admin");
+
+            }
+            else
+            {
+                return BadRequest("no role assigned");
             }
 
             userManager.Create(user, newAccount.Password);
@@ -48,38 +67,7 @@ namespace RealEstateCRM.API.Controllers
             return Ok("registered account and logged in");
         }
 
-        [HttpPost]
-        [Route("~/api/Accounts/RegisterAdmin")]
-        [AllowAnonymous]
-
-        public IHttpActionResult RegisterAdmin(Account account)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Model is invalid");
-            }
-            // actually register
-            var userStore = new UserStore<IdentityUser>(new DataDbContext());
-            var userManager = new UserManager<IdentityUser>(userStore);
-            var user = new IdentityUser(account.Email);
-
-            if (userManager.Users.Any(u => u.UserName == account.Email))
-            {
-                return BadRequest("email is already in user manager");
-            }
-
-            userManager.Create(user, account.Password);
-            var authManager = Request.GetOwinContext().Authentication;
-            var claimsIdentity = userManager.CreateIdentity(user, WebApiConfig.AuthenticationType);
-
-            authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
-
-            // the only difference from Register action
-            userManager.AddClaim(user.Id, new Claim(ClaimTypes.Role, "admin"));
-
-            return Ok();
-
-        }
+       
 
 
         [HttpPost]
