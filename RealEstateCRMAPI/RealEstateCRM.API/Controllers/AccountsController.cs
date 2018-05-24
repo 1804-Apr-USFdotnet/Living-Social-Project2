@@ -22,8 +22,8 @@ namespace RealEstateCRM.API.Controllers
         [AllowAnonymous]
         [ResponseType(typeof(Account))]
         [HttpPost]
-        [Route("~/api/Accounts/Register")]
-        public IHttpActionResult RegisterUser(Account newAccount)
+        [Route("~/api/Accounts/Register/{role}")]
+        public IHttpActionResult RegisterUser(Account newAccount, string role)
         {
             if (!ModelState.IsValid)
             {
@@ -34,13 +34,40 @@ namespace RealEstateCRM.API.Controllers
             var userStore = new UserStore<IdentityUser>(new DataDbContext());
             var userManager = new UserManager<IdentityUser>(userStore);
             var user = new IdentityUser(newAccount.Email);
+            // create the user 
+            userManager.Create(user, newAccount.Password);
+
 
             if (userManager.Users.Any(u => u.Email == newAccount.Email))
             {
                 return BadRequest("email is already taken");
             }
 
-            userManager.Create(user, newAccount.Password);
+            if (userManager.Users.Any(u => u.Email == newAccount.Email))
+            {
+                return BadRequest("email is already taken");
+            }
+
+            // assign role
+            if (role.ToLower() == "user")
+            {
+                userManager.AddToRole(user.Id, "user");
+            }
+            else if (role.ToLower() == "agent")
+            {
+                userManager.AddToRole(user.Id, "agent");
+
+            }
+            else if (role.ToLower() == "admin")
+            {
+                userManager.AddToRole(user.Id, "admin");
+
+            }
+            else
+            {
+                return BadRequest("no role assigned");
+            }
+
             var authManager = Request.GetOwinContext().Authentication;
             var claimsIdentity = userManager.CreateIdentity(user, WebApiConfig.AuthenticationType);
 
@@ -48,38 +75,6 @@ namespace RealEstateCRM.API.Controllers
             return Ok("registered account and logged in");
         }
 
-        [HttpPost]
-        [Route("~/api/Accounts/RegisterAdmin")]
-        [AllowAnonymous]
-
-        public IHttpActionResult RegisterAdmin(Account account)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest("Model is invalid");
-            }
-            // actually register
-            var userStore = new UserStore<IdentityUser>(new DataDbContext());
-            var userManager = new UserManager<IdentityUser>(userStore);
-            var user = new IdentityUser(account.Email);
-
-            if (userManager.Users.Any(u => u.UserName == account.Email))
-            {
-                return BadRequest("email is already in user manager");
-            }
-
-            userManager.Create(user, account.Password);
-            var authManager = Request.GetOwinContext().Authentication;
-            var claimsIdentity = userManager.CreateIdentity(user, WebApiConfig.AuthenticationType);
-
-            authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
-
-            // the only difference from Register action
-            userManager.AddClaim(user.Id, new Claim(ClaimTypes.Role, "admin"));
-
-            return Ok();
-
-        }
 
 
         [HttpPost]
@@ -118,8 +113,39 @@ namespace RealEstateCRM.API.Controllers
             return Ok();
 
         }
+        //[HttpGet]
+        //[Route("api/Accounts/Seed")]
+        //public void Seed()
+        //{
+        //    DataDbContext context = new DataDbContext();
+        //    if (!context.Roles.Any(r => r.Name == "Admin"))
+        //    {
+        //        var store = new RoleStore<IdentityRole>(context);
+        //        var manager = new RoleManager<IdentityRole>(store);
+        //        var role = new IdentityRole { Name = "Admin" };
 
-      
+        //        manager.Create(role);
+        //    }
+        //    if (!context.Roles.Any(r => r.Name == "User"))
+        //    {
+        //        var store = new RoleStore<IdentityRole>(context);
+        //        var manager = new RoleManager<IdentityRole>(store);
+        //        var role = new IdentityRole { Name = "User" };
+
+        //        manager.Create(role);
+        //    }
+        //    if (!context.Roles.Any(r => r.Name == "Agent"))
+        //    {
+        //        var store = new RoleStore<IdentityRole>(context);
+        //        var manager = new RoleManager<IdentityRole>(store);
+        //        var role = new IdentityRole { Name = "Agent" };
+
+        //        manager.Create(role);
+        //    }
+        //}
+
+
+
 
         [HttpPost]
         [ResponseType(typeof(Account))]
@@ -185,6 +211,8 @@ namespace RealEstateCRM.API.Controllers
             return Ok("deleted account and logged out");
         }
 
+
+
         [HttpGet]
         [Route("~/api/Accounts/Logout")]
         public IHttpActionResult Logout()
@@ -192,8 +220,9 @@ namespace RealEstateCRM.API.Controllers
             Request.GetOwinContext().Authentication.SignOut(WebApiConfig.AuthenticationType);
             return Ok("signed out");
         }
+        // create role if it does not exist in db
+        
 
-       
     }
 }
 

@@ -12,6 +12,7 @@ using RealEstateCRM.DataAccessLayer.Repositories;
 using RealEstateCRM.Models;
 using Microsoft.AspNet.Identity;
 using System.Web;
+using System.Threading.Tasks;
 
 namespace RealEstateCRM.API.Controllers
 {
@@ -145,17 +146,21 @@ namespace RealEstateCRM.API.Controllers
 
         [Route("api/Users/currentUser")]
         [AllowAnonymous]
-        public HttpResponseMessage GetCurrentUser()
+        public async Task<HttpResponseMessage> GetCurrentUserInfo()
         {
-            string name = System.Web.HttpContext.Current?.User?.Identity?.GetUserName();
-            int HttpResponse = 200;
-            var response = Request.CreateResponse((HttpStatusCode)HttpResponse);
-            response.Content = new StringContent(name);
-            return response;
+            var userStore = new UserStore<IdentityUser>(new DataDbContext());
+            var userManager = new UserManager<IdentityUser>(userStore);
 
+            string name = HttpContext.Current?.User?.Identity?.GetUserName();
 
+            var user = userManager.Users.FirstOrDefault(u => u.UserName == name);
+            var currentRoles = await userManager.GetRolesAsync(user.Id);
+
+            return Request.CreateResponse(HttpStatusCode.OK, new { name, currentRoles });
 
         }
+
+       
 
         protected override void Dispose(bool disposing)
         {

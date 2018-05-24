@@ -19,7 +19,8 @@ namespace RealEstateCRMConsumer.Controllers
         public async Task<ActionResult> Register()
         {
             Account account = TempData["account"] as Account;
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Register", account);
+            string role = TempData["role"] as String;
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Register/" +role, account);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;

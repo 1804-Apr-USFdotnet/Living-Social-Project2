@@ -16,7 +16,7 @@ namespace RealEstateCRMConsumer
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            ) = new SessionStateRouteHandler(); ;
+            );
 
             config.EnableCors();
 
