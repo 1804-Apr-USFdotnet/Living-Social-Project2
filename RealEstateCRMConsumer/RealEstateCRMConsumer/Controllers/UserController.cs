@@ -66,7 +66,7 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(User user)
         {
-            // create request
+            // check to be sure email doesnt exist already
             HttpRequestMessage apiEmailRequest = CreateRequestToService(HttpMethod.Post, $"api/Users/emailcheck");
 
             // add user object with JSON formater to request content 

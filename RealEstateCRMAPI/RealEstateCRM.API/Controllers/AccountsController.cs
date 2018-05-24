@@ -189,7 +189,6 @@ namespace RealEstateCRM.API.Controllers
         [Route("~/api/Accounts/Logout")]
         public IHttpActionResult Logout()
         {
-
             Request.GetOwinContext().Authentication.SignOut(WebApiConfig.AuthenticationType);
             return Ok("signed out");
         }

@@ -143,6 +143,20 @@ namespace RealEstateCRM.API.Controllers
             return Request.CreateResponse(HttpStatusCode.OK);
         }
 
+        [Route("api/Users/currentUser")]
+        [AllowAnonymous]
+        public HttpResponseMessage GetCurrentUser()
+        {
+            string name = System.Web.HttpContext.Current?.User?.Identity?.GetUserName();
+            int HttpResponse = 200;
+            var response = Request.CreateResponse((HttpStatusCode)HttpResponse);
+            response.Content = new StringContent(name);
+            return response;
+
+
+
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

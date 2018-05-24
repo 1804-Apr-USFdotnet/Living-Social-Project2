@@ -40,6 +40,7 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(Account account)
             {
+
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Accounts/Login");
             apiRequest.Content = new ObjectContent<Account>(account, new JsonMediaTypeFormatter());
 
@@ -85,6 +86,8 @@ namespace RealEstateCRMConsumer.Controllers
 
         public async Task<ActionResult> Logout()
         {
+
+            HttpContext.Session.Remove("currentUser");
             HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Accounts/Logout");
             if (!response.IsSuccessStatusCode)
             {
