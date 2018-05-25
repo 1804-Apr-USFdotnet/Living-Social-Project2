@@ -12,22 +12,23 @@ using Newtonsoft.Json;
 
 namespace RealEstateCRMConsumer.Controllers
 {
-    public class LeadController : Controller
+    public class LeadController : AServiceController
     {
         private static readonly HttpClient httpClient = new HttpClient();
 
         // GET: Lead
         public async Task<ActionResult> Index()
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/");
-
-            if (!response.IsSuccessStatusCode)
+            //HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/");
+            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Users/GetCurrentUser/");
+            HttpResponseMessage leadResponse = await httpClient.GetAsync("http://localhost:57955/api/Leads/");
+            if (!response.IsSuccessStatusCode || !leadResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }
-
+            
             var lead = await response.Content.ReadAsAsync<IEnumerable<Lead>>();
-
+            var role = await response.Content.ReadAsStringAsync();
             return View(lead);
         }
 

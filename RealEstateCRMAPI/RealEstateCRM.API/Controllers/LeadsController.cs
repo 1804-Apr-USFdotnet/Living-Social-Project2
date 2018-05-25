@@ -29,6 +29,7 @@ namespace RealEstateCRM.API.Controllers
         // GET: api/Leads
         public IHttpActionResult GetLeads()
         {
+
             try
             {
                 IQueryable<Lead> leads = leadCrud.Table;
