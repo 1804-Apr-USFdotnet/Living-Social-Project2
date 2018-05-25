@@ -82,28 +82,7 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Lead lead)
         {
-            // get current user
-            //HttpRequestMessage userRequest = CreateRequestToService(HttpMethod.Get, "api/Users/currentUser");
-            //HttpResponseMessage userResponse = await httpClient.SendAsync(userRequest);
-            //PassCookiesToClient(userResponse);
-            //var curUser = await userResponse.Content.ReadAsAsync<DataTransfer>();
-
-            //// get all users in db
-            //HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/Users");
-            //HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
-            //PassCookiesToClient(response);
-
-            //if (!response.IsSuccessStatusCode)
-            //{
-            //    TempData["error"] = response.ReasonPhrase;
-            //    return View("Error");
-            //}
-            //// set returned data to variable 
-            //var users = await response.Content.ReadAsAsync<IEnumerable<User>>();
-            //User user = users.First(u => u.Email == curUser.userName);
-
-            //// add user id to lead
-            //lead.UserId = user.UserId;
+            
 
             HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Post, "api/Leads");
             leadRequest.Content = new ObjectContent<Lead>(lead, new JsonMediaTypeFormatter());
@@ -117,15 +96,15 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: Lead/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            // get cur user 
             
 
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/" + id);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Get, "api/Leads/" +id);
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+            if (!leadResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }
-            var responseDataLead = response.Content.ReadAsAsync<Lead>().Result;
+            var responseDataLead = leadResponse.Content.ReadAsAsync<Lead>().Result;
 
             return View(responseDataLead);
         }
@@ -134,8 +113,11 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(int id, Lead leadToEdit)
         {
-            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Leads/" + id, leadToEdit);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Put, "api/Leads/"+id);
+            leadRequest.Content = new ObjectContent<Lead>(leadToEdit, new JsonMediaTypeFormatter());
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+
+            if (!leadResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }

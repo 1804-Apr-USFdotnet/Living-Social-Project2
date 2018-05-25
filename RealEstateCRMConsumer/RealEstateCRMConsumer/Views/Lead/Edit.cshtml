@@ -26,7 +26,7 @@
                     @Html.RadioButtonFor(model => model.LeadType, "Buyer")
                     Buyer
                 </label>
-            
+
                 <label>
                     @Html.RadioButtonFor(model => model.LeadType, "Seller")
                     Seller
@@ -150,7 +150,10 @@
         </div>
     </div>
 
-    
+    @Html.HiddenFor(model => model.User)
+    @Html.HiddenFor(model => model.UserId)
+    @Html.HiddenFor(model => model.RealEstateAgent)
+
 
     @*VERY IMPORTANT TO AVOID DATETIME2 SQL EXCEPTION*@
     @Html.HiddenFor(model => model.Created)

@@ -30,6 +30,7 @@ namespace RealEstateCRM.API.Controllers
         }
 
         // GET: api/Leads
+        // needed to add route because default route wasnt being found properly
         [Route("api/Leads")]
         [ResponseType(typeof(Lead))]
         public IHttpActionResult GetLeads()
@@ -64,6 +65,7 @@ namespace RealEstateCRM.API.Controllers
         {
             // get cur user info
             DataTransfer curUser = await GetCurrentUserInfo();
+            User user = userCrud.Table.First(u => u.Email == curUser.userName);
 
             if (!ModelState.IsValid)
             {
@@ -72,10 +74,10 @@ namespace RealEstateCRM.API.Controllers
           
             if (id != lead.LeadId)
             {
-                return BadRequest();
+                return BadRequest("Editing the wrong lead");
             }
 
-            if(curUser.userName != lead.User.Email)
+            if(user.UserId != lead.UserId)
             {
                 return BadRequest("User did not create lead");
             }
