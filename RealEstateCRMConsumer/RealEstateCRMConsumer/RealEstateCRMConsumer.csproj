@@ -241,6 +241,7 @@
     </Compile>
     <Compile Include="Models\BuyerLead.cs" />
     <Compile Include="Models\Account.cs" />
+    <Compile Include="Models\DataTransfer.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\Lead.cs" />
     <Compile Include="Models\RealEstateAgent.cs" />

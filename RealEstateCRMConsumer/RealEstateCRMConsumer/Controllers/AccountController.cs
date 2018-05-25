@@ -28,8 +28,6 @@ namespace RealEstateCRMConsumer.Controllers
             }
             PassCookiesToClient(response);
 
-
-
             return RedirectToAction("Index", "User");
         }
 
@@ -55,6 +53,7 @@ namespace RealEstateCRMConsumer.Controllers
                 return View("Error");
             }
 
+            
 
             return RedirectToAction("Index", "User");
         }
@@ -78,7 +77,9 @@ namespace RealEstateCRMConsumer.Controllers
                 return View("Error");
             }
 
-            
+           
+
+
 
 
             return RedirectToAction("Index", "User");
@@ -97,6 +98,7 @@ namespace RealEstateCRMConsumer.Controllers
             }
 
             PassCookiesToClient(response);
+
 
             return RedirectToAction("Create", "Account");
         }

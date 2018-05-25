@@ -150,13 +150,19 @@ namespace RealEstateCRM.API.Controllers
         {
             var userStore = new UserStore<IdentityUser>(new DataDbContext());
             var userManager = new UserManager<IdentityUser>(userStore);
-
             string name = HttpContext.Current?.User?.Identity?.GetUserName();
+
+            
+            
 
             var user = userManager.Users.FirstOrDefault(u => u.UserName == name);
             var currentRoles = await userManager.GetRolesAsync(user.Id);
-
-            return Request.CreateResponse(HttpStatusCode.OK, new { name, currentRoles });
+            DataTransfer info = new DataTransfer()
+            {
+                userName = name,
+                roles = currentRoles
+            };
+            return Request.CreateResponse(HttpStatusCode.OK, info);
 
         }
 

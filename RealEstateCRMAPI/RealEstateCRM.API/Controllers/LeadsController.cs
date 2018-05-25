@@ -6,6 +6,7 @@ using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Description;
 using RealEstateCRM.DataAccessLayer;
@@ -14,19 +15,23 @@ using RealEstateCRM.Models;
 
 namespace RealEstateCRM.API.Controllers
 {
-    public class LeadsController : ApiController
+    public class LeadsController : AGeneralController
     {
         //private RealEstateCRMContext db = new RealEstateCRMContext();
         IRepository<Lead> leadCrud;
+        IRepository<User> userCrud;
         IDbContext realEstateDb;
 
         public LeadsController()
         {
             realEstateDb = new RealEstateCRMContext();
             leadCrud = new CRUD<Lead>(realEstateDb);
+            userCrud = new CRUD<User>(realEstateDb);
         }
 
         // GET: api/Leads
+        [Route("api/Leads")]
+        [ResponseType(typeof(Lead))]
         public IHttpActionResult GetLeads()
         {
             try
@@ -55,16 +60,24 @@ namespace RealEstateCRM.API.Controllers
 
         // PUT: api/Leads/5
         [ResponseType(typeof(void))]
-        public IHttpActionResult PutLead(int id, Lead lead)
+        public async Task<IHttpActionResult> PutLead(int id, Lead lead)
         {
+            // get cur user info
+            DataTransfer curUser = await GetCurrentUserInfo();
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
-
+          
             if (id != lead.LeadId)
             {
                 return BadRequest();
+            }
+
+            if(curUser.userName != lead.User.Email)
+            {
+                return BadRequest("User did not create lead");
             }
 
             leadCrud.Update(lead);
@@ -90,8 +103,12 @@ namespace RealEstateCRM.API.Controllers
 
         // POST: api/Leads
         [ResponseType(typeof(Lead))]
-        public IHttpActionResult PostLead(Lead lead)
+        public async Task<IHttpActionResult> PostLead(Lead lead)
         {
+            DataTransfer curUser = await GetCurrentUserInfo();
+            User user = userCrud.Table.First(u => u.Email == curUser.userName);
+            lead.UserId = user.UserId;
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
