@@ -23,33 +23,35 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                     // when logged in
+                    // when logged in
                     @{if (Request.Cookies.AllKeys.Contains("ApplicationCookie"))
                     {
-                        <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
 
-                        if (Session["role"] as string == "User")
-                        {
-                            <li>@Html.ActionLink("Add Lead", "Create", "Lead")</li>
-                            <li>@Html.ActionLink("Closed leads", "Closed", "Lead")</li>
-                        }
-                        else if (Session["role"] as string == "Agent")
-                        {
-                            <li>@Html.ActionLink("Favorites", "Favorites", "RealEstateAgent")</li>
-
-                        }
-
-                        <li>@Html.ActionLink("Edit Profile", "Edit", "User")</li>
-
+                if (Session["role"] as string == "User")
+                {
+                <li>@Html.ActionLink("Add Lead", "Create", "Lead")</li>
+                <li>@Html.ActionLink("Closed leads", "Closed", "Lead")</li>
+                <li>@Html.ActionLink("Edit Profile", "Edit", "User", new { id = Session["user_id"] }, null)</li>
 
                     }
-                        // when logged out
-                    else
+                    else if (Session["role"] as string == "Agent")
                     {
-                    <p>log in</p>
-                    }
+                <li>@Html.ActionLink("Favorites", "Favorites", "RealEstateAgent")</li>
+                <li>@Html.ActionLink("Edit Profile", "Edit", "RealEstateAgent", new { id = Session["agent_id"] }, null)</li>
 
-                 }
+                }
+
+
+
+                }
+// when logged out
+else
+{
+                <p>log in</p>
+}
+
+                    }
 
 
 

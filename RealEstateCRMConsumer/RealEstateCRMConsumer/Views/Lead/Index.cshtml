@@ -74,7 +74,8 @@
             @Html.DisplayFor(modelItem => item.LeadType)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.LeadName)
+            @Html.ActionLink(@item.LeadName, "Details", "Lead", new { id = item.LeadId }, null)
+
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.PriorApproval)
