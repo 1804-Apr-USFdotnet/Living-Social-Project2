@@ -19,6 +19,10 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: Lead
         public async Task<ActionResult> Index()
         {
+            HttpRequestMessage userRequest = CreateRequestToService(HttpMethod.Get, "api/Users/currentuser");
+            HttpResponseMessage userResponse = await httpClient.SendAsync(userRequest);
+            var curUser = userResponse.Content.ReadAsAsync<DataTransfer>().Result;
+            Session["role"] = curUser.roles[0];
             // make request for leads 
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/leads");
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);

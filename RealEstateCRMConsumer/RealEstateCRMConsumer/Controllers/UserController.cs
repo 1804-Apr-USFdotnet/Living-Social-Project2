@@ -18,7 +18,10 @@ namespace RealEstateCRMConsumer.Controllers
     {
         // GET: Users
         public async Task<ActionResult> Index()
+
+
         {
+           
             // create request using method from abstract controller 
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/Users");
             // send request
