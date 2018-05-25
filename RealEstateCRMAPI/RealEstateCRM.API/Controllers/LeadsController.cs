@@ -20,6 +20,7 @@ namespace RealEstateCRM.API.Controllers
         //private RealEstateCRMContext db = new RealEstateCRMContext();
         IRepository<Lead> leadCrud;
         IRepository<User> userCrud;
+        IRepository<RealEstateAgent> agentCrud;
         IDbContext realEstateDb;
 
         public LeadsController()
@@ -27,6 +28,8 @@ namespace RealEstateCRM.API.Controllers
             realEstateDb = new RealEstateCRMContext();
             leadCrud = new CRUD<Lead>(realEstateDb);
             userCrud = new CRUD<User>(realEstateDb);
+            agentCrud = new CRUD<RealEstateAgent>(realEstateDb);
+
         }
 
         // GET: api/Leads
@@ -36,12 +39,12 @@ namespace RealEstateCRM.API.Controllers
         public async Task<IHttpActionResult> GetLeads()
         {
             DataTransfer curUser = await GetCurrentUserInfo();
-            User user = userCrud.Table.First(u => u.Email == curUser.userName);
 
             try
             {
                 if(curUser.roles[0].ToLower() == "user")
                 {
+                    User user = userCrud.Table.First(u => u.Email == curUser.userName);
                     IQueryable<Lead> leads = leadCrud.Table.Where(l => l.UserId == user.UserId);
                     return Ok(leads);
 
@@ -49,14 +52,12 @@ namespace RealEstateCRM.API.Controllers
                 }
                 else if(curUser.roles[0].ToLower() == "agent")
                 {
+                    RealEstateAgent agent = agentCrud.Table.First(a => a.Email == curUser.userName);
                     IQueryable<Lead> leads = leadCrud.Table;
+
                     return Ok(leads);
                 }
-                else if(curUser.roles[0].ToLower() == "admin")
-                {
-                    IQueryable<Lead> leads = leadCrud.Table;
-                    return Ok(leads);
-                }
+                
                 else
                 {
                     return BadRequest();

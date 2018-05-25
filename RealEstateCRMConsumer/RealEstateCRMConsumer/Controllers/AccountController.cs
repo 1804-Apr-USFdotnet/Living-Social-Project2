@@ -20,6 +20,7 @@ namespace RealEstateCRMConsumer.Controllers
         {
             Account account = TempData["account"] as Account;
             string role = TempData["role"] as String;
+            Session["role"] = role;
             HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Register/" +role, account);
             if (!response.IsSuccessStatusCode)
             {
@@ -28,16 +29,16 @@ namespace RealEstateCRMConsumer.Controllers
             }
             PassCookiesToClient(response);
 
-            if (role == "user")
-            {
-                return RedirectToAction("Index", "User");
-            } else if (role == "agent") { 
+        //     if (role == "user")
+        //     {
+        //         return RedirectToAction("Index", "User");
+        //     } else if (role == "agent") { 
             
-                return RedirectToAction("Index", "RealEstateAgent");
-            } else {
-                return View("role " + role + " not found");
-        }
-
+        //         return RedirectToAction("Index", "RealEstateAgent");
+        //     } else {
+        //         return View("role " + role + " not found");
+        // }
+            return RedirectToAction("Index", "Lead");
         }
 
         [HttpGet]
@@ -56,6 +57,7 @@ namespace RealEstateCRMConsumer.Controllers
 
 
             return RedirectToAction("Index", "RealEstateAgent");
+            
         }
 
         public ActionResult Create()
@@ -82,7 +84,7 @@ namespace RealEstateCRMConsumer.Controllers
 
             
 
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("Index", "Lead");
         }
 
         [HttpPost]
@@ -115,8 +117,7 @@ namespace RealEstateCRMConsumer.Controllers
 
         public async Task<ActionResult> Logout()
         {
-
-            HttpContext.Session.Remove("currentUser");
+            Session.Clear();
             HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Accounts/Logout");
             if (!response.IsSuccessStatusCode)
             {

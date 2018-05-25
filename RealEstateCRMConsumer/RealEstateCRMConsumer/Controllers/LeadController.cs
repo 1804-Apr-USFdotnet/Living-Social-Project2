@@ -19,6 +19,27 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: Lead
         public async Task<ActionResult> Index()
         {
+            HttpRequestMessage userRequest = CreateRequestToService(HttpMethod.Get, "api/Users/currentuser");
+            HttpResponseMessage userResponse = await httpClient.SendAsync(userRequest);
+            var curUser = userResponse.Content.ReadAsAsync<DataTransfer>().Result;
+
+
+            // store user in session
+            Session["role"] = curUser.roles[0];
+            if(Session["role"] as string == "User")
+            {
+                HttpRequestMessage usersRequest = CreateRequestToService(HttpMethod.Get, "api/Users");
+                HttpResponseMessage usersResponse = await httpClient.SendAsync(usersRequest);
+                var users = await usersResponse.Content.ReadAsAsync<IEnumerable<User>>();
+                Session["user_id"] = users.First(u => u.Email == curUser.userName).UserId;
+            }
+            else if(Session["role"] as string == "Agent")
+            {
+                HttpRequestMessage agentsRequest = CreateRequestToService(HttpMethod.Get, "api/Agents");
+                HttpResponseMessage agentsResponse = await httpClient.SendAsync(agentsRequest);
+                var agents = await agentsResponse.Content.ReadAsAsync<IEnumerable<RealEstateAgent>>();
+                Session["agent_id"] = agents.First(a => a.Email == curUser.userName);
+            }
             // make request for leads 
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/leads");
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
