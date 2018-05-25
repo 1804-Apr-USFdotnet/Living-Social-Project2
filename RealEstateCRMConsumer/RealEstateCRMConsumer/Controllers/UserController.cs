@@ -66,7 +66,7 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(User user)
         {
-            // create request
+            // check to be sure email doesnt exist already
             HttpRequestMessage apiEmailRequest = CreateRequestToService(HttpMethod.Post, $"api/Users/emailcheck");
 
             // add user object with JSON formater to request content 
@@ -107,6 +107,7 @@ namespace RealEstateCRMConsumer.Controllers
             };
 
             // save account to Temp Data to be passed to register action in account controller 
+            TempData["role"] = "user";
             TempData["account"] = account;
 
             return RedirectToAction("Register", "Account");

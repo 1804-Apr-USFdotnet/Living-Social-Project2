@@ -9,32 +9,33 @@ using System.Web;
 
 using System.Web.Mvc;
 using Newtonsoft.Json;
+using System.Net.Http.Formatting;
 
 namespace RealEstateCRMConsumer.Controllers
 {
-    public class LeadController : Controller
+    public class LeadController : AServiceController
     {
-        private static readonly HttpClient httpClient = new HttpClient();
 
         // GET: Lead
         public async Task<ActionResult> Index()
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/");
+            // make request for leads 
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/leads");
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return View("Error");
-            }
-
+       
             var lead = await response.Content.ReadAsAsync<IEnumerable<Lead>>();
-
+            
             return View(lead);
         }
 
         // GET: Lead/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/" + id);
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/leads/" +id);
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
@@ -47,7 +48,6 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: Lead/Create
         public ActionResult Create()
         {
-           // ViewBag.LeadType = new SelectList("Buyer", "Seller");
 
             return View(new Lead());
         }
@@ -56,12 +56,13 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Lead lead)
         {
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Leads/", lead);
+            
 
-            if (!response.IsSuccessStatusCode)
-            {
-                return View("Error");
-            }
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Post, "api/Leads");
+            leadRequest.Content = new ObjectContent<Lead>(lead, new JsonMediaTypeFormatter());
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+            PassCookiesToClient(leadResponse);
+
 
             return RedirectToAction("Index");
         }
@@ -69,12 +70,15 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: Lead/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/" + id);
-            if (!response.IsSuccessStatusCode)
+            
+
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Get, "api/Leads/" +id);
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+            if (!leadResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }
-            var responseDataLead = response.Content.ReadAsAsync<Lead>().Result;
+            var responseDataLead = leadResponse.Content.ReadAsAsync<Lead>().Result;
 
             return View(responseDataLead);
         }
@@ -83,8 +87,11 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit(int id, Lead leadToEdit)
         {
-            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/Leads/" + id, leadToEdit);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Put, "api/Leads/"+id);
+            leadRequest.Content = new ObjectContent<Lead>(leadToEdit, new JsonMediaTypeFormatter());
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+
+            if (!leadResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }
@@ -94,12 +101,13 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: Lead/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Leads/" + id);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Get, "api/Leads/" + id);
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+            if (!leadResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }
-            var responseDataLead = response.Content.ReadAsAsync<Lead>().Result;
+            var responseDataLead = leadResponse.Content.ReadAsAsync<Lead>().Result;
 
             return View(responseDataLead);
         }
@@ -108,8 +116,10 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(int id, Lead leadToDelete)
         {
-            HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/Leads/" + id);
-            if (!response.IsSuccessStatusCode)
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Delete, "api/Leads/" + id);
+            leadRequest.Content = new ObjectContent<Lead>(leadToDelete, new JsonMediaTypeFormatter());
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+            if (!leadResponse.IsSuccessStatusCode)
             {
                 return View("Error");
             }

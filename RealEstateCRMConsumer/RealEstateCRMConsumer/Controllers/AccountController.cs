@@ -19,15 +19,14 @@ namespace RealEstateCRMConsumer.Controllers
         public async Task<ActionResult> Register()
         {
             Account account = TempData["account"] as Account;
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Register", account);
+            string role = TempData["role"] as String;
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Register/" +role, account);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
             PassCookiesToClient(response);
-
-
 
             return RedirectToAction("Index", "User");
         }
@@ -56,6 +55,7 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Login(Account account)
             {
+
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Accounts/Login");
             apiRequest.Content = new ObjectContent<Account>(account, new JsonMediaTypeFormatter());
 
@@ -69,6 +69,7 @@ namespace RealEstateCRMConsumer.Controllers
                 return View("Error");
             }
 
+            
 
             return RedirectToAction("Index", "User");
         }
@@ -92,7 +93,9 @@ namespace RealEstateCRMConsumer.Controllers
                 return View("Error");
             }
 
-            
+           
+
+
 
 
             return RedirectToAction("Index", "User");
@@ -101,6 +104,8 @@ namespace RealEstateCRMConsumer.Controllers
 
         public async Task<ActionResult> Logout()
         {
+
+            HttpContext.Session.Remove("currentUser");
             HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Accounts/Logout");
             if (!response.IsSuccessStatusCode)
             {
@@ -109,6 +114,7 @@ namespace RealEstateCRMConsumer.Controllers
             }
 
             PassCookiesToClient(response);
+
 
             return RedirectToAction("Create", "Account");
         }
