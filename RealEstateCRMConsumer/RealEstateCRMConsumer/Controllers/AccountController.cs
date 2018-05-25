@@ -32,6 +32,22 @@ namespace RealEstateCRMConsumer.Controllers
             return RedirectToAction("Index", "User");
         }
 
+        public async Task<ActionResult> RegisterAgent()
+        {
+            Account account = TempData["account"] as Account;
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Register", account);
+            if (!response.IsSuccessStatusCode)
+            {
+                TempData["error"] = response.ReasonPhrase;
+                return View("Error");
+            }
+            PassCookiesToClient(response);
+
+
+
+            return RedirectToAction("Index", "RealEstateAgent");
+        }
+
         public ActionResult Create()
         {
             return View(new Account());
