@@ -11,16 +11,26 @@ namespace RealEstateCRM.DataAccessLayer
     {
         static void Main(string[] args)
         {
-            BuyerLead testBuyerLead = new BuyerLead
+            Lead testLead = new Lead
             {
+                LeadType = "Seller",
                 LeadName = "firstname lastname",
                 PriorApproval = true,
+                
                 Min = 200,
                 Max = 800,
                 Bed = 1,
                 Bath = 1,
                 SqFootage = 1500,
-                Floors = 1
+                Floors = 1,
+
+                PhoneNumber = "555-555-5555",
+                Email = "testlead@testleads.com",
+
+                Address = "1283 Red Rd",
+                City = "Tampa",
+                State = "FL",
+                Zipcode = 11223
                
             };
 
@@ -31,8 +41,8 @@ namespace RealEstateCRM.DataAccessLayer
             //block comment ctrl+K, ctrl+C
             //block uncomment ctrl+K, ctrl+U
 
-            #region AddTestBuyerLead
-            crmDB.BuyerLeads.Add(testBuyerLead);
+            #region AddTestLead
+            crmDB.Leads.Add(testLead);
             crmDB.SaveChanges();
             Console.WriteLine("Db Changes Saved..............");
             #endregion

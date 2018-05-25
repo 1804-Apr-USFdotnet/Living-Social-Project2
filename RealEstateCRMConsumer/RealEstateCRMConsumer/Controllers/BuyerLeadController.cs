@@ -19,7 +19,7 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: BuyerLead
         public async Task<ActionResult> Index()
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/BuyerLeads/");
+            HttpResponseMessage response = await httpClient.GetAsync( "http://localhost:57955/api/BuyerLeads/");
 
             if (!response.IsSuccessStatusCode)
             {
