@@ -28,7 +28,7 @@ namespace RealEstateCRMConsumer.Controllers
             }
             PassCookiesToClient(response);
 
-            return RedirectToAction("Index", "User");
+            return RedirectToAction("Index", "Lead");
         }
 
         public ActionResult Create()
@@ -42,18 +42,21 @@ namespace RealEstateCRMConsumer.Controllers
 
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Accounts/Login");
             apiRequest.Content = new ObjectContent<Account>(account, new JsonMediaTypeFormatter());
-
-
             HttpResponseMessage  response = await httpClient.SendAsync(apiRequest);
+            
             PassCookiesToClient(response);
+
+            
+
+
 
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
+            // set session role for View 
 
-            
 
             return RedirectToAction("Index", "User");
         }
@@ -62,25 +65,14 @@ namespace RealEstateCRMConsumer.Controllers
         public async Task<ActionResult> Edit(Account account)
         {
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Post, "api/Accounts/Edit");
-
-            
-          
             apiRequest.Content = new ObjectContent<Account>(account, new JsonMediaTypeFormatter());
-
-
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
-
 
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
-
-           
-
-
-
 
             return RedirectToAction("Index", "User");
         }
@@ -98,9 +90,11 @@ namespace RealEstateCRMConsumer.Controllers
             }
 
             PassCookiesToClient(response);
-
+            // delete session
+            Session.Abandon();
 
             return RedirectToAction("Create", "Account");
+            
         }
 
         

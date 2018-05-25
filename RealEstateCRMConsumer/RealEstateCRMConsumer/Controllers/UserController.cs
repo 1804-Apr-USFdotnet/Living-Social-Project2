@@ -31,6 +31,12 @@ namespace RealEstateCRMConsumer.Controllers
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
+
+            HttpRequestMessage userRequest = CreateRequestToService(HttpMethod.Get, "api/Users/currentUser");
+            HttpResponseMessage userResponse = await httpClient.SendAsync(userRequest);
+            var curUser = userResponse.Content.ReadAsAsync<DataTransfer>().Result;
+
+            Session["role"] = curUser.roles[0];
             // set returned data to variable 
             var users = await response.Content.ReadAsAsync<IEnumerable<User>>();
 
@@ -108,9 +114,10 @@ namespace RealEstateCRMConsumer.Controllers
 
             // save account to Temp Data to be passed to register action in account controller 
             TempData["role"] = "user";
+            Session["role"] = "user";
             TempData["account"] = account;
 
-            return RedirectToAction("Register", "Account");
+            return RedirectToAction("Register");
         }
 
         // GET: User/Edit/5

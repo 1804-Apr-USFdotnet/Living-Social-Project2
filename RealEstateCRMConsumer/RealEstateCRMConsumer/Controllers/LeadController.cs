@@ -64,7 +64,7 @@ namespace RealEstateCRMConsumer.Controllers
             PassCookiesToClient(leadResponse);
 
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Index", "Leads");
         }
 
         // GET: Lead/Edit/5

@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace RealEstateCRM.API.Controllers
 {
-    public class AccountsController : ApiController
+    public class AccountsController : AGeneralController
     {
         [AllowAnonymous]
         [ResponseType(typeof(Account))]
@@ -81,7 +81,7 @@ namespace RealEstateCRM.API.Controllers
         [ResponseType(typeof(Account))]
         [Route("~/api/Accounts/Login")]
         [AllowAnonymous]
-        public IHttpActionResult LogIn(Account loginAccount)
+        public async Task<IHttpActionResult>  LogIn(Account loginAccount)
         {
             if (!ModelState.IsValid)
             {
@@ -110,6 +110,8 @@ namespace RealEstateCRM.API.Controllers
 
             authManager.SignIn(new AuthenticationProperties { IsPersistent = true }, claimsIdentity);
 
+            //DataTransfer curUser = await GetCurrentUserInfo();
+            //IList<string> roles = curUser.roles;
             return Ok();
 
         }

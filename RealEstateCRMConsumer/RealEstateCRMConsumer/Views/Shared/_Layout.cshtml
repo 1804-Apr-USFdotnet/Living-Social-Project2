@@ -20,16 +20,47 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+    @{
+
+                        <!-- if the name of the cookie returned does not equal null AKA is logged in-->
+
+        if (Request.Cookies.AllKeys.Contains<string>("ApplicationCookie"))
+        {
+            if (Session["role"] as string == "User")
+            {
+                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <li>@Html.ActionLink("About", "About", "Home")</li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home") </li>
+            }
+            else if(Session["role"] as string == "Agent")
+            {
+                <p>Im a real estate agent!</p>
+            }
+            else
+            {
+                <p>Im something else</p>
+            }
+                <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+
+            
+        }
+        else
+        {
+            <li>Log in</li>
+        }
+    }
+
+
+
+
+
+
 
                 </ul>
             </div>
         </div>
     </div>
-    <div class="container body-content">
+    <div class="container body-content"> 
         @RenderBody()
         <hr />
         <footer>
