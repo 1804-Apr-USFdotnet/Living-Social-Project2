@@ -16,26 +16,31 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @{if (Request.Cookies.AllKeys.Contains("ApplicationCookie")) {
+                    @Html.ActionLink("Leads", "Index", "Lead", new { area = "" }, new { @class = "navbar-brand" })
+
+                } }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                      // when logged in
                     @{if (Request.Cookies.AllKeys.Contains("ApplicationCookie"))
                     {
-                       
+                        <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+
                         if (Session["role"] as string == "User")
                         {
-                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                            <li>@Html.ActionLink("About", "About", "Home")</li>
-                            <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                            <li>@Html.ActionLink("Add Lead", "Create", "Lead")</li>
+                            <li>@Html.ActionLink("Closed leads", "Closed", "Lead")</li>
                         }
                         else if (Session["role"] as string == "Agent")
                         {
+                            <li>@Html.ActionLink("Favorites", "Favorites", "RealEstateAgent")</li>
 
                         }
 
-                        <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                        <li>@Html.ActionLink("Edit Profile", "Edit", "User")</li>
+
 
                     }
                         // when logged out
