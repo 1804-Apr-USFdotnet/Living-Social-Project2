@@ -91,9 +91,10 @@ namespace RealEstateCRMConsumer.Controllers
                 Password = realEstateAgent.Password
             };
 
+            TempData["role"] = "agent";
             TempData["account"] = account;
 
-            return RedirectToAction("RegisterAgent", "Account");
+            return RedirectToAction("Register", "Account");
         }
 
         // GET: RealEstateAgent/Edit/5
