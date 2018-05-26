@@ -64,7 +64,7 @@ stage("Deploy")
 {
     try {
     dir('RealEstateCRMAPI/RealEstateCRM.API/obj/Debug/Package') {
-        bat "msdeploy -verb:sync -source:package=\"%CD%\\RealEstateCRM.API.zip\" -dest:auto,computerName=\"https://ec2-13-58-19-141.us-east-2.compute.amazonaws.com:8172/msdeploy.axd\",userName=\"Administrator\",password=\"Password123-\",authtype=\"basic\",includeAcls=\"False\" -disableLink:AppPoolExtension -disableLink:ContentExtension -disableLink:CertificateExtension -setParam:\"IIS Web Application Name\"=\"Default Web Site/RealEstateAPI\" -enableRule:AppOffline -allowUntrusted"
+        bat "msdeploy -verb:sync -source:package=\"%CD%\\RealEstateCRM.API.zip\" -dest:auto,computerName=\"${env.Deploy_Site}\",userName=\"Administrator\",password=\"${env.Deploy_Pass}\",authtype=\"basic\",includeAcls=\"False\" -disableLink:AppPoolExtension -disableLink:ContentExtension -disableLink:CertificateExtension -setParam:\"IIS Web Application Name\"=\"Default Web Site/RealEstateAPI\" -enableRule:AppOffline -allowUntrusted"
         slackSuccess('Deploy')
     }
     }
