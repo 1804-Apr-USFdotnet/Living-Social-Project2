@@ -14,9 +14,11 @@ using Microsoft.AspNet.Identity;
 using Microsoft.Owin.Security;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 
 namespace RealEstateCRM.API.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class AccountsController : ApiController
     {
         [AllowAnonymous]

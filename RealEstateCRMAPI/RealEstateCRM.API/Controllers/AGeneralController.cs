@@ -9,12 +9,15 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace RealEstateCRM.API.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class AGeneralController : ApiController
     {
       
+        [AllowAnonymous]
         public async Task<DataTransfer> GetCurrentUserInfo()
         {
             var userStore = new UserStore<IdentityUser>(new DataDbContext());

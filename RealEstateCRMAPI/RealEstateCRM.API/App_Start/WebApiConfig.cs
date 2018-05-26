@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace RealEstateCRM.API
 {
@@ -17,7 +18,6 @@ namespace RealEstateCRM.API
             = Newtonsoft.Json.ReferenceLoopHandling.Serialize;
             config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling
             = Newtonsoft.Json.PreserveReferencesHandling.Objects;
-
             config.EnableCors();
 
             //// adds authorization to EVERYTHING

@@ -79,7 +79,7 @@ namespace RealEstateCRMConsumer.Controllers
         {
             
 
-            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Post, "api/Leads");
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Post, "api/Leads/hidden");
             leadRequest.Content = new ObjectContent<Lead>(lead, new JsonMediaTypeFormatter());
             HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
             PassCookiesToClient(leadResponse);

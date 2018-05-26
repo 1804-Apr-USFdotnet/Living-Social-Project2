@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using RealEstateCRM.DataAccessLayer;
 using RealEstateCRM.DataAccessLayer.Repositories;
@@ -14,6 +15,7 @@ using RealEstateCRM.Models;
 
 namespace RealEstateCRM.API.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class RealEstateAgentsController : ApiController
     {
         //private RealEstateCRMContext db = new RealEstateCRMContext();

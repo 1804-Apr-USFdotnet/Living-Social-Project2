@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using RealEstateCRM.DataAccessLayer;
 using RealEstateCRM.DataAccessLayer.Repositories;
@@ -15,6 +16,7 @@ using RealEstateCRM.Models;
 
 namespace RealEstateCRM.API.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class LeadsController : AGeneralController
     {
         //private RealEstateCRMContext db = new RealEstateCRMContext();
@@ -32,14 +34,36 @@ namespace RealEstateCRM.API.Controllers
 
         }
 
+        // POST: api/Leads
+        [ResponseType(typeof(Lead))]
+        [HttpPost]
+        public async Task<IHttpActionResult> PostLead(Lead lead)
+        {
+            DataTransfer curUser = await GetCurrentUserInfo();
+            User user = userCrud.Table.First(u => u.Email == curUser.userName);
+            lead.UserId = user.UserId;
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+
+            leadCrud.Insert(lead);
+
+            return CreatedAtRoute("DefaultApi", new { id = lead.LeadId }, lead);
+        }
+
         // GET: api/Leads
         // needed to add route because default route wasnt being found properly
+        [AllowAnonymous]
         [Route("api/Leads")]
         [ResponseType(typeof(Lead))]
         public async Task<IHttpActionResult> GetLeads()
         {
             DataTransfer curUser = await GetCurrentUserInfo();
-
+           
             try
             {
                 if(curUser.roles[0].ToLower() == "user")
@@ -83,6 +107,28 @@ namespace RealEstateCRM.API.Controllers
 
             return Ok(lead);
         }
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/Leads/ng")]
+        [ResponseType(typeof(Lead))]
+        public IHttpActionResult GetAllLeads()
+        {
+
+            
+            try
+            {
+                IQueryable<Lead> leads = leadCrud.Table;
+                return Ok(leads);
+
+
+            }
+            catch
+            {
+                return InternalServerError();
+            }
+        }
+
+        
 
         // PUT: api/Leads/5
         [ResponseType(typeof(void))]
@@ -128,25 +174,7 @@ namespace RealEstateCRM.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // POST: api/Leads
-        [ResponseType(typeof(Lead))]
-        public async Task<IHttpActionResult> PostLead(Lead lead)
-        {
-            DataTransfer curUser = await GetCurrentUserInfo();
-            User user = userCrud.Table.First(u => u.Email == curUser.userName);
-            lead.UserId = user.UserId;
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-
-
-            leadCrud.Insert(lead);
-
-            return CreatedAtRoute("DefaultApi", new { id = lead.LeadId }, lead);
-        }
+        
 
         // DELETE: api/Leads/5
         [ResponseType(typeof(Lead))]

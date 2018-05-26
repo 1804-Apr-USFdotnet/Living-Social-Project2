@@ -13,9 +13,11 @@ using RealEstateCRM.Models;
 using Microsoft.AspNet.Identity;
 using System.Web;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 
 namespace RealEstateCRM.API.Controllers
 {
+    [EnableCors("*", "*", "*")]
     public class UsersController : ApiController
     {
         IRepository<User> crud;

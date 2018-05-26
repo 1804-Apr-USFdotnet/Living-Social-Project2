@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin;
+using Microsoft.Extensions.DependencyInjection;
 
 [assembly: OwinStartup(typeof(RealEstateCRM.API.Startup))]
 
@@ -17,7 +18,7 @@ namespace RealEstateCRM.API
 
             config.MapHttpAttributeRoutes();
 
-             
+
             app.UseCookieAuthentication(new CookieAuthenticationOptions()
             {
                 AuthenticationType = WebApiConfig.AuthenticationType,
@@ -27,7 +28,7 @@ namespace RealEstateCRM.API
             app.UseWebApi(config);
 
 
-            
+
         }
     }
 }
