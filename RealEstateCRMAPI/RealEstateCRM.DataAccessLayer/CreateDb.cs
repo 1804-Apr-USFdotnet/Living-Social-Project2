@@ -33,15 +33,20 @@ namespace RealEstateCRM.DataAccessLayer
                 Zipcode = 77425
                
             };*/
-            RealEstateAgent newAgent = new RealEstateAgent
+            /*RealEstateAgent newAgent = new RealEstateAgent
             {
                 FirstName = "Irene",
                 LastName = "Wise",
                 Email = "anything@work.org",
                 Password = "password1",
                 Alias = "water"
+            };*/
+            User newUser = new User
+            {
+                Email = "thismail@thisaddress.edu",
+                Password = "password4",
+                Alias = "User4"
             };
-
             Console.WriteLine("Creating DB...............");
             //RealEstateCRMContext crmDB = new RealEstateCRMContext();
             TestCRMContext  testCRM = new TestCRMContext();
@@ -52,7 +57,7 @@ namespace RealEstateCRM.DataAccessLayer
 
             #region AddTestLead
             //testCRM.Leads.Add(testLead);
-            testCRM.RealEstateAgents.Add(newAgent);
+            testCRM.Users.Add(newUser);
             testCRM.SaveChanges();
             //crmDB.Leads.Add(testLead);
             //crmDB.SaveChanges();
