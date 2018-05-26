@@ -10,11 +10,16 @@ import { Lead } from '../models/lead';
 export class LeadComponent implements OnInit {
   
   private leads: Lead[];
+  foundLeads: Lead[] = [];
+
+  searchText: string;
 
   constructor(private _httpService: HttpService) { }
 
+
   ngOnInit() {
     this.getLeads();
+    
   }
 
   getLeads(): void{
@@ -22,6 +27,14 @@ export class LeadComponent implements OnInit {
       .subscribe(
           response => this.leads = response,
           errors => console.log(errors)
+      );
+  }
+
+  searchLeads(){
+    this._httpService.searchLeads(this.searchText)
+      .subscribe(
+        response => this.leads = response,
+        error => console.log(error)
       );
   }
 

@@ -1,11 +1,13 @@
 <p>
   lead works!
 </p>
+<input type="text" [(ngModel)]="searchText" />
+<button (click)="searchLeads()">Search</button>
 
 <table class="table">
   <thead class="thead-dark">
     <tr>
-      <th scope="col">Name</th>
+      <th scope="col" >Name</th>
       <th scope="col">Phone number</th>
       <th scope="col">Email</th>
       <th scope="col">Address</th>
@@ -19,33 +21,45 @@
   <tbody>
     <tr *ngFor="let lead of leads">
       <th scope="row">{{lead.Name}}</th>
+      
       <th>{{lead.Phone}}</th>
-      <th>{{lead.Email}}</th>
+      <th><a routerLink="/leads/{{lead.Email}}">{{lead.Email}}</a></th>
+
       <th>{{lead.Address}}</th>
       <th>{{lead.City}}</th>
       <th>{{lead.State}}</th>
       <th>{{lead.Zipcode}}</th>
     </tr>
+    <router-outlet></router-outlet>
+
 
   </tbody>
 </table>
 
 <table class="table">
-  <thead class="thead-light">
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First</th>
-      <th scope="col">Last</th>
-      <th scope="col">Handle</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>@mdo</td>
-    </tr>
-    
-  </tbody>
-</table>
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Phone number</th>
+        <th scope="col">Email</th>
+        <th scope="col">Address</th>
+        <th scope="col">City</th>
+        <th scope="col">State</th>
+        <th scope="col">Zipcode</th>
+  
+  
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lead of foundLeads">
+        <th scope="row">{{lead.Name}}</th>
+        <th>{{lead.Phone}}</th>
+        <th>{{lead.Email}}</th>
+        <th>{{lead.Address}}</th>
+        <th>{{lead.City}}</th>
+        <th>{{lead.State}}</th>
+        <th>{{lead.Zipcode}}</th>
+      </tr>
+  
+    </tbody>
+  </table>
