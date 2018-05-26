@@ -126,9 +126,17 @@
             @Html.DisplayFor(modelItem => item.Modified)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.LeadId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.LeadId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.LeadId })
+
+            @if (Session["role"] as string == "User")
+            {
+                @Html.ActionLink("Edit", "Edit", new { id = item.LeadId })
+            } |
+            @*@Html.ActionLink("Details", "Details", new { id = item.LeadId }) |*@
+
+            @if (Session["role"] as string == "User")
+            {
+                @Html.ActionLink("Delete", "Delete", new { id = item.LeadId })
+            }
         </td>
     </tr>
 }

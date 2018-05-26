@@ -53,7 +53,7 @@ namespace RealEstateCRM.API.Controllers
                 else if(curUser.roles[0].ToLower() == "agent")
                 {
                     RealEstateAgent agent = agentCrud.Table.First(a => a.Email == curUser.userName);
-                    IQueryable<Lead> leads = leadCrud.Table;
+                    IQueryable<Lead> leads = leadCrud.Table.Where(l => l.RealEstateAgent == null);
 
                     return Ok(leads);
                 }
@@ -102,9 +102,66 @@ namespace RealEstateCRM.API.Controllers
                 return BadRequest("Editing the wrong lead");
             }
 
+
             if(user.UserId != lead.UserId)
             {
                 return BadRequest("User did not create lead");
+            }
+
+            leadCrud.Update(lead);
+
+            try
+            {
+                leadCrud.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LeadExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // PUT: api/Leads/5
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> CheckoutLead(int id, Lead lead)
+        {
+            // get cur user info
+            DataTransfer curUser = await GetCurrentUserInfo();
+            User user = new User();
+
+            if (curUser.roles[0].ToLower() == "user")
+            {
+                user = userCrud.Table.First(u => u.Email == curUser.userName);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (curUser.roles[0].ToLower() == "user")
+            {
+
+                if (id != lead.LeadId)
+                {
+                    return BadRequest("Editing the wrong lead");
+                }
+
+
+
+                if (user.UserId != lead.UserId)
+                {
+                    return BadRequest("User did not create lead");
+                }
             }
 
             leadCrud.Update(lead);

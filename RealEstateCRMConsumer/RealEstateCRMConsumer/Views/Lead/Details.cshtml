@@ -158,5 +158,6 @@
 </div>
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.LeadId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") |
+    @Html.ActionLink("Add to favorites", "Favorite", new { id = Model.LeadId })
 </p>

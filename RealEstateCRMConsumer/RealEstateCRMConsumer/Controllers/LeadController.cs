@@ -26,16 +26,16 @@ namespace RealEstateCRMConsumer.Controllers
 
             // store user in session
             Session["role"] = curUser.roles[0];
-            if(Session["role"] as string == "User")
+            if (Session["role"] as string == "User")
             {
                 HttpRequestMessage usersRequest = CreateRequestToService(HttpMethod.Get, "api/Users");
                 HttpResponseMessage usersResponse = await httpClient.SendAsync(usersRequest);
                 var users = await usersResponse.Content.ReadAsAsync<IEnumerable<User>>();
                 Session["user_id"] = users.First(u => u.Email == curUser.userName).UserId;
             }
-            else if(Session["role"] as string == "Agent")
+            else if (Session["role"] as string == "Agent")
             {
-                HttpRequestMessage agentsRequest = CreateRequestToService(HttpMethod.Get, "api/Agents");
+                HttpRequestMessage agentsRequest = CreateRequestToService(HttpMethod.Get, "api/RealEstateAgents");
                 HttpResponseMessage agentsResponse = await httpClient.SendAsync(agentsRequest);
                 var agents = await agentsResponse.Content.ReadAsAsync<IEnumerable<RealEstateAgent>>();
                 Session["agent_id"] = agents.First(a => a.Email == curUser.userName);
@@ -45,16 +45,16 @@ namespace RealEstateCRMConsumer.Controllers
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
 
-       
+
             var lead = await response.Content.ReadAsAsync<IEnumerable<Lead>>();
-            
+
             return View(lead);
         }
 
         // GET: Lead/Details/5
         public async Task<ActionResult> Details(int id)
         {
-            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/leads/" +id);
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/leads/" + id);
             HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
             PassCookiesToClient(response);
             if (!response.IsSuccessStatusCode)
@@ -77,13 +77,68 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(Lead lead)
         {
-            
 
-            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Post, "api/Leads");
+
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Post, "api/Leads/x");
             leadRequest.Content = new ObjectContent<Lead>(lead, new JsonMediaTypeFormatter());
             HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
             PassCookiesToClient(leadResponse);
 
+
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> Favorite(int id)
+        {
+
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Get, "api/Leads/" + id);
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+            if (!leadResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            var responseDataLead = leadResponse.Content.ReadAsAsync<Lead>().Result;
+
+            return View(responseDataLead);
+        }
+      
+
+
+        [HttpPost]
+        public async Task<ActionResult> Favorite(int id, Lead leadToFav)
+        {
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Get, "api/Leads/" + id);
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+            if (!leadResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            leadToFav = leadResponse.Content.ReadAsAsync<Lead>().Result;
+
+            //get current real estate agent account
+            HttpRequestMessage userRequest = CreateRequestToService(HttpMethod.Get, "api/Users/currentuser");
+            HttpResponseMessage userResponse = await httpClient.SendAsync(userRequest);
+            var curUser = userResponse.Content.ReadAsAsync<DataTransfer>().Result;
+
+            //get list of agents
+            HttpRequestMessage agentsRequest = CreateRequestToService(HttpMethod.Get, "api/RealEstateAgents");
+            HttpResponseMessage agentsResponse = await httpClient.SendAsync(agentsRequest);
+            var agents = await agentsResponse.Content.ReadAsAsync<IEnumerable<RealEstateAgent>>();
+
+            int agentid = agents.Where(a => a.Email == curUser.userName).First().RealEstateAgentId;
+            RealEstateAgent currentAgent = agents.Where(agent => agent.RealEstateAgentId == agentid).First();
+            leadToFav.RealEstateAgent = currentAgent;
+
+            HttpRequestMessage favRequest = CreateRequestToService(HttpMethod.Put, "api/Leads/" + id);
+            favRequest.Content = new ObjectContent<Lead>(leadToFav, new JsonMediaTypeFormatter());
+            HttpResponseMessage favResponse = await httpClient.SendAsync(favRequest);
+            PassCookiesToClient(favResponse);
+
+            if (!favResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
 
             return RedirectToAction("Index");
         }
