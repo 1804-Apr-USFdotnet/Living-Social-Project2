@@ -157,10 +157,24 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.LeadId }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index") |
 
-    @if (Session["role"] as string == "Agent") {
-    @Html.ActionLink("Add to favorites", "Favorite", new {id = Model.LeadId})
+    @if (Session["role"] as string == "User")
+    {
+        @Html.ActionLink("Update Lead information", "Edit", new { id = Model.LeadId })
+
     }
+
+     @if (Session["role"] as string == "User") { 
+
+ @Html.ActionLink("Delete this Lead", "Delete", new { id = Model.LeadId })
+
+    }
+
+    @if (Session["role"] as string == "Agent")
+    {
+        @Html.ActionLink("Add to favorites", "Favorite", new { id = Model.LeadId })
+    }
+
+
 </p>

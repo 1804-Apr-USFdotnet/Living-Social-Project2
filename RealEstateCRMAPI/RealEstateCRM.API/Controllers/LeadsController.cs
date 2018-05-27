@@ -239,7 +239,7 @@ namespace RealEstateCRM.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-        // PUT: api/Leads/checkout/5
+        // PUT: api/Leads/return/5
         [Route("api/Leads/return/{id}")]
         [HttpPut]
         [ResponseType(typeof(void))]
