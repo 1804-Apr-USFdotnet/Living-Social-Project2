@@ -10,8 +10,15 @@ namespace RealEstateCRMConsumer.Controllers
 {
     public abstract class AServiceController : Controller
     {
-        protected static readonly HttpClient httpClient = new HttpClient(new HttpClientHandler() { UseCookies = false });
-        private static readonly Uri serviceUri = new Uri("http://localhost:57955/");
+        //protected static readonly HttpClient httpClient = new HttpClient(new HttpClientHandler() { UseCookies = false });
+
+        protected static readonly HttpClient httpClient = new HttpClient(new HttpClientHandler() { UseCookies = false })
+            {
+                Timeout = TimeSpan.FromMinutes(5)
+
+            };
+
+    private static readonly Uri serviceUri = new Uri("http://localhost:57955/");
         private static readonly string cookieName = "ApplicationCookie";
 
         protected HttpRequestMessage CreateRequestToService(HttpMethod method, string uri)

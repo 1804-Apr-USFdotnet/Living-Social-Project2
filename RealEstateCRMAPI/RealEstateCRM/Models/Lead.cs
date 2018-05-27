@@ -41,6 +41,7 @@ namespace RealEstateCRM.Models
         public int? UserId { get; set; }
         public virtual User User { get; set; }
 
+        public int? RealEstateAgentId { get; set; }
         public virtual RealEstateAgent RealEstateAgent { get; set; }
 
         public DateTime Created { get; set; }
