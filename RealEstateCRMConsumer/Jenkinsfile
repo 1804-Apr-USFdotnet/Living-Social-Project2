@@ -52,7 +52,7 @@ node('master') {
             }
         }
         catch (exc) {
-            slackError('Import')
+            slackError('Package')
             throw exc
         }
     }
