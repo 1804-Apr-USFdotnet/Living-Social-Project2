@@ -24,7 +24,7 @@ node('master') {
     stage("Test") {
         try {
             dir('RealEstateCRMConsumer') {
-                bat "VSTest.Console RealEstateCRM.Test\\bin\\Debug\\RealEstateCRM.Test.dll"
+                bat "VSTest.Console RealEstateCRMConsumer.Test\\bin\\Debug\\RealEstateCRMConsumer.Test.dll"
             }
         }
         catch (exc) {
