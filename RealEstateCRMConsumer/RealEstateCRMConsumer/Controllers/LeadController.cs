@@ -51,6 +51,7 @@ namespace RealEstateCRMConsumer.Controllers
             return View(lead);
         }
 
+
         public async Task<ActionResult> ViewFavorites()
         {
             HttpRequestMessage userRequest = CreateRequestToService(HttpMethod.Get, "api/Users/currentuser");
@@ -82,6 +83,8 @@ namespace RealEstateCRMConsumer.Controllers
             return View(myleads);
         }
 
+
+
         // GET: Lead/Details/5
         public async Task<ActionResult> Details(int id)
         {
@@ -95,6 +98,21 @@ namespace RealEstateCRMConsumer.Controllers
             var responseDataLead = response.Content.ReadAsAsync<Lead>().Result;
 
             return View(responseDataLead);
+        }
+
+        // GET: Lead/FavDetails/5
+        public async Task<ActionResult> FavDetails(int id)
+        {
+            HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/leads/" + id);
+            HttpResponseMessage response = await httpClient.SendAsync(apiRequest);
+            PassCookiesToClient(response);
+            if (!response.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+            var responseDataFavLead = response.Content.ReadAsAsync<Lead>().Result;
+
+            return View(responseDataFavLead);
         }
 
         // GET: Lead/Create
@@ -181,6 +199,28 @@ namespace RealEstateCRMConsumer.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<ActionResult> UnFavorite(int id)
+        {
+
+            HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Get, "api/leads/" + id);
+            HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+            PassCookiesToClient(leadResponse);
+
+            var responseDataLead = leadResponse.Content.ReadAsAsync<Lead>().Result;
+
+
+            HttpRequestMessage unFavRequest = CreateRequestToService(HttpMethod.Put, "api/Leads/return/" + id);
+            unFavRequest.Content = new ObjectContent<Lead>(responseDataLead, new JsonMediaTypeFormatter());
+            HttpResponseMessage unFavResponse = await httpClient.SendAsync(unFavRequest);
+
+            if (!unFavResponse.IsSuccessStatusCode)
+            {
+                return View("Error");
+            }
+
+            return RedirectToAction("ViewFavorites");
+        }
+
         // GET: Lead/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
@@ -217,6 +257,7 @@ namespace RealEstateCRMConsumer.Controllers
         {
             HttpRequestMessage leadRequest = CreateRequestToService(HttpMethod.Get, "api/Leads/" + id);
             HttpResponseMessage leadResponse = await httpClient.SendAsync(leadRequest);
+
             if (!leadResponse.IsSuccessStatusCode)
             {
                 return View("Error");
@@ -239,5 +280,7 @@ namespace RealEstateCRMConsumer.Controllers
             }
             return RedirectToAction("Index");
         }
+
+
     }
 }

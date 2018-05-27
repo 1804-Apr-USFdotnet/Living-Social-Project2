@@ -74,10 +74,12 @@ namespace RealEstateCRM.API.Controllers
         [Route("api/Leads/Favorites")]
         [ResponseType(typeof(Lead))]
         [HttpGet]
-        public async Task<IHttpActionResult> GetFavorites()
+        //public async Task<IHttpActionResult> GetFavorites() //old attempts - serverside sorting
+        public IHttpActionResult GetFavorites()
         {
-                DataTransfer curUser = await GetCurrentUserInfo();
+            //DataTransfer curUser = await GetCurrentUserInfo();
 
+            #region old attempts -serverside sorting region
             //try
             //{
             //RealEstateAgent curAgent = agentCrud.Table.First(agent => agent.Email == curUser.userName);
@@ -90,13 +92,18 @@ namespace RealEstateCRM.API.Controllers
             //RealEstateAgent agent = agentCrud.Table.First(a => a.Email == curUser.userName);
             //IQueryable<Lead> leads = leadCrud.Table.Where(l => l.RealEstateAgentId == agent.RealEstateAgentId);
 
-
-
             //RealEstateAgent agent = agentCrud.Table.First(a => a.Email == curUser.userName);
             //IEnumerable<Lead> leads = leadCrud.Table.ToList();
 
             //var myleads = leads.Where(l => l.RealEstateAgentId == agent.RealEstateAgentId);
             //return Ok(myleads);
+            //} catch
+            //{
+            //    return InternalServerError();
+            //}
+            #endregion
+
+
 
             IQueryable<Lead> leads = leadCrud.Table;
             return Ok(leads);
@@ -105,10 +112,7 @@ namespace RealEstateCRM.API.Controllers
 
             
 
-            //} catch
-            //{
-            //    return InternalServerError();
-            //}
+            
 
         }
 
@@ -234,6 +238,61 @@ namespace RealEstateCRM.API.Controllers
 
             return StatusCode(HttpStatusCode.NoContent);
         }
+
+        // PUT: api/Leads/checkout/5
+        [Route("api/Leads/return/{id}")]
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> CheckInLead(int id, Lead lead)
+        {
+            // get cur user info
+            DataTransfer curUser = await GetCurrentUserInfo();
+            
+
+            if (curUser.roles[0].ToLower() == "user")
+            {
+                return BadRequest("Users cannot unfavorite leads");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            RealEstateAgent agentUnFavoriting = agentCrud.Table.ToList().Find(agent => agent.Email == curUser.userName);
+
+            if (agentUnFavoriting.RealEstateAgentId != lead.RealEstateAgentId)
+            {
+                return BadRequest("Agent did not favorite this lead");
+            }
+
+            lead.RealEstateAgent = null;
+            lead.RealEstateAgentId = null;
+
+            leadCrud.Update(lead);
+            agentCrud.Update(agentUnFavoriting);
+
+            try
+            {
+                //leadCrud.Save();
+
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LeadExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
 
         // POST: api/Leads
         [ResponseType(typeof(Lead))]
