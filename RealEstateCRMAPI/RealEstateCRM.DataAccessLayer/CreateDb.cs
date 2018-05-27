@@ -11,39 +11,56 @@ namespace RealEstateCRM.DataAccessLayer
     {
         static void Main(string[] args)
         {
-            Lead testLead = new Lead
+            /*Lead testLead = new Lead
             {
                 LeadType = "Seller",
-                LeadName = "firstname lastname",
-                PriorApproval = true,
+                LeadName = "Marcus",
+                PriorApproval = false,
                 
-                Min = 200,
-                Max = 800,
-                Bed = 1,
-                Bath = 1,
-                SqFootage = 1500,
-                Floors = 1,
+                Min = 100,
+                Max = 900,
+                Bed = 2,
+                Bath = 3,
+                SqFootage = 3000,
+                Floors = 2,
 
                 PhoneNumber = "555-555-5555",
-                Email = "testlead@testleads.com",
+                Email = "testlead4@testleads.com",
 
-                Address = "1283 Red Rd",
-                City = "Tampa",
-                State = "FL",
-                Zipcode = 11223
+                Address = "6847 Indigo Lane",
+                City = "New Orleans",
+                State = "LA",
+                Zipcode = 77425
                
+            };*/
+            /*RealEstateAgent newAgent = new RealEstateAgent
+            {
+                FirstName = "Irene",
+                LastName = "Wise",
+                Email = "anything@work.org",
+                Password = "password1",
+                Alias = "water"
+            };*/
+            User newUser = new User
+            {
+                Email = "thismail@thisaddress.edu",
+                Password = "password4",
+                Alias = "User4"
             };
-
             Console.WriteLine("Creating DB...............");
-            RealEstateCRMContext crmDB = new RealEstateCRMContext();
+            //RealEstateCRMContext crmDB = new RealEstateCRMContext();
+            TestCRMContext  testCRM = new TestCRMContext();
             Console.WriteLine("DB Created..............");
 
             //block comment ctrl+K, ctrl+C
             //block uncomment ctrl+K, ctrl+U
 
             #region AddTestLead
-            crmDB.Leads.Add(testLead);
-            crmDB.SaveChanges();
+            //testCRM.Leads.Add(testLead);
+            testCRM.Users.Add(newUser);
+            testCRM.SaveChanges();
+            //crmDB.Leads.Add(testLead);
+            //crmDB.SaveChanges();
             Console.WriteLine("Db Changes Saved..............");
             #endregion
 
