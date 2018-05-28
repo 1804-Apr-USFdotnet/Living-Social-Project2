@@ -34,6 +34,24 @@ namespace RealEstateCRM.API.Controllers
 
         }
 
+        // Angular api action
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/Leads/ng/{email}")]
+        [ResponseType(typeof(Lead))]
+        public IHttpActionResult GetLeadByEmail(string email)
+        {
+            IQueryable<Lead> leads = leadCrud.Table;
+            IQueryable<Lead> foundLeads = leads.Where(l => l.Email.Contains(email.ToLower()));
+
+            if (leads == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(foundLeads);
+        }
+
         // POST: api/Leads
         [ResponseType(typeof(Lead))]
         [HttpPost]
@@ -94,6 +112,7 @@ namespace RealEstateCRM.API.Controllers
             }
         }
 
+        
         // GET: api/Leads/5
         [ResponseType(typeof(Lead))]
         public IHttpActionResult GetLead(int id)
@@ -107,6 +126,7 @@ namespace RealEstateCRM.API.Controllers
 
             return Ok(lead);
         }
+        
         [HttpGet]
         [AllowAnonymous]
         [Route("api/Leads/ng")]

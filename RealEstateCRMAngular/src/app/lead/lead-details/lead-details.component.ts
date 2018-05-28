@@ -8,6 +8,8 @@ import { Lead } from '../../models/lead';
   styleUrls: ['./lead-details.component.css']
 })
 export class LeadDetailsComponent implements OnInit {
+  // @Input() lead: Lead;
+  
 
   constructor(private _httpService: HttpService) { }
 
@@ -26,6 +28,6 @@ export class LeadDetailsComponent implements OnInit {
         console.log(error)
       }
     )
-  }
+  
 
 }

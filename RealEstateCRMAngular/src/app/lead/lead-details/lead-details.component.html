@@ -1,3 +1,9 @@
-<p>
-  lead-details works!
-</p>
+<div *ngIf="lead">
+
+    <h2>{{ lead.LeadName | uppercase }} Details</h2>
+    <div><span>id: </span>{{lead.id}}</div>
+    <div>
+      <label>name: {{lead.LeadName}}
+      </label>
+      
+    </div>

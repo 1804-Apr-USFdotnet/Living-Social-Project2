@@ -77,6 +77,8 @@ namespace RealEstateCRM.DataAccessLayer.Repositories
             return this.Entities.Find(id);
         }
 
+      
+
         //Update
         public void Update(T entity)
         {

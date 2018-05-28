@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import {RouterModule, Routes } from '@angular/router';
 import { LeadComponent } from './lead/lead.component';
+import { LeadDetailsComponent } from './lead/lead-details/lead-details.component';
 
 const routes : Routes = [
-  
+  {path: 'leads/:id', component: LeadDetailsComponent},
   {path: 'leads', component: LeadComponent},
   {path: '', redirectTo: '/', pathMatch: 'full'}
 ]

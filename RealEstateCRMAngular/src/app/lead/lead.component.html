@@ -19,22 +19,25 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let lead of leads">
-      <th scope="row">{{lead.Name}}</th>
+    <tr *ngFor="let lead of testLeads">
+      <th scope="row"> {{lead.LeadName}}</button></th>
       
-      <th>{{lead.Phone}}</th>
-      <th><a routerLink="/leads/{{lead.Email}}">{{lead.Email}}</a></th>
+      <th> {{lead.PhoneNumber}}</th>
+      <!-- <th><a routerLink="/leads/{{lead.Email}}">{{lead.Email}}</a></th> -->
+      <th>{{lead.EmailAddress}}</th>
+     
 
       <th>{{lead.Address}}</th>
       <th>{{lead.City}}</th>
       <th>{{lead.State}}</th>
       <th>{{lead.Zipcode}}</th>
     </tr>
-    <router-outlet></router-outlet>
 
 
   </tbody>
 </table>
+
+
 
 <table class="table">
     <thead class="thead-dark">
@@ -63,3 +66,13 @@
   
     </tbody>
   </table>
+
+  <ul>
+      <li *ngFor="let lead of testLeads"
+      [class.selected]="lead === selectedLead"
+      (click)="onSelect(lead)">
+      <span class="badge">{{lead.Id}}</span> {{lead.LeadName}}
+    </li>
+  </ul>
+  <app-lead-details [lead]="selectedLead"></app-lead-details>
+

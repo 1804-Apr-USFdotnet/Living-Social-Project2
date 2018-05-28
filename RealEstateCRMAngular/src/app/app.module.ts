@@ -10,13 +10,15 @@ import { UserComponent } from './user/user.component';
 import { LeadComponent } from './lead/lead.component';
 import { AppRoutingModule } from './/app-routing.module';
 import { HttpClient } from '@angular/common/http';
+import { LeadDetailsComponent } from './lead/lead-details/lead-details.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     UserComponent,
-    LeadComponent
+    LeadComponent,
+    LeadDetailsComponent
   ],
   imports: [
     BrowserModule,
