@@ -1,10 +1,10 @@
 ﻿@model RealEstateCRMConsumer.Models.Lead
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "FavDetails";
 }
 
-<h2>Details</h2>
+<h2>FavDetails</h2>
 
 <div>
     <h4>Lead</h4>
@@ -139,6 +139,14 @@
         </dd>
 
         <dt>
+            @Html.DisplayNameFor(model => model.RealEstateAgentId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RealEstateAgentId)
+        </dd>
+
+        <dt>
             @Html.DisplayNameFor(model => model.Created)
         </dt>
 
@@ -157,24 +165,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Back to List", "Index") |
-
-    @if (Session["role"] as string == "User")
-    {
-        @Html.ActionLink("Update Lead information", "Edit", new { id = Model.LeadId })
-
-    }
-
-     @if (Session["role"] as string == "User") { 
-
- @Html.ActionLink("Delete this Lead", "Delete", new { id = Model.LeadId })
-
-    }
-
-    @if (Session["role"] as string == "Agent")
-    {
-        @Html.ActionLink("Add to favorites", "Favorite", new { id = Model.LeadId })
-    }
-
-
+    @Html.ActionLink("Remove from favorites", "Unfavorite", new { id = Model.LeadId }) |
+    @Html.ActionLink("Back to Favorites", "ViewFavorites")
 </p>

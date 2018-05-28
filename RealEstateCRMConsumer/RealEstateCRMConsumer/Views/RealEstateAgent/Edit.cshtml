@@ -1,13 +1,13 @@
 ﻿@model RealEstateCRMConsumer.Models.RealEstateAgent
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "EditAccount";
 }
 
 <h2>Edit</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("EditAccount", "RealEstateAgent", new { id = @ViewBag.realEstateAgentId } ))
 {
     @Html.AntiForgeryToken()
     
@@ -69,7 +69,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Leads", "Index", "Lead")
 </div>
 
 @section Scripts {

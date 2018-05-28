@@ -37,7 +37,7 @@
                     }
                     else if (Session["role"] as string == "Agent")
                     {
-                <li>@Html.ActionLink("Favorites", "Favorites", "RealEstateAgent")</li>
+                <li>@Html.ActionLink("Favorites", "ViewFavorites", "Lead")</li>
                 <li>@Html.ActionLink("Edit Profile", "Edit", "RealEstateAgent", new { id = Session["agent_id"] }, null)</li>
 
                 }

@@ -1,5 +1,5 @@
-node('master'){
-    stage("Import") {
+node('master') {
+    stage("Import"){
         try {
             git 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
             git branch: 'Dev', url: 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
@@ -11,21 +11,21 @@ node('master'){
     }
     stage("Build") {
         try {
-            dir('RealEstateCRMAPI'){
+            dir('RealEstateCRMConsumer') {
                 bat 'nuget restore'
                 bat 'msbuild'
             }
         }
         catch (exc) {
-            slackError('build')
+            slackError('Build')
             throw exc
-        }
+        }        
     }
     stage("Test") {
         try {
-            dir('RealEstateCRMAPI'){
-            bat "VSTest.Console RealEstateCRM.Test\\bin\\Debug\\RealEstateCRM.Test.dll"
-            }   
+            dir('RealEstateCRMConsumer') {
+                bat "VSTest.Console RealEstateCRMConsumer.Test\\bin\\Debug\\RealEstateCRMConsumer.Test.dll"
+            }
         }
         catch (exc) {
             slackError('Test')
@@ -34,8 +34,8 @@ node('master'){
     }
     stage("Analyze") {
         try {
-            dir('RealEstateCRMAPI'){
-                bat 'SonarScanner.MSBuild begin /k:Project2API /v:0.1.0 /d:sonar.organization=robertb100-github /d:sonar.verbose=true'
+            dir('RealEstateCRMConsumer') {
+                bat 'SonarScanner.MSBuild begin /k:Project2Consumer /v:0.1.0 /d:sonar.organization=robertb100-github /d:sonar.verbose=true'
                 bat 'msbuild /t:rebuild'  
                 bat 'SonarScanner.MSBuild end'
             }
@@ -47,10 +47,10 @@ node('master'){
     }
     stage("Package") {
         try {
-        dir('RealEstateCRMAPI/RealEstateCRM.API') {
-            bat 'msbuild /t:package'
+            dir('RealEstateCRMConsumer/RealEstateCRMConsumer') {
+                bat 'msbuild /t:package'
+            }
         }
-    }
         catch (exc) {
             slackError('Package')
             throw exc
@@ -58,15 +58,14 @@ node('master'){
     }
     stage("Deploy") {
         try {
-            dir('RealEstateCRMAPI/RealEstateCRM.API/obj/Debug/Package') {
-                bat "msdeploy -verb:sync -source:package=\"%CD%\\RealEstateCRM.API.zip\" -dest:auto,computerName=\"${env.Deploy_Site}\",userName=\"Administrator\",password=\"${env.Deploy_Pass}\",authtype=\"basic\",includeAcls=\"False\" -disableLink:AppPoolExtension -disableLink:ContentExtension -disableLink:CertificateExtension -setParam:\"IIS Web Application Name\"=\"Default Web Site/RealEstateAPI\" -enableRule:AppOffline -allowUntrusted"
-                slackSuccess('Deploy')
+            dir('RealEstateCRMConsumer/RealEstateCRMConsumer/obj/Debug/Package') {
+                bat "msdeploy -verb:sync -source:package=\"%CD%\\RealEstateCRMConsumer.zip\" -dest:auto,computerName=\"${Deploy_MVC}\",userName=\"Administrator\",password=\"${Deploy_MVCPass}\",authtype=\"basic\",includeAcls=\"False\" -disableLink:AppPoolExtension -disableLink:ContentExtension -disableLink:CertificateExtension -setParam:\"IIS Web Application Name\"=\"Default Web Site/RealEstateConsumer\" -enableRule:AppOffline -allowUntrusted"
             }
         }
         catch (exc) {
             slackError('Deploy')
             throw exc
-        }
+        }        
     }
 }
 
@@ -75,5 +74,5 @@ def slackError(stageName) {
 }
 
 def slackSuccess(stageName) {
-    slackSend color: 'good', message: "Success ${stageName}. The API has successfully passed through the pipeline and has been deployed to the Dev server"
+    slackSend color: 'good', message: "Success ${stageName}. The MVC Application has successfully passed through the pipeline and has been deployed to the Dev server"
 }

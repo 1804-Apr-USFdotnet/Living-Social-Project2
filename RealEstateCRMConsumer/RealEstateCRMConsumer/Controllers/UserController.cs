@@ -193,7 +193,8 @@ namespace RealEstateCRMConsumer.Controllers
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
+            return RedirectToAction("Index", "Lead");
         }
 
         // GET: Lead/Delete/5

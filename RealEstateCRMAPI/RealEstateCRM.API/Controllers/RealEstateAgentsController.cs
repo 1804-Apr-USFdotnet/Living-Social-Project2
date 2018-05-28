@@ -20,15 +20,18 @@ namespace RealEstateCRM.API.Controllers
     {
         //private RealEstateCRMContext db = new RealEstateCRMContext();
         IRepository<RealEstateAgent> agentCrud;
+        IRepository<User> userCrud;
         IDbContext realEstateDb;
 
         public RealEstateAgentsController()
         {
             realEstateDb = new RealEstateCRMContext();
             agentCrud = new CRUD<RealEstateAgent>(realEstateDb);
+            userCrud = new CRUD<User>(realEstateDb);
         }
 
         // GET: api/RealEstateAgents
+        [ResponseType(typeof(RealEstateAgent))]
         public IHttpActionResult GetRealEstateAgents()
         {
             try
@@ -94,6 +97,7 @@ namespace RealEstateCRM.API.Controllers
 
         // POST: api/RealEstateAgents
         [ResponseType(typeof(RealEstateAgent))]
+        [AllowAnonymous]
         public IHttpActionResult PostRealEstateAgent(RealEstateAgent realEstateAgent)
         {
             if (!ModelState.IsValid)
@@ -107,6 +111,7 @@ namespace RealEstateCRM.API.Controllers
         }
 
         // DELETE: api/RealEstateAgents/5
+        [HttpDelete]
         [ResponseType(typeof(RealEstateAgent))]
         public IHttpActionResult DeleteRealEstateAgent(int id)
         {
@@ -121,6 +126,21 @@ namespace RealEstateCRM.API.Controllers
             return Ok(realEstateAgent);
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("api/RealEstateAgents/emailcheck")]
+        public HttpResponseMessage EmailCheck(RealEstateAgent agent)
+        {
+            if (RealEstateAgentEmailExists(agent.Email))
+            {
+                int HttpResponse = 400;
+                var response = Request.CreateResponse((HttpStatusCode)HttpResponse);
+                response.ReasonPhrase = "Duplicate email";
+                return response;
+            }
+            return Request.CreateResponse(HttpStatusCode.OK);
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -133,6 +153,13 @@ namespace RealEstateCRM.API.Controllers
         private bool RealEstateAgentExists(int id)
         {
             return agentCrud.Table.ToList().Count(e => e.RealEstateAgentId == id) > 0;
+        }
+
+        public bool RealEstateAgentEmailExists(string email)
+        {
+            bool inAgents = agentCrud.Table.ToList().Count(a => a.Email == email) > 0;
+            bool inUsers = userCrud.Table.ToList().Count(u => u.Email == email) > 0;
+            return (inAgents && inUsers);
         }
     }
 }

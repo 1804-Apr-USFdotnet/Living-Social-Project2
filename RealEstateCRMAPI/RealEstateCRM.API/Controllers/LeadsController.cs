@@ -95,7 +95,7 @@ namespace RealEstateCRM.API.Controllers
                 else if(curUser.roles[0].ToLower() == "agent")
                 {
                     RealEstateAgent agent = agentCrud.Table.First(a => a.Email == curUser.userName);
-                    IQueryable<Lead> leads = leadCrud.Table;
+                    IQueryable<Lead> leads = leadCrud.Table.Where(l => l.RealEstateAgent == null);
 
                     return Ok(leads);
                 }
@@ -113,6 +113,51 @@ namespace RealEstateCRM.API.Controllers
         }
 
         
+        [Route("api/Leads/Favorites")]
+        [ResponseType(typeof(Lead))]
+        [HttpGet]
+        //public async Task<IHttpActionResult> GetFavorites() //old attempts - serverside sorting
+        public IHttpActionResult GetFavorites()
+        {
+            //DataTransfer curUser = await GetCurrentUserInfo();
+
+            #region old attempts -serverside sorting region
+            //try
+            //{
+            //RealEstateAgent curAgent = agentCrud.Table.First(agent => agent.Email == curUser.userName);
+            //IQueryable<Lead> leads = leadCrud.Table.Where(lead => lead.RealEstateAgentId == curAgent.RealEstateAgentId);
+
+            //var leads = leadCrud.Table.ToList()
+            //    .Where(lead => lead.RealEstateAgentId == curAgent.RealEstateAgentId);
+
+
+            //RealEstateAgent agent = agentCrud.Table.First(a => a.Email == curUser.userName);
+            //IQueryable<Lead> leads = leadCrud.Table.Where(l => l.RealEstateAgentId == agent.RealEstateAgentId);
+
+            //RealEstateAgent agent = agentCrud.Table.First(a => a.Email == curUser.userName);
+            //IEnumerable<Lead> leads = leadCrud.Table.ToList();
+
+            //var myleads = leads.Where(l => l.RealEstateAgentId == agent.RealEstateAgentId);
+            //return Ok(myleads);
+            //} catch
+            //{
+            //    return InternalServerError();
+            //}
+            #endregion
+
+
+
+            IQueryable<Lead> leads = leadCrud.Table;
+            return Ok(leads);
+            
+
+
+            
+
+            
+
+        }
+
         // GET: api/Leads/5
         [ResponseType(typeof(Lead))]
         public IHttpActionResult GetLead(int id)
@@ -168,6 +213,7 @@ namespace RealEstateCRM.API.Controllers
                 return BadRequest("Editing the wrong lead");
             }
 
+
             if(user.UserId != lead.UserId)
             {
                 return BadRequest("User did not create lead");
@@ -178,6 +224,124 @@ namespace RealEstateCRM.API.Controllers
             try
             {
                 leadCrud.Save();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LeadExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // PUT: api/Leads/checkout/5
+        [Route("api/Leads/checkout/{id}")]
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> CheckoutLead(int id, Lead lead)
+        {
+            // get cur user info
+            DataTransfer curUser = await GetCurrentUserInfo();
+            User user = new User();
+
+            if (curUser.roles[0].ToLower() == "user")
+            {
+                user = userCrud.Table.First(u => u.Email == curUser.userName);
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (curUser.roles[0].ToLower() == "user")
+            {
+
+                if (id != lead.LeadId)
+                {
+                    return BadRequest("Editing the wrong lead");
+                }
+
+
+
+                if (user.UserId != lead.UserId)
+                {
+                    return BadRequest("User did not create lead");
+                }
+            }
+
+            RealEstateAgent agentFavoriting = agentCrud.Table.ToList().Find(agent => agent.Email == curUser.userName);
+
+            lead.RealEstateAgentId = agentFavoriting.RealEstateAgentId;
+            
+            leadCrud.Update(lead);
+            agentCrud.Update(agentFavoriting);
+
+            try
+            {
+                //leadCrud.Save();
+
+                
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!LeadExists(id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        // PUT: api/Leads/return/5
+        [Route("api/Leads/return/{id}")]
+        [HttpPut]
+        [ResponseType(typeof(void))]
+        public async Task<IHttpActionResult> CheckInLead(int id, Lead lead)
+        {
+            // get cur user info
+            DataTransfer curUser = await GetCurrentUserInfo();
+            
+
+            if (curUser.roles[0].ToLower() == "user")
+            {
+                return BadRequest("Users cannot unfavorite leads");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            RealEstateAgent agentUnFavoriting = agentCrud.Table.ToList().Find(agent => agent.Email == curUser.userName);
+
+            if (agentUnFavoriting.RealEstateAgentId != lead.RealEstateAgentId)
+            {
+                return BadRequest("Agent did not favorite this lead");
+            }
+
+            lead.RealEstateAgent = null;
+            lead.RealEstateAgentId = null;
+
+            leadCrud.Update(lead);
+            agentCrud.Update(agentUnFavoriting);
+
+            try
+            {
+                //leadCrud.Save();
+
+
             }
             catch (DbUpdateConcurrencyException)
             {
