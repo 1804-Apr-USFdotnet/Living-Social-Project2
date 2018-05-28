@@ -18,6 +18,7 @@ namespace RealEstateCRM.API
             config.Formatters.JsonFormatter.SerializerSettings.PreserveReferencesHandling
             = Newtonsoft.Json.PreserveReferencesHandling.Objects;
 
+            config.Filters.Add(new AuthorizeAttribute());
             config.EnableCors();
 
             //// adds authorization to EVERYTHING

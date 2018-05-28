@@ -8,6 +8,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Http.Description;
 using RealEstateCRM.DataAccessLayer;
 using RealEstateCRM.DataAccessLayer.Repositories;
@@ -52,6 +53,7 @@ namespace RealEstateCRM.API.Controllers
 
         // POST: api/Leads
         [ResponseType(typeof(Lead))]
+        [HttpPost]
         public async Task<IHttpActionResult> PostLead(Lead lead)
         {
             DataTransfer curUser = await GetCurrentUserInfo();
@@ -78,7 +80,7 @@ namespace RealEstateCRM.API.Controllers
         public async Task<IHttpActionResult> GetLeads()
         {
             DataTransfer curUser = await GetCurrentUserInfo();
-
+           
             try
             {
                 if(curUser.roles[0].ToLower() == "user")
@@ -157,6 +159,7 @@ namespace RealEstateCRM.API.Controllers
 
         // GET: api/Leads/5
         [AllowAnonymous]
+
         [ResponseType(typeof(Lead))]
         public IHttpActionResult GetLead(int id)
         {
@@ -169,7 +172,7 @@ namespace RealEstateCRM.API.Controllers
 
             return Ok(lead);
         }
-
+        
         [HttpGet]
         [AllowAnonymous]
         [Route("api/Leads/ng")]
@@ -177,7 +180,7 @@ namespace RealEstateCRM.API.Controllers
         public IHttpActionResult GetAllLeads()
         {
 
-
+            
             try
             {
                 IQueryable<Lead> leads = leadCrud.Table;
@@ -190,6 +193,8 @@ namespace RealEstateCRM.API.Controllers
                 return InternalServerError();
             }
         }
+
+        
 
         // PUT: api/Leads/5
         [ResponseType(typeof(void))]
@@ -354,9 +359,7 @@ namespace RealEstateCRM.API.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
 
-
-       
-
+        
         // DELETE: api/Leads/5
         [ResponseType(typeof(Lead))]
         public async Task<IHttpActionResult> DeleteLead(int id)
