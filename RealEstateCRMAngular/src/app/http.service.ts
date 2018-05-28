@@ -18,15 +18,15 @@ export class HttpService {
   //   var r = this._httpclient.get<Lead[]>(this.urlBase);
   //   return r;
   // }
-  // getDetails(lead_id: number): Observable<Lead>{
-  //   var r = this._httpclient.get<Lead>("http://localhost:57955/api/Leads/"+lead_id)
-  //   return r;
-  // }
+  getDetails(lead_id: number): Observable<Lead>{
+    var r = this._httpclient.get<Lead>("http://localhost:57955/api/Leads/"+lead_id)
+    return r;
+  }
 
-  // searchLeads(email:string): Observable<Lead[]>{
-  //   var r = this._httpclient.get<Lead[]>(this.urlBase + "/" + email);
-  //   return r;
-  // }
+  searchLeads(email:string): Observable<Lead[]>{
+    var r = this._httpclient.get<Lead[]>(this.urlBase + "/" + email);
+    return r;
+  }
 
   
 
