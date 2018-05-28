@@ -24,25 +24,25 @@ export class LeadComponent implements OnInit {
 
 
   ngOnInit() {
-    // this.getLeads();
+    this.getLeads();
     
   }
 
-  // getLeads(): void{
-  //   this._httpService.getLeads()
-  //     .subscribe(
-  //         response => this.leads = response,
-  //         errors => console.log(errors)
-  //     );
-  // }
+  getLeads(): void{
+    this._httpService.getLeads()
+      .subscribe(
+          response => this.leads = response,
+          errors => console.log(errors)
+      );
+  }
 
-  // searchLeads(){
-  //   this._httpService.searchLeads(this.searchText)
-  //     .subscribe(
-  //       response => this.leads = response,
-  //       error => console.log(error)
-  //     );
-  // }
+  searchLeads(){
+    this._httpService.searchLeads(this.searchText)
+      .subscribe(
+        response => this.leads = response,
+        error => console.log(error)
+      );
+  }
 
   onSelect(lead: Lead): void {
     this.selectedLead = lead;

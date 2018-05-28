@@ -5,6 +5,8 @@ using System.Web.Routing;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin;
 using Microsoft.Extensions.DependencyInjection;
+using System.Web.Cors;
+using System.Web.Http.Cors;
 
 [assembly: OwinStartup(typeof(RealEstateCRM.API.Startup))]
 
@@ -26,6 +28,8 @@ namespace RealEstateCRM.API
             });
 
             app.UseWebApi(config);
+
+            
 
 
 

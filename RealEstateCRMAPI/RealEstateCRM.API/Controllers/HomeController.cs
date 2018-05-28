@@ -7,7 +7,6 @@ using System.Web.Mvc;
 
 namespace RealEstateCRM.API.Controllers
 {
-    [EnableCors("*", "*", "*")]
     public class HomeController : Controller
     {
         public ActionResult Index()

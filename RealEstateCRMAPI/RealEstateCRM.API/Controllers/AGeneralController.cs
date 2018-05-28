@@ -13,7 +13,6 @@ using System.Web.Http.Cors;
 
 namespace RealEstateCRM.API.Controllers
 {
-    [EnableCors("*", "*", "*")]
     public class AGeneralController : ApiController
     {
       

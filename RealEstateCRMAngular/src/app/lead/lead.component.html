@@ -1,12 +1,11 @@
-<p>
-  lead works!
-</p>
+
 <input type="text" [(ngModel)]="searchText" />
 <button (click)="searchLeads()">Search</button>
 
 <table class="table">
   <thead class="thead-dark">
     <tr>
+        <th scope="col" >Actions</th>
       <th scope="col" >Name</th>
       <th scope="col">Phone number</th>
       <th scope="col">Email</th>
@@ -19,11 +18,12 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let lead of testLeads">
-      <th scope="row"> {{lead.LeadName}}</button></th>
+    <tr *ngFor="let lead of leads">
+        <th><a routerLink="/leads/{{lead.Email}}">Details</a></th>
+
+      <th scope="row"> {{lead.LeadName}}</th>
       
       <th> {{lead.PhoneNumber}}</th>
-      <!-- <th><a routerLink="/leads/{{lead.Email}}">{{lead.Email}}</a></th> -->
       <th>{{lead.EmailAddress}}</th>
      
 
@@ -39,7 +39,7 @@
 
 
 
-<table class="table">
+<table class="table" *ngIf="buyerLeads">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Name</th>
@@ -67,12 +67,12 @@
     </tbody>
   </table>
 
-  <ul>
+  <!-- <ul>
       <li *ngFor="let lead of testLeads"
       [class.selected]="lead === selectedLead"
       (click)="onSelect(lead)">
       <span class="badge">{{lead.Id}}</span> {{lead.LeadName}}
     </li>
   </ul>
-  <app-lead-details [lead]="selectedLead"></app-lead-details>
+  <app-lead-details [lead]="selectedLead"></app-lead-details> -->
 

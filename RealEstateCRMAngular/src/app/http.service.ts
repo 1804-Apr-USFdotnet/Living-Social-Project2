@@ -14,10 +14,10 @@ export class HttpService {
   }
   private urlBase = "http://localhost:57955/api/Leads/ng";
 
-  // getLeads(onFail = (reason) => console.log(reason)) : Observable<Lead[]>{
-  //   var r = this._httpclient.get<Lead[]>(this.urlBase);
-  //   return r;
-  // }
+  getLeads(onFail = (reason) => console.log(reason)) : Observable<Lead[]>{
+    var r = this._httpclient.get<Lead[]>(this.urlBase);
+    return r;
+  }
   getDetails(lead_id: number): Observable<Lead>{
     var r = this._httpclient.get<Lead>("http://localhost:57955/api/Leads/"+lead_id)
     return r;

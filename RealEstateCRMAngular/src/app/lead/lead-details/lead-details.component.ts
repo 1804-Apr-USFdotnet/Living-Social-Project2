@@ -28,6 +28,6 @@ export class LeadDetailsComponent implements OnInit {
         console.log(error)
       }
     )
-  
+  }
 
 }

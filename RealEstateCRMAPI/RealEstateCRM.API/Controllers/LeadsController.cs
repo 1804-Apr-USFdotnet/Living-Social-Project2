@@ -16,7 +16,6 @@ using RealEstateCRM.Models;
 
 namespace RealEstateCRM.API.Controllers
 {
-    [EnableCors("*", "*", "*")]
     public class LeadsController : AGeneralController
     {
         //private RealEstateCRMContext db = new RealEstateCRMContext();

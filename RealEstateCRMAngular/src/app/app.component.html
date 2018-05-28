@@ -1,19 +1,30 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<nav>
-<ul class="nav navbar-nav">
-    <li class="nav-item">
-      <a routerLink="/leads" class="nav-link">Leads</a>
-      <router-outlet></router-outlet>
-    </li>
-    
-    <li class="nav-item">
-      <a href="http://ec2-18-205-198-149.compute-1.amazonaws.com/Bookmarker/Accounts/Login" class="nav-link">Login</a>
-    </li>
-    <li class="nav-item">
-      <!-- change -->
-        <a href="http://ec2-18-205-198-149.compute-1.amazonaws.com/Bookmarker/Accounts/Login" class="nav-link">Register</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <a class="navbar-brand" href="/">
+      Living Social
+    </a>
+    <ul class="nav navbar-nav">
+      <li class="nav-item">
+        <a routerLink="/leads" class="nav-link">Leads</a>
       </li>
-      
-  </ul>
-</nav>
+      <li class="nav-item">
+        <a routerLink="/collections" class="nav-link">Login</a>
+      </li>
+      <li class="nav-item">
+          <a routerLink="/collections" class="nav-link">Register as User</a>
+        </li>
+        <li class="nav-item">
+            <a routerLink="/collections" class="nav-link">Register as Agent</a>
+          </li>
+          
+    </ul>
+  </nav>
+<nav>
+  <br>
+  <br>
+  <br>
+  <br>
+
+    <router-outlet></router-outlet>
+
 
