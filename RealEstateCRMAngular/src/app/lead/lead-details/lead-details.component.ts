@@ -26,6 +26,7 @@ export class LeadDetailsComponent implements OnInit {
     this._httpService.getDetails(LeadId).subscribe(
       response => {
         this.lead = response
+        console.log(this.lead);
       },
       error => {
         console.log(error)

@@ -4,6 +4,9 @@ import { Observable, of } from 'rxjs';
 import { Lead } from './models/lead';
 
 
+
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -19,8 +22,7 @@ export class HttpService {
     return r;
   }
   getDetails(lead_id: number): Observable<Lead>{
-    var r = this._httpclient.get<Lead>("http://localhost:57955/api/Leads/"+lead_id)
-    return r;
+    return this._httpclient.get<Lead>("http://localhost:57955/api/Leads/"+lead_id)
   }
 
   searchLeads(email:string): Observable<Lead[]>{

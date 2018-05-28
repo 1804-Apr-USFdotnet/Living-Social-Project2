@@ -1,10 +1,14 @@
 <div *ngIf="lead">
 
-    <h2>{{ lead.LeadName | uppercase }} Details</h2>
-    <p>Test info: {{lead.EmailAddress}}</p>
-    <div><span>id: </span>{{lead.LeadId}}</div>
+    <h2>{{ lead.leadName | uppercase }} Details</h2>
     <div>
-      <label>name: {{lead.LeadName}}
-      </label>
+        <ul class="list-group">
+            <li class="list-group-item"><b>Name:</b> {{lead.leadName}}</li>
+            <li class="list-group-item"><b>Address</b>: {{lead.address}}</li>
+            <li class="list-group-item"><b>City:</b> {{lead.city}}</li>
+            <li class="list-group-item"><b>State:</b> {{lead.state}}</li>
+            <li class="list-group-item"><b>Zipcode:</b> {{lead.zipcode}}</li>
+
+          </ul>
       
     </div>
