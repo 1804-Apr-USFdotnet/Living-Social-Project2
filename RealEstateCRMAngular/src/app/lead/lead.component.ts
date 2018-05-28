@@ -9,7 +9,7 @@ import { Lead } from '../models/lead';
 })
 export class LeadComponent implements OnInit {
   
-  private leads: Lead[];
+  leads: Lead[];
   foundLeads: Lead[] = [];
 
   searchText: string;
@@ -19,6 +19,8 @@ export class LeadComponent implements OnInit {
   testLeads: Lead[] = [
     {LeadId: 1, User: null, Address: null, City:'Dallas', State: 'Texas', Zipcode: 12345, LeadName: 'Cooper', EmailAddress: 'test@me.com', LeadType: 'buyer', PriorApproval: false, PhoneNumber: '1111111111'}
   ];
+
+  buyerLeads: Lead;
 
   constructor(private _httpService: HttpService) { }
 
