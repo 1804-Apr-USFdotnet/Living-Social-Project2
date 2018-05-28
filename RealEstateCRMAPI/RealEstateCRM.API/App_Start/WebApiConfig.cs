@@ -23,8 +23,8 @@ namespace RealEstateCRM.API
             //// adds authorization to EVERYTHING
             config.Filters.Add(new AuthorizeAttribute());
 
-            var cors = new EnableCorsAttribute("*", "*", "*");
-            config.EnableCors(cors);
+            //var cors = new EnableCorsAttribute("*", "*", "*");
+            config.EnableCors();
 
            
 

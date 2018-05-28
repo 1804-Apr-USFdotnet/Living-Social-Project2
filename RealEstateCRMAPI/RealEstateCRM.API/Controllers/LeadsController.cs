@@ -158,6 +158,8 @@ namespace RealEstateCRM.API.Controllers
         }
 
         // GET: api/Leads/5
+        [AllowAnonymous]
+
         [ResponseType(typeof(Lead))]
         public IHttpActionResult GetLead(int id)
         {
@@ -358,7 +360,6 @@ namespace RealEstateCRM.API.Controllers
         }
 
         
-
         // DELETE: api/Leads/5
         [ResponseType(typeof(Lead))]
         public async Task<IHttpActionResult> DeleteLead(int id)

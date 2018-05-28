@@ -1,7 +1,7 @@
 import { User } from "./user";
 
 export class Lead {
-    id: number
+    LeadId: number;
     LeadType : string;
     LeadName: string;
     PriorApproval: boolean;

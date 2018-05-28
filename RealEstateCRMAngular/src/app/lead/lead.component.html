@@ -19,9 +19,9 @@
   </thead>
   <tbody>
     <tr *ngFor="let lead of leads">
-        <th><a routerLink="/leads/{{lead.Email}}">Details</a></th>
+        <th><a [routerLink]="['/leads', lead.LeadId]">Details</a></th>
 
-      <th scope="row"> {{lead.LeadName}}</th>
+      <th scope="row"> {{lead.LeadId}}</th>
       
       <th> {{lead.PhoneNumber}}</th>
       <th>{{lead.EmailAddress}}</th>

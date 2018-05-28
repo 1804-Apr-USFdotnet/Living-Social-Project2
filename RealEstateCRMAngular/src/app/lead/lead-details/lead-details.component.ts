@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {HttpService} from '../../http.service';
 import { Lead } from '../../models/lead';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-lead-details',
@@ -10,17 +11,19 @@ import { Lead } from '../../models/lead';
 export class LeadDetailsComponent implements OnInit {
   // @Input() lead: Lead;
   
-
-  constructor(private _httpService: HttpService) { }
-
   lead: Lead;
-  lead_id: number;
+
+  constructor(private _httpService: HttpService, private _activatedRoute: ActivatedRoute) { }
+
+
   ngOnInit() {
-    this.getLead(this.lead_id);
+    let LeadId = this._activatedRoute.snapshot.params['LeadId'];
+    this.getLead(LeadId);
+    console.log(this.lead);
   }
 
-  getLead(lead_id: number){
-    this._httpService.getDetails(lead_id).subscribe(
+  getLead(LeadId: number){
+    this._httpService.getDetails(LeadId).subscribe(
       response => {
         this.lead = response
       },
