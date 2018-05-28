@@ -1,0 +1,78 @@
+node('master') {
+    stage("Import") {
+        try {
+            git 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
+            git branch: 'Dev', url: 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
+        }
+        catch (exc) {
+            slackError('Import')
+            throw exc
+        }
+    }
+    stage("Build") {
+        try {
+            dir('RealEstateCRMAngular') {
+                bat 'npm install'
+                bat 'npm run build'
+            }
+        }
+        catch (exc) {
+            slackError('Build')
+            throw exc
+        }        
+    }
+    //stage("Test") {
+        //try {
+            //dir('RealEstateCRMConsumer') {
+                //bat "VSTest.Console RealEstateCRMConsumer.Test\\bin\\Debug\\RealEstateCRMConsumer.Test.dll"
+            //}
+        //}
+        //catch (exc) {
+            //slackError('Test')
+            //throw exc
+        //}
+    //}
+    //stage("Analyze") {
+        //try {
+            //dir('RealEstateCRMConsumer') {
+                //bat 'SonarScanner.MSBuild begin /k:Project2Consumer /v:0.1.0 /d:sonar.organization=robertb100-github /d:sonar.verbose=true'
+                //bat 'msbuild /t:rebuild'  
+                //bat 'SonarScanner.MSBuild end'
+            //}
+        //}
+        //catch (exc) {
+            //slackError('Analyze')
+            //throw exc
+        //}
+    //}
+    stage("Package") {
+        try {
+            dir('RealEstateCRMAngular') {
+                bat 'npm run build -- --base-href /RealEstateCRMAngular/ --prod'
+            }
+        }
+        catch (exc) {
+            slackError('Package')
+            throw exc
+        }
+    }
+    stage("Deploy") {
+        try {
+            dir('RealEstateCRMAngular/Dist/RealEstateCRMAngular') {
+                bat "msdeploy -verb:sync -source:contentPath=\"%CD%\" -dest:contentPath=\"Default Web Site/RealEstateCRMAngular\",wmsvc=ec2-18-217-243-247.us-east-2.compute.amazonaws.com,userName=Administrator,password=\"password123-\" -enableRule:AppOffline -allowUntrusted"
+            }
+        }
+        catch (exc) {
+            slackError('Deploy')
+            throw exc
+        }        
+    }
+}
+
+def slackError(stageName) {
+    slackSend color: 'danger', message: "FAILED ${stageName} stage: [<${JOB_URL}|${env.JOB_NAME}> <${env.BUILD_URL}console|${env.BUILD_DISPLAY_NAME}>] [${currentBuild.durationString.replace(' and counting', '')}]"
+}
+
+def slackSuccess(stageName) {
+    slackSend color: 'good', message: "Success ${stageName}. The Angular Application has successfully passed through the pipeline and has been deployed to the Dev server"
+}
