@@ -1,0 +1,69 @@
+<div class="search">
+  <input type="text" [(ngModel)]="searchText" />
+  <button (click)="searchLeads()">Search</button>
+   
+</div>
+
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+        <th scope="col" >Actions</th>
+      <th scope="col" >Name</th>
+      <th scope="col">Phone number</th>
+      <th scope="col">Email</th>
+      
+
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let lead of leads">
+        <th><a [routerLink]="['/leads', lead.LeadId]">Details</a></th>
+
+      <th scope="row"> {{lead.LeadName}}</th>
+      
+      <th> {{lead.PhoneNumber}}</th>
+      <th>{{lead.EmailAddress}}</th>
+     
+
+  
+    </tr>
+
+
+  </tbody>
+</table>
+
+
+
+<table class="table" *ngIf="buyerLeads">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Phone number</th>
+        <th scope="col">Email</th>
+       
+  
+  
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lead of foundLeads">
+        <th scope="row">{{lead.Name}}</th>
+        <th>{{lead.Phone}}</th>
+        <th>{{lead.Email}}</th>
+ 
+      </tr>
+  
+    </tbody>
+  </table>
+
+  <!-- <ul>
+      <li *ngFor="let lead of testLeads"
+      [class.selected]="lead === selectedLead"
+      (click)="onSelect(lead)">
+      <span class="badge">{{lead.Id}}</span> {{lead.LeadName}}
+    </li>
+  </ul>
+  <app-lead-details [lead]="selectedLead"></app-lead-details> -->
+

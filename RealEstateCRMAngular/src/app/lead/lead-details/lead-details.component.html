@@ -1,0 +1,55 @@
+<div *ngIf="lead">
+
+    <h2>{{ lead.leadName | uppercase }} Details</h2>
+    <div>
+        <ul class="list-group">
+            <li class="list-group-item"><b>Lead type:</b> {{lead.type}}</li>
+            <li class="list-group-item"><b>Email:</b> {{lead.email}}</li>
+            <li class="list-group-item"><b>Phone number:</b> {{lead.phoneNumber}}</li>
+            <!-- seller lead properties -->
+<div *ngIf="lead.leadType === 'Seller'">
+    <li class="list-group-item"><b>Address:</b> {{lead.address}}</li>
+    <li class="list-group-item"><b>City:</b> {{lead.city}}</li>
+    <li class="list-group-item"><b>State:</b> {{lead.state}}</li>
+    <li class="list-group-item"><b>Zipcode:</b> {{lead.zipcode}}</li>
+    <li class="list-group-item"><b>Square footage:</b> {{lead.squareFootage}}</li>
+    <li class="list-group-item"><b>Number of baths</b>: {{lead.bath}}</li>
+    <li class="list-group-item"><b>Number of beds:</b> {{lead.bed}}</li>
+    <li class="list-group-item"><b>Number of floors:</b> {{lead.floors}}</li>
+
+  </div>
+
+<!-- buyer lead properties -->
+<div *ngIf="lead.leadType === 'Buyer'">
+    <li class="list-group-item"><b>Prior Approval:</b> {{lead.priorApproval}}</li>
+
+    <li class="list-group-item"><b>Desired square footage:</b> {{lead.squareFootage}}</li>
+    <li class="list-group-item"><b>Desired number of baths</b>: {{lead.bath}}</li>
+    <li class="list-group-item"><b>Desired number of beds:</b> {{lead.bed}}</li>
+    <li class="list-group-item"><b>Desired number of floors:</b> {{lead.floors}}</li>
+
+</div>
+
+  
+
+<!-- characteristics shared by both types of leads -->
+<div *ngIf="lead.user">
+    <li class="list-group-item"><b>User who submitted lead:</b> {{lead.user.name}}</li>
+
+      <!-- if lead is favorited by an agent -->
+    <div *ngIf="lead.realEstateAgent">
+
+        <li class="list-group-item"><b>Agent who owns lead:</b> {{lead.realEstateAgent.name}}</li>
+      </div>
+    
+    
+</div>
+
+          
+           
+
+         
+ </ul>
+      
+    
+    </div>

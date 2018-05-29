@@ -19,7 +19,7 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: BuyerLead
         public async Task<ActionResult> Index()
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/BuyerLeads/");
+            HttpResponseMessage response = await httpClient.GetAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/BuyerLeads/");
 
             if (!response.IsSuccessStatusCode)
             {
@@ -41,7 +41,7 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Create(BuyerLead buyerLead)
         {
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/BuyerLeads/", buyerLead);
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/BuyerLeads/", buyerLead);
 
             if (!response.IsSuccessStatusCode)
             {
@@ -53,7 +53,7 @@ namespace RealEstateCRMConsumer.Controllers
 
         public async Task<ActionResult> Edit(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/BuyerLeads/" + id);
+            HttpResponseMessage response = await httpClient.GetAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/BuyerLeads/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
@@ -67,7 +67,7 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Edit (int id, BuyerLead buyerLeadToEdit)
         {
-            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://localhost:57955/api/BuyerLeads/"+id, buyerLeadToEdit);
+            HttpResponseMessage response = await httpClient.PutAsJsonAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/BuyerLeads/" + id, buyerLeadToEdit);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
@@ -77,7 +77,7 @@ namespace RealEstateCRMConsumer.Controllers
 
         public async Task<ActionResult> Delete(int id)
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/BuyerLeads/" + id);
+            HttpResponseMessage response = await httpClient.GetAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/BuyerLeads/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
@@ -93,7 +93,7 @@ namespace RealEstateCRMConsumer.Controllers
         [HttpPost]
         public async Task<ActionResult> Delete(int id, BuyerLead buyerLeadToDelete)
         {
-            HttpResponseMessage response = await httpClient.DeleteAsync("http://localhost:57955/api/BuyerLeads/" + id);
+            HttpResponseMessage response = await httpClient.DeleteAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/BuyerLeads/" + id);
             if (!response.IsSuccessStatusCode)
             {
                 return View("Error");
