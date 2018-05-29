@@ -36,7 +36,7 @@
   </tbody>
 </table>
 
-<div  *ngIf="isEmptyObject(sellerLeads)">
+<div  *ngIf="isEmptyObject(sellerLeads) == false">
 <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -62,7 +62,7 @@
   </table>
 </div>
 
-<div *ngIf="(buyerLeads | json) != ({} | json)">
+<div *ngIf="isEmptyObject(buyerLeads) == false">
     <table class="table" >
         <thead class="thead-dark">
           <tr>
