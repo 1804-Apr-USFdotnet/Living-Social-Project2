@@ -7,7 +7,10 @@
 
 <!-- all leads -->
 
-<table class="table" *ngIf="isEmptyObject(buyerLeads) && isEmptyObject(sellerLeads)">
+<div *ngIf="isEmptyObject(buyerLeads) && isEmptyObject(sellerLeads)">
+    <h1 class="display-3">All Leads</h1>
+
+<table class="table" >
   <thead class="thead-dark">
     <tr>
         <th scope="col" >Actions</th>
@@ -26,7 +29,7 @@
       <th scope="row"> {{lead.LeadName}}</th>
       
       <th> {{lead.PhoneNumber}}</th>
-      <th>{{lead.EmailAddress}}</th>
+      <th>{{lead.Email}}</th>
      
 
   
@@ -36,8 +39,10 @@
 
   </tbody>
 </table>
+</div>
 
 <div  *ngIf="isEmptyObject(sellerLeads) == false">
+  <h1 class="display-3">Seller Leads</h1>
 <table class="table">
     <thead class="thead-dark">
       <tr>
@@ -57,13 +62,15 @@
         <th scope="row"> {{lead.LeadName}}</th>
         
         <th> {{lead.PhoneNumber}}</th>
-        <th>{{lead.EmailAddress}}</th>
+        <th>{{lead.Email}}</th>
       </tr>
     </tbody>
   </table>
 </div>
 
 <div *ngIf="isEmptyObject(buyerLeads) == false">
+    <h1 class="display-3">Buyer Leads</h1>
+
     <table class="table" >
         <thead class="thead-dark">
           <tr>
@@ -83,7 +90,7 @@
               <th scope="row"> {{lead.LeadName}}</th>
               
               <th> {{lead.PhoneNumber}}</th>
-              <th>{{lead.EmailAddress}}</th>
+              <th>{{lead.Email}}</th>
     
           </tr>
       
