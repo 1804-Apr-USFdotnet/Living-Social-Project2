@@ -17,11 +17,9 @@ export class LeadComponent implements OnInit {
 
   selectedLead: Lead;
 
-  testLeads: Lead[] = [
-    {LeadId: 1, User: null, Address: null, City:'Dallas', State: 'Texas', Zipcode: 12345, LeadName: 'Cooper', EmailAddress: 'test@me.com', LeadType: 'buyer', PriorApproval: false, PhoneNumber: '1111111111'}
-  ];
-
-  buyerLeads: Lead;
+ 
+  sellerLeads: Lead[] = [];
+  buyerLeads: Lead[] = [];
 
   constructor(private _httpService: HttpService) { }
 
@@ -50,6 +48,28 @@ export class LeadComponent implements OnInit {
   onSelect(lead: Lead): void {
     this.selectedLead = lead;
     console.log(lead);
+  
+  }
+
+  sort(){
+    this.leads.forEach(element => {
+      if(element.LeadType === "Buyer"){
+        console.log("buyer: "+element);
+        this.buyerLeads.push(element);
+      }
+      else if(element.LeadType === "Seller"){
+        console.log("seller: "+element);
+        this.sellerLeads.push(element);
+      }
+      else{
+        console.log(element);
+      }
+    });
+  }
+
+  isEmptyObject(obj) {
+    console.log(obj);
+    return (obj && (Object.keys(obj).length === 0));
   }
 
 }
