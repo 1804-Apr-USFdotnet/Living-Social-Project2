@@ -1,0 +1,110 @@
+
+<div class="options">
+    <input class=""  type="search" [(ngModel)]="searchText" id="option-items"/>
+    <button (click)="searchLeads()" class="btn btn-primary" id="option-items">Search</button>
+    <button (click)="sort()" class="btn btn-success" id="option-items">Sort by type</button>
+</div>
+
+<!-- all leads -->
+
+<div *ngIf="isEmptyObject(buyerLeads) && isEmptyObject(sellerLeads)">
+    <h1 class="display-3">All Leads</h1>
+
+<table class="table" >
+  <thead class="thead-dark">
+    <tr>
+        <th scope="col" >Actions</th>
+      <th scope="col" >Name</th>
+      <th scope="col">Phone number</th>
+      <th scope="col">Email</th>
+      
+
+
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let lead of leads">
+        <th><a [routerLink]="['/leads', lead.LeadId]">Details</a></th>
+
+      <th scope="row"> {{lead.LeadName}}</th>
+      
+      <th> {{lead.PhoneNumber}}</th>
+      <th>{{lead.Email}}</th>
+     
+
+  
+   
+    </tr>
+
+
+  </tbody>
+</table>
+</div>
+
+<div  *ngIf="isEmptyObject(sellerLeads) == false">
+  <h1 class="display-3">Seller Leads</h1>
+<table class="table">
+    <thead class="thead-dark">
+      <tr>
+          <th scope="col" >Actions</th>
+        <th scope="col" >Name</th>
+        <th scope="col">Phone number</th>
+        <th scope="col">Email</th>
+       
+  
+  
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let lead of sellerLeads">
+          <th><a [routerLink]="['/leads', lead.LeadId]">Details</a></th>
+  
+        <th scope="row"> {{lead.LeadName}}</th>
+        
+        <th> {{lead.PhoneNumber}}</th>
+        <th>{{lead.Email}}</th>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="isEmptyObject(buyerLeads) == false">
+    <h1 class="display-3">Buyer Leads</h1>
+
+    <table class="table" >
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col" >Actions</th>
+            <th scope="col" >Name</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Email</th>
+      
+      
+      
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let lead of buyerLeads">
+              <th><a [routerLink]="['/leads', lead.LeadId]">Details</a></th>
+  
+              <th scope="row"> {{lead.LeadName}}</th>
+              
+              <th> {{lead.PhoneNumber}}</th>
+              <th>{{lead.Email}}</th>
+    
+          </tr>
+      
+        </tbody>
+      </table>
+</div>
+
+
+  <!-- <ul>
+      <li *ngFor="let lead of testLeads"
+      [class.selected]="lead === selectedLead"
+      (click)="onSelect(lead)">
+      <span class="badge">{{lead.Id}}</span> {{lead.LeadName}}
+    </li>
+  </ul>
+  <app-lead-details [lead]="selectedLead"></app-lead-details> -->
+

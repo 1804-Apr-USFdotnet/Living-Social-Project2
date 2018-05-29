@@ -244,6 +244,7 @@
     <Compile Include="Models\DataTransfer.cs" />
     <Compile Include="Models\IEntity.cs" />
     <Compile Include="Models\Lead.cs" />
+    <Compile Include="Models\LeadResponse.cs" />
     <Compile Include="Models\RealEstateAgent.cs" />
     <Compile Include="Models\SellerLead.cs" />
     <Compile Include="Models\User.cs" />
@@ -307,6 +308,9 @@
     <Content Include="Views\RealEstateAgent\Details.cshtml" />
     <Content Include="Views\RealEstateAgent\Edit.cshtml" />
     <Content Include="Views\RealEstateAgent\Index.cshtml" />
+    <Content Include="Views\Lead\Favorite.cshtml" />
+    <Content Include="Views\Lead\ViewFavorites.cshtml" />
+    <Content Include="Views\Lead\FavDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

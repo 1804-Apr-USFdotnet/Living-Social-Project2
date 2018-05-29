@@ -1,81 +1,79 @@
 node('master'){
-    stage("Import"){
+    stage("Import") {
         try {
-    git 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
-    git branch: 'Dev', url: 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
+            git 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
+            git branch: 'Dev', url: 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
         }
         catch (exc) {
             slackError('Import')
             throw exc
         }
-}
-stage("Build") {
-    try {
-    dir('RealEstateCRMAPI'){
-    bat 'nuget restore'
-    bat 'msbuild'
     }
-    }
+    stage("Build") {
+        try {
+            dir('RealEstateCRMAPI'){
+                bat 'nuget restore'
+                bat 'msbuild'
+            }
+        }
         catch (exc) {
             slackError('build')
             throw exc
         }
-}
-stage("Test")
-{
-    try {
-    dir('RealEstateCRMAPI'){
-         bat "VSTest.Console RealEstateCRM.Test\\bin\\Debug\\RealEstateCRM.Test.dll"
     }
-    }
-    catch (exc) {
+    stage("Test") {
+        try {
+            dir('RealEstateCRMAPI'){
+            bat "VSTest.Console RealEstateCRM.Test\\bin\\Debug\\RealEstateCRM.Test.dll"
+            }   
+        }
+        catch (exc) {
             slackError('Test')
             throw exc
         }
-}
-stage("Analyze")
-{
-    try {
-     dir('RealEstateCRMAPI'){
+    }
+    stage("Analyze") {
+        try {
+            dir('RealEstateCRMAPI'){
                 bat 'SonarScanner.MSBuild begin /k:Project2API /v:0.1.0 /d:sonar.organization=robertb100-github /d:sonar.verbose=true'
                 bat 'msbuild /t:rebuild'  
                 bat 'SonarScanner.MSBuild end'
-     }
-    }
-    catch (exc) {
+            }
+        }
+        catch (exc) {
             slackError('Analyze')
             throw exc
         }
-}
-stage("Package")
-{
-    try {
-    dir('RealEstateCRMAPI/RealEstateCRM.API') {
-        bat 'msbuild /t:package'
+    }
+    stage("Package") {
+        try {
+        dir('RealEstateCRMAPI/RealEstateCRM.API') {
+            bat 'msbuild /t:package'
         }
     }
-    catch (exc) {
+        catch (exc) {
             slackError('Package')
             throw exc
         }
-}
-stage("Deploy") 
-{
-    try {
-    dir('RealEstateCRMAPI/RealEstateCRM.API/obj/Debug/Package') {
-        bat "msdeploy -verb:sync -source:package=\"%CD%\\RealEstateCRM.API.zip\" -dest:auto,computerName=\"https://ec2-13-58-19-141.us-east-2.compute.amazonaws.com:8172/msdeploy.axd\",userName=\"Administrator\",password=\"Password123-\",authtype=\"basic\",includeAcls=\"False\" -disableLink:AppPoolExtension -disableLink:ContentExtension -disableLink:CertificateExtension -setParam:\"IIS Web Application Name\"=\"Default Web Site\" -enableRule:AppOffline -allowUntrusted"
     }
-    }
-    catch (exc) {
-            slackError('Import')
+    stage("Deploy") {
+        try {
+            dir('RealEstateCRMAPI/RealEstateCRM.API/obj/Debug/Package') {
+                bat "msdeploy -verb:sync -source:package=\"%CD%\\RealEstateCRM.API.zip\" -dest:auto,computerName=\"${env.Deploy_Site}\",userName=\"Administrator\",password=\"${env.Deploy_Pass}\",authtype=\"basic\",includeAcls=\"False\" -disableLink:AppPoolExtension -disableLink:ContentExtension -disableLink:CertificateExtension -setParam:\"IIS Web Application Name\"=\"Default Web Site/RealEstateAPI\" -enableRule:AppOffline -allowUntrusted"
+                slackSuccess('Deploy')
+            }
+        }
+        catch (exc) {
+            slackError('Deploy')
             throw exc
         }
     }
 }
 
-
 def slackError(stageName) {
-
     slackSend color: 'danger', message: "FAILED ${stageName} stage: [<${JOB_URL}|${env.JOB_NAME}> <${env.BUILD_URL}console|${env.BUILD_DISPLAY_NAME}>] [${currentBuild.durationString.replace(' and counting', '')}]"
+}
 
+def slackSuccess(stageName) {
+    slackSend color: 'good', message: "Success ${stageName}. The API has successfully passed through the pipeline and has been deployed to the Dev server"
 }

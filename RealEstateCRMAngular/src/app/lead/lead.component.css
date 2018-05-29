@@ -1,0 +1,13 @@
+
+.options{
+    display: inline-block;
+    margin-top: 7%;
+    margin-bottom: 3%;
+    margin-left: 5%;
+    margin-right: 5%;
+    
+}
+
+#option-items{
+    display: inline-block;
+}

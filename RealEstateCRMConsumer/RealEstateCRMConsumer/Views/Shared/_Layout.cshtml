@@ -16,14 +16,47 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @{if (Request.Cookies.AllKeys.Contains("ApplicationCookie")) {
+                    //@Html.ActionLink("Leads", "Index", "Lead", new { area = "" }, new { @class = "navbar-brand" })
+                  <a href="http://ec2-18-217-243-247.us-east-2.compute.amazonaws.com/realestatecrmangular" 
+                           class = "navbar-brand">
+                            Lead Index</a>
+                } }
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+                    @*// when logged in*@
+                    @{if (Request.Cookies.AllKeys.Contains("ApplicationCookie"))
+                        {
+                            <li>@Html.ActionLink("Logout", "Logout", "Account")</li>
+
+                            if (Session["role"] as string == "User")
+                            {
+                                <li>@Html.ActionLink("Add Lead", "Create", "Lead")</li>
+                                <li>@Html.ActionLink("Closed leads", "Closed", "Lead")</li>
+                                <li>@Html.ActionLink("Edit Profile", "Edit", "User", new { id = Session["user_id"] }, null)</li>
+
+                            }
+                            else if (Session["role"] as string == "Agent")
+                            {
+                                <li>@Html.ActionLink("Favorites", "ViewFavorites", "Lead")</li>
+                                <li>@Html.ActionLink("Edit Profile", "Edit", "RealEstateAgent", new { id = Session["agent_id"] }, null)</li>
+
+                            }
+
+
+
+                        }
+
+                        else
+                        {
+                            @*// when logged out*@
+                            <li>@Html.ActionLink("Login", "Create", "Account")</li>
+                        }
+
+                    }
+
+
 
                 </ul>
             </div>

@@ -18,7 +18,10 @@ namespace RealEstateCRMConsumer.Controllers
     {
         // GET: Users
         public async Task<ActionResult> Index()
+
+
         {
+           
             // create request using method from abstract controller 
             HttpRequestMessage apiRequest = CreateRequestToService(HttpMethod.Get, "api/Users");
             // send request
@@ -190,7 +193,8 @@ namespace RealEstateCRMConsumer.Controllers
                 TempData["error"] = response.ReasonPhrase;
                 return View("Error");
             }
-            return RedirectToAction("Index");
+            //return RedirectToAction("Index");
+            return RedirectToAction("Index", "Lead");
         }
 
         // GET: Lead/Delete/5
