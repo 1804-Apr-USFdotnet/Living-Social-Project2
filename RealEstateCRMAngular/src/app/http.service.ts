@@ -15,14 +15,14 @@ export class HttpService {
   constructor(private _httpclient: HttpClient) { 
     
   }
-  private urlBase = "http://localhost:57955/api/Leads/ng";
+  private urlBase = "http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/Leads/ng";
 
   getLeads(onFail = (reason) => console.log(reason)) : Observable<Lead[]>{
     var r = this._httpclient.get<Lead[]>(this.urlBase);
     return r;
   }
   getDetails(lead_id: number): Observable<Lead>{
-    return this._httpclient.get<Lead>("http://localhost:57955/api/Leads/"+lead_id)
+    return this._httpclient.get<Lead>("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/Leads/"+lead_id)
   }
 
   searchLeads(email:string): Observable<Lead[]>{
