@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { HttpService } from '../http.service';
 import { Lead } from '../models/lead';
 
@@ -12,7 +12,8 @@ export class LeadComponent implements OnInit {
   leads: Lead[];
   foundLeads: Lead[] = [];
 
-  searchText: string;
+  searchText: string
+  
 
   selectedLead: Lead;
 

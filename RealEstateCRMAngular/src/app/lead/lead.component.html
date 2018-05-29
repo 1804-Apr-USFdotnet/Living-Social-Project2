@@ -1,6 +1,9 @@
+<div class="search">
+  <input type="text" [(ngModel)]="searchText" />
+  <button (click)="searchLeads()">Search</button>
+   
+</div>
 
-<input type="text" [(ngModel)]="searchText" />
-<button (click)="searchLeads()">Search</button>
 
 <table class="table">
   <thead class="thead-dark">
@@ -9,10 +12,7 @@
       <th scope="col" >Name</th>
       <th scope="col">Phone number</th>
       <th scope="col">Email</th>
-      <th scope="col">Address</th>
-      <th scope="col">City</th>
-      <th scope="col">State</th>
-      <th scope="col">Zipcode</th>
+      
 
 
     </tr>
@@ -27,10 +27,7 @@
       <th>{{lead.EmailAddress}}</th>
      
 
-      <th>{{lead.Address}}</th>
-      <th>{{lead.City}}</th>
-      <th>{{lead.State}}</th>
-      <th>{{lead.Zipcode}}</th>
+  
     </tr>
 
 
@@ -45,10 +42,7 @@
         <th scope="col">Name</th>
         <th scope="col">Phone number</th>
         <th scope="col">Email</th>
-        <th scope="col">Address</th>
-        <th scope="col">City</th>
-        <th scope="col">State</th>
-        <th scope="col">Zipcode</th>
+       
   
   
       </tr>
@@ -58,10 +52,7 @@
         <th scope="row">{{lead.Name}}</th>
         <th>{{lead.Phone}}</th>
         <th>{{lead.Email}}</th>
-        <th>{{lead.Address}}</th>
-        <th>{{lead.City}}</th>
-        <th>{{lead.State}}</th>
-        <th>{{lead.Zipcode}}</th>
+ 
       </tr>
   
     </tbody>

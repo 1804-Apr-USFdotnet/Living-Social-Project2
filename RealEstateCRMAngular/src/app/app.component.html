@@ -8,23 +8,25 @@
         <a routerLink="/leads" class="nav-link">Leads</a>
       </li>
       <li class="nav-item">
-        <a routerLink="/collections" class="nav-link">Login</a>
+        <a href="http://ec2-18-222-67-85.us-east-2.compute.amazonaws.com/realestateconsumer/Account/create" class="nav-link">Login</a>
       </li>
       <li class="nav-item">
-          <a routerLink="/collections" class="nav-link">Register as User</a>
-        </li>
+        <a href="http://ec2-18-222-67-85.us-east-2.compute.amazonaws.com/realestateconsumer/User/create" class="nav-link">Register as User</a>
+      </li>
         <li class="nav-item">
-            <a routerLink="/collections" class="nav-link">Register as Agent</a>
-          </li>
-          
+          <a href="http://ec2-18-222-67-85.us-east-2.compute.amazonaws.com/realestateconsumer/RealEstateAgent/create" class="nav-link">Register as Agent</a>
+        </li>
+
     </ul>
   </nav>
 <nav>
-  <br>
-  <br>
-  <br>
-  <br>
+  <div class="container">
+      <router-outlet></router-outlet>
 
-    <router-outlet></router-outlet>
+
+  </div>
+
+
+    
 
 
