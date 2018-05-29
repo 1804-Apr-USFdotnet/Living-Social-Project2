@@ -1,18 +1,20 @@
 
-<input type="text" [(ngModel)]="searchText" />
-<button (click)="searchLeads()">Search</button>
+<div class="options">
+    <input class=""  type="search" [(ngModel)]="searchText" id="option-items"/>
+    <button (click)="searchLeads()" class="btn btn-primary" id="option-items">Search</button>
+    <button (click)="sort()" class="btn btn-success" id="option-items">Sort by type</button>
+</div>
 
-<table class="table">
+<!-- all leads -->
+
+<table class="table" *ngIf="isEmptyObject(buyerLeads) && isEmptyObject(sellerLeads)">
   <thead class="thead-dark">
     <tr>
         <th scope="col" >Actions</th>
       <th scope="col" >Name</th>
       <th scope="col">Phone number</th>
       <th scope="col">Email</th>
-      <th scope="col">Address</th>
-      <th scope="col">City</th>
-      <th scope="col">State</th>
-      <th scope="col">Zipcode</th>
+   
 
 
     </tr>
@@ -27,45 +29,67 @@
       <th>{{lead.EmailAddress}}</th>
      
 
-      <th>{{lead.Address}}</th>
-      <th>{{lead.City}}</th>
-      <th>{{lead.State}}</th>
-      <th>{{lead.Zipcode}}</th>
+   
     </tr>
 
 
   </tbody>
 </table>
 
-
-
-<table class="table" *ngIf="buyerLeads">
+<div  *ngIf="isEmptyObject(sellerLeads)">
+<table class="table">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">Name</th>
+          <th scope="col" >Actions</th>
+        <th scope="col" >Name</th>
         <th scope="col">Phone number</th>
         <th scope="col">Email</th>
-        <th scope="col">Address</th>
-        <th scope="col">City</th>
-        <th scope="col">State</th>
-        <th scope="col">Zipcode</th>
+     
   
   
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let lead of foundLeads">
-        <th scope="row">{{lead.Name}}</th>
-        <th>{{lead.Phone}}</th>
-        <th>{{lead.Email}}</th>
-        <th>{{lead.Address}}</th>
-        <th>{{lead.City}}</th>
-        <th>{{lead.State}}</th>
-        <th>{{lead.Zipcode}}</th>
-      </tr>
+      <tr *ngFor="let lead of sellerLeads">
+          <th><a [routerLink]="['/leads', lead.LeadId]">Details</a></th>
   
+        <th scope="row"> {{lead.LeadName}}</th>
+        
+        <th> {{lead.PhoneNumber}}</th>
+        <th>{{lead.EmailAddress}}</th>
+      </tr>
     </tbody>
   </table>
+</div>
+
+<div *ngIf="(buyerLeads | json) != ({} | json)">
+    <table class="table" >
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col" >Actions</th>
+            <th scope="col" >Name</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Email</th>
+      
+      
+      
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let lead of buyerLeads">
+              <th><a [routerLink]="['/leads', lead.LeadId]">Details</a></th>
+  
+              <th scope="row"> {{lead.LeadName}}</th>
+              
+              <th> {{lead.PhoneNumber}}</th>
+              <th>{{lead.EmailAddress}}</th>
+    
+          </tr>
+      
+        </tbody>
+      </table>
+</div>
+
 
   <!-- <ul>
       <li *ngFor="let lead of testLeads"
