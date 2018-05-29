@@ -2,7 +2,7 @@ node('master') {
     stage("Import"){
         try {
             git 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
-            git branch: 'Dev', url: 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
+            //git branch: 'Dev', url: 'https://github.com/1804-Apr-USFdotnet/Living-Social-Project2.git'
         }
         catch (exc) {
             slackError('Import')
