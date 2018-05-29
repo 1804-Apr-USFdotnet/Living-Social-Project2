@@ -45,27 +45,14 @@
         <th scope="col" >Name</th>
         <th scope="col">Phone number</th>
         <th scope="col">Email</th>
-<<<<<<< HEAD
        
-=======
-     
->>>>>>> leadSeperation
   
   
       </tr>
     </thead>
     <tbody>
-<<<<<<< HEAD
-      <tr *ngFor="let lead of foundLeads">
-        <th scope="row">{{lead.Name}}</th>
-        <th>{{lead.Phone}}</th>
-        <th>{{lead.Email}}</th>
- 
-      </tr>
-=======
       <tr *ngFor="let lead of sellerLeads">
           <th><a [routerLink]="['/leads', lead.LeadId]">Details</a></th>
->>>>>>> leadSeperation
   
         <th scope="row"> {{lead.LeadName}}</th>
         
