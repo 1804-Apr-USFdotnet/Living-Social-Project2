@@ -17,8 +17,10 @@
                     <span class="icon-bar"></span>
                 </button>
                 @{if (Request.Cookies.AllKeys.Contains("ApplicationCookie")) {
-                    @Html.ActionLink("Leads", "Index", "Lead", new { area = "" }, new { @class = "navbar-brand" })
-
+                    //@Html.ActionLink("Leads", "Index", "Lead", new { area = "" }, new { @class = "navbar-brand" })
+                  <a href="http://ec2-18-217-243-247.us-east-2.compute.amazonaws.com/realestatecrmangular" 
+                           class = "navbar-brand">
+                            Lead Index</a>
                 } }
             </div>
             <div class="navbar-collapse collapse">

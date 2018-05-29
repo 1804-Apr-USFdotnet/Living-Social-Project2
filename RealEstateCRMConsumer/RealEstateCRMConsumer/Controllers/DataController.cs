@@ -15,7 +15,7 @@ namespace RealEstateCRMConsumer.Controllers
         // GET: Data
         public async Task<ActionResult> Index()
         {
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Data/");
+            HttpResponseMessage response = await httpClient.GetAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/Data/");
             TempData["message"] = response.ReasonPhrase;
             return View();
         }

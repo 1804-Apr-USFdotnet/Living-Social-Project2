@@ -21,7 +21,7 @@ namespace RealEstateCRMConsumer.Controllers
             Account account = TempData["account"] as Account;
             string role = TempData["role"] as String;
             Session["role"] = role;
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Register/" +role, account);
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/Accounts/Register/" + role, account);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
@@ -46,7 +46,7 @@ namespace RealEstateCRMConsumer.Controllers
         {
             Account account = TempData["account"] as Account;
             string role = TempData["role"] as String;
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://localhost:57955/api/Accounts/Register" + role, account);
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/Accounts/Register" + role, account);
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
@@ -118,7 +118,7 @@ namespace RealEstateCRMConsumer.Controllers
         public async Task<ActionResult> Logout()
         {
             Session.Clear();
-            HttpResponseMessage response = await httpClient.GetAsync("http://localhost:57955/api/Accounts/Logout");
+            HttpResponseMessage response = await httpClient.GetAsync("http://ec2-13-58-19-141.us-east-2.compute.amazonaws.com/realestateapi/api/Accounts/Logout");
             if (!response.IsSuccessStatusCode)
             {
                 TempData["error"] = response.ReasonPhrase;
