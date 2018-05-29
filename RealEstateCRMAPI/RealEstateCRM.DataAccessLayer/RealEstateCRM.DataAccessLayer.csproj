@@ -101,13 +101,13 @@
   <ItemGroup>
     <Compile Include="CreateDb.cs" />
     <Compile Include="DataDbContext.cs" />
-    <Compile Include="Migrations\201805191610362_InitialCreate.cs" />
-    <Compile Include="Migrations\201805191610362_InitialCreate.Designer.cs">
-      <DependentUpon>201805191610362_InitialCreate.cs</DependentUpon>
+    <Compile Include="Migrations\201805221426015_InitialCreate.cs" />
+    <Compile Include="Migrations\201805221426015_InitialCreate.Designer.cs">
+      <DependentUpon>201805221426015_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201805262033348_AddRestaurantIDtoLead.cs" />
-    <Compile Include="Migrations\201805262033348_AddRestaurantIDtoLead.Designer.cs">
-      <DependentUpon>201805262033348_AddRestaurantIDtoLead.cs</DependentUpon>
+    <Compile Include="Migrations\201805282116473_addAgentID2.cs" />
+    <Compile Include="Migrations\201805282116473_addAgentID2.Designer.cs">
+      <DependentUpon>201805282116473_addAgentID2.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -140,11 +140,11 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201805191610362_InitialCreate.resx">
-      <DependentUpon>201805191610362_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805221426015_InitialCreate.resx">
+      <DependentUpon>201805221426015_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201805262033348_AddRestaurantIDtoLead.resx">
-      <DependentUpon>201805262033348_AddRestaurantIDtoLead.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201805282116473_addAgentID2.resx">
+      <DependentUpon>201805282116473_addAgentID2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
